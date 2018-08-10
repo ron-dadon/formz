@@ -1,4 +1,4 @@
-#Formz <small><small><small>👌 Painless react forms</small></small></small>
+# Formz <small><small><small>👌 Painless react forms</small></small></small>
 
 ## Another form library? Why?!
 
