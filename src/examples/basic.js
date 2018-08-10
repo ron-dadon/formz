@@ -60,7 +60,6 @@ export default class App extends Component {
     return (
       <div>
         <Formz render={LoginForm} onSubmit={this.onSubmit} />
-        <Formz render={LoginForm} onSubmit={this.onSubmit} />
       </div>
     )
   }

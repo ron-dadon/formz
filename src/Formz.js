@@ -56,7 +56,7 @@ const calculateFieldErrors = ({ validators, value, allValues, props }) => {
     const validatorResult = validators[validatorKey]({ value, allValues, props })
     if (validatorResult === true) return errors
     if (validatorResult instanceof Promise) return { ...errors, [validatorKey]: validatorResult }
-    return { ...errors, [validatorKey]: false }
+    return { ...errors, [validatorKey]: true }
   }, {})
 }
 
@@ -312,8 +312,8 @@ export default class Formz extends Component {
       const { value, defaultValue, pristine } = field
       const newValue = reInitialize && ((keepDirty && pristine) || !keepDirty) && defaultValue !== newDefaultValue ? newDefaultValue : value
       const formattedValue = executeModifiersPipeline({ modifiers: formatters, value: newValue, allValues, props })
-      let fieldValidators = props.required && !validators.required ? { ...validators, required } : validators
-      if (!props.required && fieldValidators.required === required) {
+      let fieldValidators = props && validators && props.required && !validators.required ? { ...validators, required } : validators
+      if (props && fieldValidators && !props.required && fieldValidators.required === required) {
         const { required: requiredFn, ...otherValidators } = validators
         fieldValidators = otherValidators
       }
@@ -396,7 +396,7 @@ export default class Formz extends Component {
             return pendingValidators.reduce((resolveErrors, pendingValidator) => {
               const error = asyncErrors[pendingValidators.indexOf(pendingValidator)]
               if (error) return resolveErrors
-              return { ...resolveErrors, [pendingValidator]: false }
+              return { ...resolveErrors, [pendingValidator]: true }
             }, {})
           })
           asyncValidations.push(fieldPromises)

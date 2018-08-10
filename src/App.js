@@ -174,11 +174,13 @@ class App extends PureComponent {
               <div>
                 <Field component={Checkbox} name="israeli" defaultValue={false} label="Israeli" />
               </div>
-              <div className="mt-2">
-                {submitting && pending && <div className="alert alert-info">Validating form...</div>}
-                {submitting && !pending && <div className="alert alert-info">Submitting form...</div>}
-                {!submitting && invalid && <div className="alert alert-danger">Form has errors</div>}
-              </div>
+              {touched &&
+                <div className="mt-2">
+                  {submitting && pending && <div className="alert alert-info">Validating form...</div>}
+                  {submitting && !pending && <div className="alert alert-info">Submitting form...</div>}
+                  {!submitting && invalid && <div className="alert alert-danger">Form has errors</div>}
+                </div>
+              }
             </div>
             <div className="card-footer d-flex flex-row-reverse justify-content-between">
               <div>
@@ -193,7 +195,7 @@ class App extends PureComponent {
             </div>
           </div>
         </div>
-        <div className="col">
+        <div className="col-8">
           <div>
             <h4>Form State</h4>
             <table className="table table-bordered table-sm">
@@ -329,19 +331,6 @@ class App extends PureComponent {
     return (
       <div className="container-fluid p-3">
         <h1>Formz</h1>
-        <Formz
-          render={this.renderForm}
-          onSubmit={this.submit}
-          onSubmitSuccess={this.onSubmitSuccess}
-          onSubmitError={this.onSubmitError}
-          onValidation={this.onValidation}
-          onValuesChange={this.onValuesChange}
-          onReset={this.onReset}
-          autoReset={this.state.autoReset}
-          validateOnInit={false}
-          validateOnBlur={true}
-          validateOnChange={false}
-        />
         <Formz
           render={this.renderForm}
           onSubmit={this.submit}
