@@ -16,7 +16,7 @@ const Input = ({ label, value, onChange, onFocus, onBlur, submitting, type = 'te
 )
 
 class LoginForm extends Component {
-  render() {
+  render () {
     console.log('render')
     // The Field prop is the unique form field component bound to the wrapping form
     const { Field, submitting, submitted, submitSuccess } = this.props
@@ -24,18 +24,18 @@ class LoginForm extends Component {
       <div>
         <Field
           component={Input}
-          name='email'
-          label='Email'
+          name="email"
+          label="Email"
         />
         <Field
           component={Input}
-          name='password'
-          type='password'
-          label='Password'
+          name="password"
+          type="password"
+          label="Password"
         />
         <div>
-          <button type='reset' disabled={submitting}>Reset</button>
-          <button type='submit' disabled={submitting}>Login</button>
+          <button type="reset" disabled={submitting}>Reset</button>
+          <button type="submit" disabled={submitting}>Login</button>
         </div>
         {
           <p>
@@ -56,7 +56,7 @@ export default class App extends Component {
     setTimeout(result, 100)
   })
 
-  render() {
+  render () {
     return (
       <div>
         <Formz render={LoginForm} onSubmit={this.onSubmit} />

@@ -50,11 +50,11 @@ class Select extends PureComponent {
           className={`form-control ${!valid && (!pristine || touched) ? 'is-invalid' : ''}`}
           value={(valueKey ? value[valueKey] : value) || ''}
           onChange={(e) => {
-           if (valueKey) {
-             onChange(options.find(option => option.value[valueKey] === e.target.value).value)
-           } else {
-             onChange(e.target.value)
-           }
+            if (valueKey) {
+              onChange(options.find(option => option.value[valueKey] === e.target.value).value)
+            } else {
+              onChange(e.target.value)
+            }
           }}
           onBlur={onBlur}
           disabled={submitting}
@@ -90,7 +90,7 @@ const genderOptions = [
 ]
 const validateName = {
   capitalFirst: ({ value }) => /^[A-Z]/.test(value),
-  minLength: ({ value }) => value.length >= 3,
+  minLength: ({ value }) => value.length >= 3
   // exists: ({ value }) => new Promise(resolve => setTimeout(() => ['Gilad', 'Alex', 'gilad', 'alex'].includes(value) ? resolve(false) : resolve(true), Math.random() * 1000))
 }
 const parsers = [({ value }) => value.toUpperCase()]
@@ -102,9 +102,7 @@ const matchPassword = {
   }
 }
 
-const asyncNameValidation = {
-
-}
+const asyncNameValidation = {}
 
 class App extends PureComponent {
   state = {
@@ -175,11 +173,11 @@ class App extends PureComponent {
                 <Field component={Checkbox} name="israeli" defaultValue={false} label="Israeli" />
               </div>
               {touched &&
-                <div className="mt-2">
-                  {submitting && pending && <div className="alert alert-info">Validating form...</div>}
-                  {submitting && !pending && <div className="alert alert-info">Submitting form...</div>}
-                  {!submitting && invalid && <div className="alert alert-danger">Form has errors</div>}
-                </div>
+              <div className="mt-2">
+                {submitting && pending && <div className="alert alert-info">Validating form...</div>}
+                {submitting && !pending && <div className="alert alert-info">Submitting form...</div>}
+                {!submitting && invalid && <div className="alert alert-danger">Form has errors</div>}
+              </div>
               }
             </div>
             <div className="card-footer d-flex flex-row-reverse justify-content-between">
@@ -190,7 +188,8 @@ class App extends PureComponent {
               <div>
                 <button className="btn btn-danger" type="button" onClick={this.resetLog}>Clear Log</button>
                 <button className="btn btn-warning" type="button" onClick={this.changeAgeDefaultValue}>Change Age Default</button>
-                <button className={`btn btn-info ${!this.state.autoReset ? 'active' : ''}`} type="button" onClick={this.autoReset(!this.state.autoReset)}>Auto reset {this.state.autoReset ? 'ON' : 'OFF'}</button>
+                <button className={`btn btn-info ${!this.state.autoReset ? 'active' : ''}`} type="button" onClick={this.autoReset(!this.state.autoReset)}>Auto
+                  reset {this.state.autoReset ? 'ON' : 'OFF'}</button>
               </div>
             </div>
           </div>
@@ -291,7 +290,7 @@ class App extends PureComponent {
     }, Math.ceil(Math.random() * 1000))
   })
 
-  log = entry => this.setState((state) => ({ ...state, log: [ ...state.log, entry]}), () => this.ref.scrollTop = this.ref.scrollHeight)
+  log = entry => this.setState((state) => ({ ...state, log: [...state.log, entry] }), () => this.ref.scrollTop = this.ref.scrollHeight)
 
   onSubmitSuccess = (values) => {
     this.log(`On Submit Success with values ${JSON.stringify(values)}`)

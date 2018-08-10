@@ -2,13 +2,13 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
 export const FieldPropTypes = {
-  component: PropTypes.oneOfType([ PropTypes.element, PropTypes.func ]).isRequired,
+  component: PropTypes.oneOfType([PropTypes.element, PropTypes.func]).isRequired,
   name: PropTypes.string.isRequired,
   defaultValue: PropTypes.any,
   validators: PropTypes.object,
   asyncValidators: PropTypes.object,
-  parsers: PropTypes.oneOfType([ PropTypes.arrayOf(PropTypes.func), PropTypes.func ]),
-  formatters: PropTypes.oneOfType([ PropTypes.arrayOf(PropTypes.func), PropTypes.func ]),
+  parsers: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.func), PropTypes.func]),
+  formatters: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.func), PropTypes.func]),
   validateOnChange: PropTypes.bool,
   validateOnBlur: PropTypes.bool,
   validateOnInit: PropTypes.bool,
@@ -17,7 +17,7 @@ export const FieldPropTypes = {
 }
 
 export const FormzPropTypes = {
-  render: PropTypes.oneOfType([ PropTypes.element, PropTypes.func ]).isRequired,
+  render: PropTypes.oneOfType([PropTypes.element, PropTypes.func]).isRequired,
   onSubmit: PropTypes.func.isRequired,
   onSubmitSuccess: PropTypes.func,
   onSubmitError: PropTypes.func,
@@ -40,7 +40,10 @@ export const required = ({ value }) => {
 
 const getFormValues = ({ fields }) => Object.keys(fields).reduce((values, fieldName) => ({ ...values, [fieldName]: fields[fieldName].value }), {})
 
-const getFormErrors = fields => Object.keys(fields).reduce((values, fieldName) => ({ ...values, [fieldName]: Object.keys(fields[fieldName].errors).length ? fields[fieldName].errors : undefined }), {})
+const getFormErrors = fields => Object.keys(fields).reduce((values, fieldName) => ({
+  ...values,
+  [fieldName]: Object.keys(fields[fieldName].errors).length ? fields[fieldName].errors : undefined
+}), {})
 
 const getFormIsValid = errors => Object.keys(errors).reduce((isValid, fieldName) => isValid && (!errors[fieldName] || !Object.keys(errors[fieldName]).length), true)
 
@@ -60,25 +63,35 @@ const calculateFieldErrors = ({ validators, value, allValues, props }) => {
   }, {})
 }
 
-const executeModifiersPipeline = ({ modifiers, value, allValues, props }) => modifiers.reduce((finalValue, modifier) => modifier({ value: finalValue, allValues, props}), value)
+const executeModifiersPipeline = ({ modifiers, value, allValues, props }) => modifiers.reduce((finalValue, modifier) => modifier({
+  value: finalValue,
+  allValues,
+  props
+}), value)
 
 const forceFunctionsArray = val => Array.isArray(val) ? val : (typeof val === 'function' ? [val] : [])
 
-const extractAsyncErrors = obj => Object.keys(obj).reduce((promises, objKey) => (obj[objKey] instanceof Promise ? {...promises, [objKey]: obj[objKey] } : promises), {})
+const extractAsyncErrors = obj => Object.keys(obj).reduce((promises, objKey) => (obj[objKey] instanceof Promise ? {
+  ...promises,
+  [objKey]: obj[objKey]
+} : promises), {})
 
-const extractSyncErrors = obj => Object.keys(obj).reduce((errors, objKey) => (obj[objKey] instanceof Promise ? errors : {...errors, [objKey]: obj[objKey] }), {})
+const extractSyncErrors = obj => Object.keys(obj).reduce((errors, objKey) => (obj[objKey] instanceof Promise ? errors : {
+  ...errors,
+  [objKey]: obj[objKey]
+}), {})
 
 const fieldComponentFactory = ({ registerField, unregisterField, isRegistered, resetField, updateField, updateFieldValue, setFieldTouched, setFieldActive, getField, formValues, getFormState }) => {
   class Field extends Component {
     static propTypes = FieldPropTypes
 
-    componentDidMount() {
+    componentDidMount () {
       const { component, parsers, formatters, reInitialize, keepDirty, ...otherProps } = this.props
       registerField({ ...otherProps, parsers: forceFunctionsArray(parsers), formatters: forceFunctionsArray(formatters) })
     }
 
-    componentDidUpdate(oldProps) {
-      const { component, name, parsers, formatters, reInitialize, keepDirty,...otherProps } = this.props
+    componentDidUpdate (oldProps) {
+      const { component, name, parsers, formatters, reInitialize, keepDirty, ...otherProps } = this.props
       if (this.propsChanged(oldProps)) {
         updateField({
           name,
@@ -91,7 +104,7 @@ const fieldComponentFactory = ({ registerField, unregisterField, isRegistered, r
       }
     }
 
-    componentWillUnmount() {
+    componentWillUnmount () {
       unregisterField(this.props.name)
     }
 
@@ -123,7 +136,7 @@ const fieldComponentFactory = ({ registerField, unregisterField, isRegistered, r
       setFieldTouched({ name })
     }
 
-    render() {
+    render () {
       if (!isRegistered(this.props.name)) return null
       const {
         component: FieldComponent, name, defaultValue, validators, asyncValidators, parsers, formatters,
@@ -159,6 +172,7 @@ const fieldComponentFactory = ({ registerField, unregisterField, isRegistered, r
       )
     }
   }
+
   return Field
 }
 
@@ -200,8 +214,10 @@ export default class Formz extends Component {
 
   formValues = () => getFormValues(this.state)
 
-  createNewField = ({ name, defaultValue, validators = {}, asyncValidators = {}, formatters = [], parsers = [],
-                      validateOnChange, validateOnBlur, validateOnInit, props = {} }) => {
+  createNewField = ({
+                      name, defaultValue, validators = {}, asyncValidators = {}, formatters = [], parsers = [],
+                      validateOnChange, validateOnBlur, validateOnInit, props = {}
+                    }) => {
     const allValues = getFormValues(this.state)
     const errors = {}
     const valid = true
@@ -335,13 +351,19 @@ export default class Formz extends Component {
     this.validateAllFields()
   }
 
-  registerField = ({ name, defaultValue = '', validateOnChange, validateOnBlur, validateOnInit,
-                     validators = {}, asyncValidators = {}, formatters = [], parsers = [], ...props }) => {
+  registerField = ({
+                     name, defaultValue = '', validateOnChange, validateOnBlur, validateOnInit,
+                     validators = {}, asyncValidators = {}, formatters = [], parsers = [], ...props
+                   }) => {
     const { validateOnInit: formValidateOnInit } = this.props
     this.setState((state) => ({
       ...state,
-      fields: { ...state.fields, [name]: this.createNewField({ name, defaultValue, validators, asyncValidators, formatters,
-          parsers, props, validateOnChange, validateOnBlur, validateOnInit }) }
+      fields: {
+        ...state.fields, [name]: this.createNewField({
+          name, defaultValue, validators, asyncValidators, formatters,
+          parsers, props, validateOnChange, validateOnBlur, validateOnInit
+        })
+      }
     }))
     if (validateOnInit || (validateOnInit === undefined && formValidateOnInit)) {
       this.validateAllFields()
