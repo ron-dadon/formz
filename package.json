@@ -1,20 +1,55 @@
 {
   "name": "formz",
-  "version": "0.1.0",
-  "private": true,
+  "description": "Painless React forms",
+  "version": "0.1.9",
+  "license": "MIT",
+  "keywords": [
+    "formz",
+    "react",
+    "react-dom",
+    "form",
+    "forms",
+    "field",
+    "fields",
+    "validation",
+    "validations",
+    "parser",
+    "parsers",
+    "formatter",
+    "formatters"
+  ],
+  "main": "lib/index.js",
   "dependencies": {
+    "@material-ui/core": "^1.4.3",
+    "@material-ui/icons": "^2.0.1",
     "prop-types": "^15.6.2",
-    "react": "^16.4.1",
-    "react-dom": "^16.4.1",
-    "react-scripts": "1.1.4"
+    "react": "^16.4.2",
+    "react-dom": "^16.4.2"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.4",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-0": "^6.24.1",
+    "css-loader": "^1.0.0",
+    "html-webpack-plugin": "^3.2.0",
+    "style-loader": "^0.22.1",
+    "url-loader": "^1.0.1",
+    "webpack": "^4.1.1",
+    "webpack-cli": "^2.0.12",
+    "webpack-dev-server": "^3.1.5",
+    "webpack-node-externals": "^1.7.2"
   },
   "peerDependencies": {
-    "react": ">= 15.0.0"
+    "react": ">= 15"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "build": "webpack --mode production",
+    "build:docs": "env LIB=1 && webpack --mode production",
+    "build:publish:patch": "webpack --mode production && npm version patch && npm publish",
+    "build:publish:minor": "webpack --mode production && npm version minor && npm publish",
+    "build:publish:major": "webpack --mode production && npm version major && npm publish",
+    "start": "env LIB=1 && webpack-dev-server --mode development --open"
   }
 }
