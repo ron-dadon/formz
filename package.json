@@ -47,9 +47,9 @@
   "scripts": {
     "build": "webpack --mode production",
     "build:docs": "env LIB=1 && webpack --mode production",
-    "build:publish:patch": "webpack --mode production && npm version patch && npm publish",
-    "build:publish:minor": "webpack --mode production && npm version minor && npm publish",
-    "build:publish:major": "webpack --mode production && npm version major && npm publish",
+    "build:patch": "webpack --mode production && npm version patch",
+    "build:minor": "webpack --mode production && npm version minor",
+    "build:major": "webpack --mode production && npm version major",
     "start": "env LIB=1 && webpack-dev-server --mode development --open"
   }
 }
