@@ -490,7 +490,8 @@ class Formz extends Component {
   render() {
     const { render: RenderComponent } = this.props
     const {
-      errors, valid, pristine, touched, pending
+      errors, valid, pristine, touched, pending,
+      submitting, submitted, submitSuccess, fields
     } = this.state
     return (
       <form onSubmit={this.startSubmit} onReset={this.resetForm} noValidate>
@@ -506,7 +507,10 @@ class Formz extends Component {
           touched={touched}
           untouched={!touched}
           pending={pending}
-          {...this.state}
+          submitting={submitting}
+          submitted={submitted}
+          submitSuccess={submitSuccess}
+          fields={fields}
         />
       </form>
     )

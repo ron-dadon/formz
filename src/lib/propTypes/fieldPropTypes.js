@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 const fieldPropTypes = {
   render: PropTypes.oneOfType([PropTypes.element, PropTypes.func]).isRequired,
   name: PropTypes.string.isRequired,
-  defaultValue: PropTypes.any,
+  defaultValue: PropTypes.oneOfType([PropTypes.array, PropTypes.object, PropTypes.string, PropTypes.number, PropTypes.bool]),
   validators: PropTypes.object,
   asyncValidators: PropTypes.object,
   parsers: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.func), PropTypes.func]),

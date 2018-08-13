@@ -71,13 +71,14 @@ const fieldComponentFactory = ({
         validateOnChange, validateOnBlur, validateOnInit, reInitialize, keepDirty, ...props
       } = this.props
       const {
-        formattedValue, active, valid, pristine, touched, errors, pending
+        formattedValue, value, active, valid, pristine, touched, errors, pending
       } = getField(this.props.name)
       const { submitting, submitted, submitSuccess } = getFormState()
       return (
         <FieldRender
           {...props}
           value={formattedValue}
+          rawValue={value}
           errors={errors}
           valid={valid}
           invalid={!valid}
