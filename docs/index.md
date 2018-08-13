@@ -1,4 +1,4 @@
-[version 0.2.0](https://img.shields.io/badge/version-0.2.0-green.svg)
+![version 0.2.0](https://img.shields.io/badge/version-0.2.0-green.svg)
 
 # Another form library? Why?!
 

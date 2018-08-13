@@ -1,3 +1,3 @@
-const LIB = !!process.env.LIB
+const DOCS = !!process.env.DOCS
 
-module.exports = LIB ? require('./webpack.config.lib') : require('./webpack.config.docs')
+module.exports = DOCS ? require('./webpack.config.docs') : require('./webpack.config.lib')
