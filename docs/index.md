@@ -1,6 +1,4 @@
-# Formz <small><small><small>👌 Painless react forms</small></small></small>
-
-## Another form library? Why?!
+# Another form library? Why?!
 
 First, because I can...
 
@@ -14,7 +12,7 @@ That is what Redux Form does - on every change, there is a complete Redux cycle 
 
 So, the why part is first because I wanted to stop using Redux for form state management, and second, because I could not found a library that gave me the AngularJS experience.
 
-## Installation
+# Installation
 
 That one is easy. Like must libraries, just use `npm` or `yarn`.
 
@@ -26,7 +24,7 @@ $ npm i formz --save
 $ yarn add formz
 ```
 
-## Basic Example
+# Basic Example
 
 Formz make use of render prop pattern to inject a unique `Field` component for each form. The `Field` component is in-charge of providing field level functionality that is bound to that form only.
 
@@ -98,7 +96,7 @@ export default class App extends Component {
 
 You can find this example file and more under `examples` folder.
 
-## Validation
+# Validation
 
 Client side validation provides a good UX for your users, and also minimizes traffic to your server for form submissions that should fail anyway.
 
@@ -108,28 +106,28 @@ Due to the nature of validation, where one field validation may depend on other 
 
 Each validation function is injected with the field value, form values and field props, to give a fine level of details for every validation use case. See `validators` prop on `Field` component for more information.
 
-## Data formatting and parsing
+# Data formatting and parsing
 
 Many times the displayed value and actual form value are not identical in their format, the common examples are `select` components where the displayed label and selected value can be different and date fields, where many times the form value is a unix timestamp / ISO string but the displayed value is a human readable format of the data.
 
 For that purpose, each field has two props, `parses` and `formatters`. Those props can receive a function or array of functions that will convert your form value to the displayed value (formatting) and vice versa (parsing). See `parsers` and `formatters` props on `Field` component.
 
-## API Documentation
+# API Documentation
 
-### Components
+## Components
 
-#### Formz
+### Formz
 
 The main form component. This component is responsible for managing the form state, and hook up your event handlers into the form.
 
-##### Props
+#### Props
 
-###### render: React element / functional component (required)
+##### render: React element / functional component (required)
 
 Formz utilizes the render prop pattern to inject all form related props and methods into your form component.
 Pass in a class component or functional component.
 
-###### onSubmit: (formValues: {}) => Promise / Boolean (required)
+##### onSubmit: (formValues: {}) => Promise / Boolean (required)
 
 Form submission handler. The handler is called only if the form is valid, and will receive a single argument, that is a map object of `<field name, field value>`.
 
@@ -137,13 +135,13 @@ If the handler does async work to process the form, it should return a `Promise`
 
 If the handler does sync work, it should return `true` if successful, or `false` if failed.
 
-###### onSubmitSuccess: (result: any) => void
+##### onSubmitSuccess: (result: any) => void
 
 A callback to be called when the submission of the form is successful.
 
 If your `onSubmit` returned a `Promise`, it will be called with the resolved value. If your `onSubmit` returned `true`, it will be called with the submitted form values.
 
-###### onSubmitError: (error: any) => void
+##### onSubmitError: (error: any) => void
 
 A callback to be called when the submission of the form failed.
 
@@ -151,42 +149,42 @@ If the form is invalid, it will be called when attempting to submit the form, an
 
 If your `onSubmit` returned a `Promise`, it will be called with the rejected value. If your `onSubmit` returned `false`, it will be called with `false`.
 
-###### onValidation: ({ errors: {}, valid: boolean }) => void
+##### onValidation: ({ errors: {}, valid: boolean }) => void
 
 A callback to be called when the form has finished a validation phase.
 
 The callback will get a single object as a parameter, with `errors`, which is the form errors object, and `valid` that states if the form is valid or not.
 
-###### onReset: () => void
+##### onReset: () => void
 
 A callback to be called when the form has been reset.
 
-###### autoReset: boolean
+##### autoReset: boolean
 
 If set to `true`, the form would automatically reset upon a successful submit.
 
-###### validateOnChange: boolean (default: `true`)
+##### validateOnChange: boolean (default: `true`)
 
 If set to `true`, the form would validate upon every change in a field.
 Please note that this may cause an additional render, and validation runs on all fields.
 
-###### validateOnBlur: boolean (default: `true`)
+##### validateOnBlur: boolean (default: `true`)
 
 If set to `true`, the form would validate upon every blur of a field.
 Please note that this may cause an additional render, and validation runs on all fields.
 
-###### validateOnInit: boolean (default: `true`)
+##### validateOnInit: boolean (default: `true`)
 
 If set to `true`, the form would validate after each field initialization.
 Please note that this may cause an additional render, runs for every field that is registered in the form (for example, form with 7 fields will execute validation 7 times on initialization), and validation runs on all fields.
 
-###### validateOnSubmit: boolean (default: `true`)
+##### validateOnSubmit: boolean (default: `true`)
 
 If set to `true`, the form would validate before submitting.
 Please note that this may cause an additional render and validation runs on all fields.
 It is a good practice to leave this option set to `true`, as it should prevent unneeded API requests to your form endpoint if client side validation fails.
 
-#### Field
+### Field
 
 The `Field` component is injected as a prop into your form component via the render prop of the `Form` component. Each form gets a `Field` component that is bounded to that form.
 
@@ -201,11 +199,11 @@ For example, the following is a BIG NO NO:
 
 Regardless of the fact that this is a bad practice in React in general, that means that for every render, the `validators` prop is injected a new object, that will trigger `componentDidUpdate` and will push a notification that props was changed for that field to the `Formz` instance, causing it to execute the validators and re-render the fields, and there for, that will cause an infinite loop.
 
-##### Props
+#### Props
 
-###### render: React element / functional component (required)
+##### render: React element / functional component (required)
 
 The `Field` component utilizes the render prop pattern to inject all field / form related props and methods into your field component.
 Pass in a class component or functional component.
 
-##### TODO: Finish docs...
+#### TODO: Finish docs...
