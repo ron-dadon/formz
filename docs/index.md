@@ -27,6 +27,7 @@ So, the why part is first because I wanted to stop using Redux for form state ma
     2. [Render props](#render-props)
         1. [Formz](#formz-render-props)
         2. [Field](#field-render-props)
+6. [Live Examples](#live-examples)
 
 # Installation
 
@@ -441,3 +442,10 @@ Call this function the reset the field.
 Call this function to update a field value. The function argument is an object of `{ name, value }` where `name` is the name of the field to update, and `value` is the new value.
 
 Calling `onChange` actually calls this function with the current field `name`.
+
+# Live examples
+
+Visit this live examples to see Formz in action:
+
+1. [Basic](examples/basic)
+2. [Validation](examples/validation)

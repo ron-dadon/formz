@@ -5,7 +5,8 @@ const SIZE_100KB = 100 * 1024 * 1024
 
 module.exports = {
   entry: {
-    basic: path.resolve(__dirname, 'src/docs/basic.js')
+    validation: path.resolve(__dirname, 'src/docs/validation.js'),
+    basic: path.resolve(__dirname, 'src/docs/basic.js'),
   },
   output: {
     path: path.resolve(__dirname, 'docs'),
@@ -42,6 +43,12 @@ module.exports = {
       inject: true,
       chunks: ['basic'],
       filename: 'examples/basic/index.html'
+    }),
+    new HtmlWebpackPlugin({
+      title: 'Formz | Painless React forms | Validation',
+      inject: true,
+      chunks: ['validation'],
+      filename: 'examples/validation/index.html'
     })
   ]
 }
