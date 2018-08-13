@@ -34,7 +34,7 @@ Formz make use of render prop pattern to inject a unique `Field` component for e
 
 So, a basic form would look like this:
 
-```js
+```jsx
 import React, { Component } from 'react'
 import Formz from 'formz'
 
@@ -59,12 +59,12 @@ class LoginForm extends Component {
     return (
       <div>
         <Field
-          component={Input}
+          render={Input}
           name='email'
           label='Email'
         />
         <Field
-          component={Input}
+          render={Input}
           name='password'
           type='password'
           label='Password'

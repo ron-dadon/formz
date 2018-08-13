@@ -4,10 +4,12 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const SIZE_100KB = 100 * 1024 * 1024
 
 module.exports = {
-  entry: path.resolve(__dirname, 'src/docs/index.js'),
+  entry: {
+    basic: path.resolve(__dirname, 'src/docs/basic.js')
+  },
   output: {
     path: path.resolve(__dirname, 'docs'),
-    filename: 'index.js'
+    filename: 'examples/[name]/[name].js'
   },
   devtool: this.mode === 'development' ? 'inline-source-map' : false,
   module: {
@@ -35,6 +37,11 @@ module.exports = {
     ]
   },
   plugins: [
-    new HtmlWebpackPlugin({ title: 'Formz | Painless React forms | Examples' })
+    new HtmlWebpackPlugin({
+      title: 'Formz | Painless React forms | Basic Example',
+      inject: true,
+      chunks: ['basic'],
+      filename: 'examples/basic/index.html'
+    })
   ]
 }

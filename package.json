@@ -45,7 +45,7 @@
   },
   "scripts": {
     "build": "webpack --mode production",
-    "build:docs": "env DOCS=1 && webpack --mode production",
+    "build:docs": "webpack --mode production --config webpack.config.docs.js",
     "build:patch": "webpack --mode production && git commit -am \"build production - update patch\" && npm version patch",
     "build:minor": "webpack --mode production && git commit -am \"build production - update minor\" && npm version minor",
     "build:major": "webpack --mode production && git commit -am \"build production - update major\" && npm version major",

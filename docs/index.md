@@ -71,12 +71,12 @@ class LoginForm extends Component {
     return (
       <div>
         <Field
-          component={Input}
+          render={Input}
           name='email'
           label='Email'
         />
         <Field
-          component={Input}
+          render={Input}
           name='password'
           type='password'
           label='Password'
