@@ -1,6 +1,6 @@
 # Formz <small><small><small>👌 Painless react forms</small></small></small>
 
-![version 0.2.0](https://img.shields.io/badge/version-0.2.0-green.svg) [![npm version 0.2.0](https://img.shields.io/badge/npm_version-0.2.0-orange.svg)](https://www.npmjs.com/package/formz)
+![version 0.3.3](https://img.shields.io/badge/version-0.3.3-green.svg) [![npm version 0.3.3](https://img.shields.io/badge/npm_version-0.3.3-orange.svg)](https://www.npmjs.com/package/formz)
 
 ## Another form library? Why?!
 
