@@ -12,6 +12,20 @@ That is what Redux Form does - on every change, there is a complete Redux cycle 
 
 So, the why part is first because I wanted to stop using Redux for form state management, and second, because I could not found a library that gave me the AngularJS experience.
 
+# Table of Contents
+
+1. [Installation](#installation)
+2. [Basic example](#basic-example)
+3. [Validation](#validation)
+4. [Formatting and parsing](#data-formatting-and-parsing)
+5. [API Documentation](#api-documentation)
+    1. [Components](#components)
+        1. [Formz](#formz-component)
+        2. [Field](#field-component)
+    2. [Render props](#render-props)
+        1. [Formz](#formz-render-props)
+        2. [Field](#field-render-props)
+
 # Installation
 
 That one is easy. Like must libraries, just use `npm` or `yarn`.
@@ -116,7 +130,7 @@ For that purpose, each field has two props, `parses` and `formatters`. Those pro
 
 ## Components
 
-### Formz
+### Formz component
 
 The main form component. This component is responsible for managing the form state, and hook up your event handlers into the form.
 
@@ -184,7 +198,7 @@ If set to `true`, the form would validate before submitting.
 Please note that this may cause an additional render and validation runs on all fields.
 It is a good practice to leave this option set to `true`, as it should prevent unneeded API requests to your form endpoint if client side validation fails.
 
-### Field
+### Field component
 
 The `Field` component is injected as a prop into your form component via the render prop of the `Form` component. Each form gets a `Field` component that is bounded to that form.
 
@@ -273,7 +287,7 @@ If set to `true`, a change in the `defaultValue` prop will change the `value` of
 
 Formz uses the **render prop** pattern of React to pass down relevant props into the rendered components.
 
-### Formz render
+### Formz render props
 
 The `Formz` component `render` prop will render the entire form. It will inject the following props into the rendered component:
 
@@ -339,7 +353,7 @@ A map object of the fields in the form. Each field contains the entire field met
 
 **This prop is designed mainly for debugging - DO NOT manipulate this object manually!**
 
-### Field render
+### Field render props
 
 The `Field` component `render` prop will render a single field. It will inject the following props into the rendered component:
 
