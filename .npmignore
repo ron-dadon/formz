@@ -1,5 +1,6 @@
 docs
 src
+.idea
 .babelrc
 .gitignore
 webpack.config.js
