@@ -44,7 +44,7 @@ Formz make use of render prop pattern to inject a unique `Field` component for e
 
 So, a basic form would look like this:
 
-```jsx harmony
+```jsx
 import React, { Component } from 'react'
 import Formz from 'formz'
 
@@ -206,7 +206,7 @@ The `Field` component is injected as a prop into your form component via the ren
 For example, the following is a BIG NO NO:
 
 {% raw %}
-```jsx harmony
+```jsx
 <Field name="fieldName" validators={{ isOK: ({ value }) => !!value }} />
 ```
 {% endraw %}
