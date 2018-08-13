@@ -1,8 +1,6 @@
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
-const SIZE_100KB = 100 * 1024 * 1024
-
 module.exports = {
   entry: {
     validation: path.resolve(__dirname, 'src/docs/validation.js'),
@@ -19,21 +17,6 @@ module.exports = {
         test: /\.js$/,
         exclude: /node_modules/,
         loader: 'babel-loader'
-      },
-      {
-        test: /\.css$/,
-        loader: ['style-loader', 'css-loader']
-      },
-      {
-        test: /\.(jpe?g|png|gif|svg)$/i,
-        use: [
-          {
-            loader: 'url-loader',
-            options: {
-              limit: SIZE_100KB
-            }
-          }
-        ]
       }
     ]
   },
