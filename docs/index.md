@@ -193,9 +193,11 @@ The `Field` component is injected as a prop into your form component via the ren
 **Important Note:** The `Field` component is very sensitive to props changes. Because validators gets the form props, every change to the props will trigger the validators, and if props always change that may cause infinite loop.
 For example, the following is a BIG NO NO:
 
+{% raw %}
 ```js
 <Field name="fieldName" validators={{ isOK: ({ value }) => !!value }} />
 ```
+{% endraw %}
 
 Regardless of the fact that this is a bad practice in React in general, that means that for every render, the `validators` prop is injected a new object, that will trigger `componentDidUpdate` and will push a notification that props was changed for that field to the `Formz` instance, causing it to execute the validators and re-render the fields, and there for, that will cause an infinite loop.
 
