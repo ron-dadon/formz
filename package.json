@@ -3,6 +3,7 @@
   "description": "Painless React forms",
   "version": "0.3.0",
   "license": "MIT",
+  "repository": "https://github.com/ron-dadon/formz",
   "keywords": [
     "formz",
     "react",
