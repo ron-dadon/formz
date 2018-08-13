@@ -35,6 +35,6 @@ module.exports = {
     ]
   },
   plugins: [
-    new HtmlWebpackPlugin({ title: 'Formz | Painless React forms' })
+    new HtmlWebpackPlugin({ title: 'Formz | Painless React forms | Examples' })
   ]
 }
