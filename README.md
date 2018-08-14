@@ -36,7 +36,7 @@ So, a basic form would look like this:
 
 ```jsx
 import React, { Component } from 'react'
-import Formz from 'formz'
+import { Formz } from 'formz'
 
 const Input = ({ label, value, onChange, onFocus, onBlur, submitting, type = 'text' }) => (
   <div>
