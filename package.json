@@ -20,11 +20,8 @@
     "formatters"
   ],
   "main": "lib/index.js",
-  "dependencies": {
-    "babel-cli": "^6.26.0",
-    "prop-types": "^15.6.2"
-  },
   "devDependencies": {
+    "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.4",
     "babel-preset-env": "^1.7.0",
@@ -38,7 +35,8 @@
     "webpack-node-externals": "^1.7.2"
   },
   "peerDependencies": {
-    "react": ">= 15"
+    "react": ">= 15",
+    "prop-types": ">= 15"
   },
   "scripts": {
     "build:lib": "rm -rf lib && babel -d lib/ src/lib/",
