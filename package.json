@@ -21,6 +21,7 @@
   ],
   "main": "lib/index.js",
   "dependencies": {
+    "babel-cli": "^6.26.0",
     "prop-types": "^15.6.2"
   },
   "devDependencies": {
@@ -40,10 +41,10 @@
     "react": ">= 15"
   },
   "scripts": {
-    "build": "webpack --mode production",
-    "build:docs": "webpack --mode production --config webpack.config.docs.js",
-    "build:patch": "webpack --mode production && git commit -am \"build production - update patch\" && npm version patch",
-    "build:minor": "webpack --mode production && git commit -am \"build production - update minor\" && npm version minor",
-    "build:major": "webpack --mode production && git commit -am \"build production - update major\" && npm version major"
+    "build:lib": "rm -rf lib && babel -d lib/ src/lib/",
+    "build:docs": "webpack --mode production",
+    "build:lib:patch": "yarn build:lib && npm version patch",
+    "build:lib:minor": "yarn build:lib && npm version minor",
+    "build:lib:major": "yarn build:lib && npm version major"
   }
 }

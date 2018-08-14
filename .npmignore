@@ -4,5 +4,3 @@ src
 .babelrc
 .gitignore
 webpack.config.js
-webpack.config.docs.js
-webpack.config.lib.js
