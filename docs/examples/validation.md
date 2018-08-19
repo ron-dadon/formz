@@ -1,8 +1,18 @@
+---
+layout: example
+example_script: validation.js
+---
+
+# Validation example
+
+A simple login form with required and email validation.
+
+```jsx
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
-import Formz from '../lib/components/Formz'
+import { Formz } from 'formz'
 
-const Input = ({ label, value, onChange, onFocus, onBlur, submitting, type = 'text' }) => (
+const Input = ({ label, value, onChange, onFocus, onBlur, submitting, touched, errors, invalid, type = 'text' }) => (
   <div>
     <input
       type={type}
@@ -13,10 +23,16 @@ const Input = ({ label, value, onChange, onFocus, onBlur, submitting, type = 'te
       placeholder={label}
       disabled={submitting}
     />
+    {touched && invalid && errors.required && <div>This is required</div>}
+    {touched && invalid && errors.email && <div>Invalid email</div>}
   </div>
 )
 
 class LoginForm extends Component {
+  emailValidators = {
+    email: ({ value }) => !value || value && /^[a-z0-9][a-z0-9\-.]+@[a-z0-9\-.]+\.[a-z]+/i.test(value)
+  }
+
   render() {
     // The Field prop is the unique form field component bound to the wrapping form
     const { Field, submitting, submitted, submitSuccess } = this.props
@@ -26,6 +42,8 @@ class LoginForm extends Component {
           render={Input}
           name='email'
           label='Email'
+          validators={this.emailValidators}
+          required
         />
         <Field
           render={Input}
@@ -48,7 +66,7 @@ class LoginForm extends Component {
   }
 }
 
-class BasicExample extends Component {
+class BasicExampleWithValidation extends Component {
   onSubmit = values => new Promise((resolve, reject) => {
     // Simulate server call with timeout
     console.log('Submitted form with values', values)
@@ -60,5 +78,4 @@ class BasicExample extends Component {
     return <Formz render={LoginForm} onSubmit={this.onSubmit} />
   }
 }
-
-ReactDOM.render(<BasicExample />, document.querySelector('div#live-example'))
+```

@@ -1,5 +1,4 @@
 const path = require('path')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
   entry: {
@@ -8,7 +7,7 @@ module.exports = {
   },
   output: {
     path: path.resolve(__dirname, 'docs'),
-    filename: 'examples/[name]/[name].js'
+    filename: 'examples/[name].js'
   },
   devtool: this.mode === 'development' ? 'inline-source-map' : false,
   module: {
@@ -19,19 +18,5 @@ module.exports = {
         loader: 'babel-loader'
       }
     ]
-  },
-  plugins: [
-    new HtmlWebpackPlugin({
-      title: 'Formz | Painless React forms | Basic Example',
-      inject: true,
-      chunks: ['basic'],
-      filename: 'examples/basic/index.html'
-    }),
-    new HtmlWebpackPlugin({
-      title: 'Formz | Painless React forms | Validation',
-      inject: true,
-      chunks: ['validation'],
-      filename: 'examples/validation/index.html'
-    })
-  ]
+  }
 }
