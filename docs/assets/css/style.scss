@@ -12,3 +12,7 @@ $blockquote-text-color: #819198 !default;
   background: #007bff;
   background-image: linear-gradient(120deg, #155799, #007bff)
 }
+
+.main-content h1, .main-content h2, .main-content h3, .main-content h4, .main-content h5, .main-content h6 {
+  color: $section-headings-color;
+}
