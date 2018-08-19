@@ -12,8 +12,12 @@
   <h2>Live Example</h2>
   <div class="card">
     <div id="live-example"></div>
-    <button class="btn btn-default" data-toggle="collapse" data-target="#source-code"><i class="fas fa-code"></i></button>
-    <div id="source-code">
+    <div class="row">
+      <div class="col-xs-12 d-flex flex-row-reverse">
+        <button class="btn btn-primary" data-toggle="collapse" data-target="#source-code"><i class="fas fa-code"></i></button>
+      </div>
+    </div>
+    <div id="source-code" class="collapse">
       {{ content }}
     </div>
   </div>
