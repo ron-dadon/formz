@@ -84,7 +84,7 @@
     }
     $.getJSON('https://raw.githubusercontent.com/ron-dadon/formz/master/package.json', function(packageJson) {
       var version = packageJson.version
-      document.querySelector('package-json-data').innerHTML = '<img src="https://img.shields.io/badge/version-' + version + '-green.svg" alt="Version ' + version + '"/>'
+      document.querySelector('#package-json-data').innerHTML = '<img src="https://img.shields.io/badge/version-' + version + '-green.svg" alt="Version ' + version + '"/>'
     })
   })()
 </script>
