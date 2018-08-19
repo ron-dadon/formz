@@ -9,14 +9,22 @@
 ></script>
 <script>
   (function() {
-    var currentPath = window.location.pathname
-    var activeElement = document.querySelector('#navbarNav li.nav-item a[href="' + currentPath + '"]')
-    if (activeElement) {
-      activeElement.classList.add('active')
-    }
-    $.getJSON('https://raw.githubusercontent.com/ron-dadon/formz/master/package.json', function(packageJson) {
-      var version = packageJson.version
-      document.querySelector('#package-json-data').innerHTML = 'Currently v' + version
+    document.on('ready', function() {
+      var currentPath = window.location.pathname.split('/').slice(0, 3).join('/')
+      if (currentPath.endsWith('examples')) {
+        currentPath += '.html'
+      }
+      var activeElement = document.querySelector('#navbarNav li.nav-item a[href="' + currentPath + '"]')
+      if (activeElement) {
+        activeElement.classList.add('active')
+      }
+      var versionDiv = document.querySelector('#package-json-data')
+      if (versionDiv) {
+        $.getJSON('https://raw.githubusercontent.com/ron-dadon/formz/master/package.json', function (packageJson) {
+          var version = packageJson.version
+          versionDiv.innerHTML = 'Currently v' + version
+        })
+      }
     })
   })()
 </script>
