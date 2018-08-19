@@ -7,3 +7,16 @@
   src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
   integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossOrigin="anonymous"
 ></script>
+<script>
+  (function() {
+    var currentPath = window.location.pathname
+    var activeElement = document.querySelector('#navbarNav li.nav-item a[href="' + currentPath + '"]')
+    if (activeElement) {
+      activeElement.classList.add('active')
+    }
+    $.getJSON('https://raw.githubusercontent.com/ron-dadon/formz/master/package.json', function(packageJson) {
+      var version = packageJson.version
+      document.querySelector('#package-json-data').innerHTML = 'Currently v' + version
+    })
+  })()
+</script>
