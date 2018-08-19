@@ -5,9 +5,6 @@
 </head>
 <body>
 {% include navigation.html %}
-{% if page.with_header %}
-  {% include header.html %}
-{% endif %}
 
 <main id="content" class="main-content container" role="main">
   {{ content }}
@@ -15,8 +12,9 @@
 </main>
 
 {% if site.google_analytics %}
-  {% include ga.html %}
+  {% include ga.html %}}
 {% endif %}
 {% include scripts.html %}
+<script src="/forms/examples/{{ page.example_script }}"></script>
 </body>
 </html>
