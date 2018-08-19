@@ -1,5 +1,3 @@
-![version 0.5.0](https://img.shields.io/badge/version-0.5.0-green.svg) [![npm version 0.5.0](https://img.shields.io/badge/npm_version-0.5.0-orange.svg)](https://www.npmjs.com/package/formz)
-
 # Another form library? Why?!
 
 First, because I can...
