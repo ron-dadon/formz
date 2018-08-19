@@ -7,24 +7,3 @@
   src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
   integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossOrigin="anonymous"
 ></script>
-<script>
-  (function() {
-    document.addEventListener('load', function() {
-      var currentPath = window.location.pathname.split('/')[2].split('.')[0]
-      if (currentPath.endsWith('examples')) {
-        currentPath += '.html'
-      }
-      var activeElement = document.querySelector('#navbarNav li.nav-item a[href="/formz/' + currentPath + '*"]')
-      if (activeElement) {
-        activeElement.classList.add('active')
-      }
-      var versionDiv = document.querySelector('#package-json-data')
-      if (versionDiv) {
-        $.getJSON('https://raw.githubusercontent.com/ron-dadon/formz/master/package.json', function (packageJson) {
-          var version = packageJson.version
-          versionDiv.innerHTML = 'Currently v' + version
-        })
-      }
-    })
-  })()
-</script>
