@@ -25,7 +25,7 @@ class LoginForm extends Component {
 
   render() {
     // The Field prop is the unique form field component bound to the wrapping form
-    const { Field, submitting, submitted, submitSuccess } = this.props
+    const { Field, invalid, submitting, submitted, submitSuccess } = this.props
     return (
       <div>
         <Field
@@ -43,7 +43,7 @@ class LoginForm extends Component {
         />
         <div>
           <button type='reset' disabled={submitting}>Reset</button>
-          <button type='submit' disabled={submitting}>Login</button>
+          <button type='submit' disabled={submitting || invalid}>Login</button>
         </div>
         {
           <p>

@@ -24,10 +24,7 @@
   (function() {
     document.addEventListener('load', function() {
       var currentPath = window.location.pathname.split('/')[2].split('.')[0]
-      if (currentPath.endsWith('examples')) {
-        currentPath += '.html'
-      }
-      var activeElement = document.querySelector('#navbarNav li.nav-item a[href="/formz/' + currentPath + '*"]')
+      var activeElement = document.querySelector('#navbarNav li.nav-item a[href*="/formz/' + currentPath + '"]')
       if (activeElement) {
         activeElement.classList.add('active')
       }
