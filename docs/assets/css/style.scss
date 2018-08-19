@@ -1,18 +1,14 @@
 ---
 ---
 
-@import "{{ site.theme }}";
+$section-headings-color: #155799;
+$body-text-color: #3b464b;
+$body-link-color: #007bff;
+$blockquote-text-color: #819198;
 
-$section-headings-color: #155799 !default;
-$body-text-color: #3b464b !default;
-$body-link-color: #007bff !default;
-$blockquote-text-color: #819198 !default;
+@import "{{ site.theme }}";
 
 .page-header {
   background: #007bff;
   background-image: linear-gradient(120deg, #155799, #007bff)
-}
-
-.main-content h1, .main-content h2, .main-content h3, .main-content h4, .main-content h5, .main-content h6 {
-  color: $section-headings-color;
 }
