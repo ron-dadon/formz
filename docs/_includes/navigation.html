@@ -22,12 +22,10 @@
 </nav>
 <script>
   (function() {
-    document.addEventListener('load', function() {
-      var currentPath = window.location.pathname.split('/')[2].split('.')[0]
-      var activeElement = document.querySelector('#navbarNav li.nav-item a[href*="/formz/' + currentPath + '"]')
-      if (activeElement) {
-        activeElement.classList.add('active')
-      }
-    })
+    var currentPath = window.location.pathname.split('/')[2].split('.')[0]
+    var activeElement = document.querySelector('#navbarNav li.nav-item a[href*="/formz/' + currentPath + '"]')
+    if (activeElement) {
+      activeElement.classList.add('active')
+    }
   })()
 </script>
