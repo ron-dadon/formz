@@ -1,11 +1,9 @@
 ---
 layout: example
 example_script: basic.js
+title: Basic example
+description: A simple login form
 ---
-
-# Basic example
-
-A simple login form.
 
 ```jsx
 import React, { Component } from 'react'

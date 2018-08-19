@@ -1,11 +1,9 @@
 ---
 layout: example
 example_script: validation.js
+title: Validation example
+description: A simple login form with required and email validation.
 ---
-
-# Validation example
-
-A simple login form with required and email validation.
 
 ```jsx
 import React, { Component } from 'react'
