@@ -1,7 +1,7 @@
 <header class="page-header" role="banner">
   <h1 class="project-name display-1">{{ site.title | default: site.github.repository_name }}</h1>
   <h2 class="project-tagline">{{ site.description | default: site.github.project_tagline }}</h2>
-  {% if site.github.is_project_page %}
+  {% if site.github.is_project_page == true and site.show_downloads == true %}
   <a href="{{ site.github.repository_url }}" class="btn"><i class="fab fa-github"></i> View on GitHub</a>
   {% endif %}
   {% if site.show_downloads %}
@@ -11,7 +11,7 @@
     <a href="https://www.npmjs.com/package/{{site.github.repository_name}}" class="btn"><i class="fab fa-npm"></i> NPM</a>
   </div>
   {% endif %}
-  <div id="package-json-data"></div>
+  <h3 class="project-tagline" id="package-json-data"></h3>
 </header>
 <script>
   window.addEventListener('load', function() {
