@@ -77,9 +77,7 @@ The `Formz` component `render` prop will render the entire form. It will inject 
 |submitting|`boolean`|Is `true` when the form is submitting.
 |submitted|`boolean`|Is `true` when the form was already submitted, and the submission completed (successfully or not).
 |submitSuccess|`boolean`|If `true` when the form was successfully submitted.
-|fields|`object<string, object>`|A map object of the fields in the form. Each field contains the entire field meta data and data (state, validators, parsers, formatters, default value, value etc.).
-
-**This prop is designed mainly for debugging - DO NOT manipulate this object manually!**
+|fields|`object<string, object>`|A map object of the fields in the form. Each field contains the entire field meta data and data (state, validators, parsers, formatters, default value, value etc.). **This prop is designed mainly for debugging - DO NOT manipulate this object manually!**
 
 ### Field render props
 
