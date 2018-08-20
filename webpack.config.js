@@ -2,6 +2,7 @@ const path = require('path')
 
 module.exports = {
   entry: {
+    'parse-format': path.resolve(__dirname, 'src/docs/parse-format.js'),
     validation: path.resolve(__dirname, 'src/docs/validation.js'),
     basic: path.resolve(__dirname, 'src/docs/basic.js'),
   },

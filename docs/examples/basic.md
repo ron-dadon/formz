@@ -56,7 +56,7 @@ class LoginForm extends Component {
   }
 }
 
-class BasicExample extends Component {
+export class BasicExample extends Component {
   onSubmit = values => new Promise((resolve, reject) => {
     // Simulate server call with timeout
     console.log('Submitted form with values', values)
@@ -68,12 +68,4 @@ class BasicExample extends Component {
     return <Formz render={LoginForm} onSubmit={this.onSubmit} />
   }
 }
-
-const getMountPoint = () => {
-  const mountDiv = document.createElement('div')
-  document.body.appendChild(mountDiv)
-  return mountDiv
-}
-
-ReactDOM.render(<BasicExample />, getMountPoint())
 ```

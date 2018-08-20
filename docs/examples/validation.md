@@ -64,7 +64,7 @@ class LoginForm extends Component {
   }
 }
 
-class BasicExampleWithValidation extends Component {
+export class BasicExampleWithValidation extends Component {
   onSubmit = values => new Promise((resolve, reject) => {
     // Simulate server call with timeout
     console.log('Submitted form with values', values)
