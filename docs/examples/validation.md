@@ -2,7 +2,7 @@
 layout: example
 example_script: validation.js
 title: Validation example
-description: A simple login form with required and email validation.
+description: A simple login form with required and email validation on the email field.
 ---
 
 ```jsx

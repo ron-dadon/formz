@@ -28,7 +28,7 @@ class LoginForm extends Component {
     // The Field prop is the unique form field component bound to the wrapping form
     const { Field, invalid, submitting, submitted, submitSuccess } = this.props
     return (
-      <div>
+      <div className='col-xs-12 col-md-6 col-lg-3'>
         <Field
           render={Input}
           name='email'

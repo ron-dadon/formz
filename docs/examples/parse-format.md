@@ -2,7 +2,7 @@
 layout: example
 example_script: parse-format.js
 title: Parse / Format example
-description: A simple form with date range that parses the date to UNIX timestamp and formats it to YYYY-MM-DD format.
+description: A simple form with date range that parses the date to UNIX timestamp and formats it to YYYY-MM-DD format. The submit will succeed only if the from date is earlier than the to date.
 ---
 
 ```jsx
