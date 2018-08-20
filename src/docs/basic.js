@@ -3,8 +3,9 @@ import ReactDOM from 'react-dom'
 import Formz from '../lib/components/Formz'
 
 const Input = ({ label, value, onChange, onFocus, onBlur, submitting, type = 'text' }) => (
-  <div>
+  <div className='form-group'>
     <input
+      className='form-control'
       type={type}
       value={value}
       onChange={e => onChange(e.target.value)}
@@ -34,8 +35,8 @@ class LoginForm extends Component {
           label='Password'
         />
         <div>
-          <button type='reset' disabled={submitting}>Reset</button>
-          <button type='submit' disabled={submitting}>Login</button>
+          <button className='btn btn-default' type='reset' disabled={submitting}>Reset</button>
+          <button className='btn btn-primary' type='submit' disabled={submitting}>Login</button>
         </div>
         {
           <p>
