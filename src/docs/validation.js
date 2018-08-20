@@ -43,7 +43,7 @@ class LoginForm extends Component {
           label='Password'
         />
         <div>
-          <button className='btn btn-default' type='reset' disabled={submitting}>Reset</button>
+          <button className='btn btn-light' type='reset' disabled={submitting}>Reset</button>
           <button className='btn btn-primary' type='submit' disabled={submitting || invalid}>Login</button>
         </div>
         {

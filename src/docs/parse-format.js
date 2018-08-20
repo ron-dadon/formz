@@ -49,7 +49,7 @@ class DateForm extends Component {
           formatters={this.formatDate}
         />
         <div>
-          <button className='btn btn-default' type='reset' disabled={submitting}>Reset</button>
+          <button className='btn btn-light' type='reset' disabled={submitting}>Reset</button>
           <button className='btn btn-primary' type='submit' disabled={submitting}>Send Dates</button>
         </div>
         {
