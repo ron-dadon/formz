@@ -21,6 +21,7 @@ class DateForm extends Component {
   parseDate = [({ value }) => (new Date(value)).getTime()]
 
   formatDate = [({ value }) => {
+    if (!value) return ''
     const dateValue = new Date(value)
     const pad = v => `${v}`.length < 2 ? `0${v}` : `${v}`
     const [year, month, day] = [dateValue.getFullYear(), pad(dateValue.getMonth() + 1), pad(dateValue.getDate())]
