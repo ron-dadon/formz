@@ -27,10 +27,8 @@ The main form component. This component is responsible for managing the form sta
 The `Field` component is injected as a prop into your form component via the render prop of the `Form` component. Each form gets a `Field` component that is bounded to that form.
 
 <div class="alert alert-warning">
-
-**Important Note:** The `Field` component is very sensitive to props changes. Because validators gets the form props, every change to the props will trigger the validators, and if props always change that may cause infinite loop.
-For example, the following is a **BIG NO NO**:
-
+<strong>Important Note:</strong> The <code>Field</code> component is very sensitive to props changes. Because validators gets the form props, every change to the props will trigger the validators, and if props always change that may cause infinite loop.
+For example, the following is a <strong>BIG NO NO</strong>!
 </div>
 
 {% raw %}
