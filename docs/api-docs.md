@@ -60,7 +60,7 @@ Regardless of the fact that this is a bad practice in React in general, that mea
 |keepDirty|`boolean`|No|`false`|If set to `true`, a change in the `defaultValue` prop will change the `value` of the field to the new default value, **ONLY IF** the field is not `dirty`.
 
 <div class="alert alert-info mt-3">
-    <i class="fas fa-info"></i> Any other props that are passed to the Field component will be passed to the render props.
+    <i class="fas fa-info-circle"></i> Any other props that are passed to the Field component will be passed to the render props.
 </div>
 
 ## Render props
@@ -90,7 +90,7 @@ The `Formz` component `render` prop will render the entire form. It will inject 
 |fields|`object<string, object>`|A map object of the fields in the form. Each field contains the entire field meta data and data (state, validators, parsers, formatters, default value, value etc.). **This prop is designed mainly for debugging - DO NOT manipulate this object manually!**
 
 <div class="alert alert-info mt-3">
-    <i class="fas fa-info"></i> Props from the Formz component that are not part of the Formz component props will be passed as well, as long as they don't conflict with the names of the render props.
+    <i class="fas fa-info-circle"></i> Props from the Formz component that are not part of the Formz component props will be passed as well, as long as they don't conflict with the names of the render props.
 </div>
 
 ### Field render props
@@ -121,5 +121,5 @@ The `Field` component `render` prop will render a single field. It will inject t
 |updateFieldValue|`({ name, value }) => void`|Call this function to update a field value. The function argument is an object of `{ name, value }` where `name` is the name of the field to update, and `value` is the new value. Calling `onChange` actually calls this function with the current field `name`.
 
 <div class="alert alert-info mt-3">
-    <i class="fas fa-info"></i> Props from the Field component that are not part of the Field component props will be passed as well, as long as they don't conflict with the names of the render props.
+    <i class="fas fa-info-circle"></i> Props from the Field component that are not part of the Field component props will be passed as well, as long as they don't conflict with the names of the render props.
 </div>
