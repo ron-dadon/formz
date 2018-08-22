@@ -22,8 +22,8 @@ The main form component. This component is responsible for managing the form sta
 |validateOnInit|`boolean`|No|`true`|If set to `true`, the form would validate after each field initialization. Please note that this may cause an additional render, runs for every field that is registered in the form (for example, form with 7 fields will execute validation 7 times on initialization), and validation runs on all fields.
 |validateOnSubmit|`boolean`|No|`true`|If set to `true`, the form would validate before submitting. Please note that this may cause an additional render and validation runs on all fields. It is a good practice to leave this option set to `true`, as it should prevent unneeded API requests to your form endpoint if client side validation fails.
 
-<div class="alert alert-info">
-    <i class="fas fa-info"></i> Any other props that are passed to the Formz component will be passed to the render props.
+<div class="alert alert-info mt-3">
+    <i class="fas fa-info-circle"></i> Any other props that are passed to the Formz component will be passed to the render props.
 </div>
 
 ### Field component
@@ -59,7 +59,7 @@ Regardless of the fact that this is a bad practice in React in general, that mea
 |reInitialize|`boolean`|No|`false`|If set to `true`, a change in the `defaultValue` prop will change the `value` of the field to the new default value.
 |keepDirty|`boolean`|No|`false`|If set to `true`, a change in the `defaultValue` prop will change the `value` of the field to the new default value, **ONLY IF** the field is not `dirty`.
 
-<div class="alert alert-info">
+<div class="alert alert-info mt-3">
     <i class="fas fa-info"></i> Any other props that are passed to the Field component will be passed to the render props.
 </div>
 
@@ -89,7 +89,7 @@ The `Formz` component `render` prop will render the entire form. It will inject 
 |submitSuccess|`boolean`|If `true` when the form was successfully submitted.
 |fields|`object<string, object>`|A map object of the fields in the form. Each field contains the entire field meta data and data (state, validators, parsers, formatters, default value, value etc.). **This prop is designed mainly for debugging - DO NOT manipulate this object manually!**
 
-<div class="alert alert-info">
+<div class="alert alert-info mt-3">
     <i class="fas fa-info"></i> Props from the Formz component that are not part of the Formz component props will be passed as well, as long as they don't conflict with the names of the render props.
 </div>
 
@@ -120,8 +120,6 @@ The `Field` component `render` prop will render a single field. It will inject t
 |reset|`() => void`|Call this function the reset the field. 
 |updateFieldValue|`({ name, value }) => void`|Call this function to update a field value. The function argument is an object of `{ name, value }` where `name` is the name of the field to update, and `value` is the new value. Calling `onChange` actually calls this function with the current field `name`.
 
-<div class="alert alert-info">
+<div class="alert alert-info mt-3">
     <i class="fas fa-info"></i> Props from the Field component that are not part of the Field component props will be passed as well, as long as they don't conflict with the names of the render props.
 </div>
-
-=
