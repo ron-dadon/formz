@@ -488,7 +488,8 @@ class Formz extends Component {
   }
 
   render() {
-    const { render: RenderComponent } = this.props
+    const { render: RenderComponent, onSubmit, onSubmitSuccess, onSubmitError, onValidation, onReset, onValuesChange,
+      autoReset, validateOnChange, validateOnInit, validateOnBlur, validateOnSubmit, ...props } = this.props
     const {
       errors, valid, pristine, touched, pending,
       submitting, submitted, submitSuccess, fields
@@ -496,6 +497,7 @@ class Formz extends Component {
     return (
       <form onSubmit={this.startSubmit} onReset={this.resetForm} noValidate>
         <RenderComponent
+          {...props}
           Field={this.Field}
           reset={this.resetForm}
           submit={this.startSubmit}
