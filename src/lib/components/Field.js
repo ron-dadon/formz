@@ -67,7 +67,7 @@ const fieldComponentFactory = ({
     render() {
       if (!isRegistered(this.props.name)) return null
       const {
-        render: FieldRender, name, defaultValue, validators, asyncValidators, parsers, formatters,
+        render: FieldRender, name, defaultValue, validators, parsers, formatters,
         validateOnChange, validateOnBlur, validateOnInit, reInitialize, keepDirty, ...props
       } = this.props
       const {

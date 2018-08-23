@@ -251,7 +251,7 @@ class Formz extends Component {
       if (!field) return state
       const allValues = getFormValues(this.state)
       const {
-        formatters, props, defaultValue: newDefaultValue, validators
+        formatters, defaultValue: newDefaultValue, validators, parsers, validateOnChange, validateOnBlur, validateOnInit, ...props
       } = fieldProps
       const { value, defaultValue, pristine } = field
       const newValue = reInitialize && ((keepDirty && pristine) || !keepDirty) && defaultValue !== newDefaultValue ? newDefaultValue : value
@@ -268,6 +268,10 @@ class Formz extends Component {
         [name]: {
           ...field,
           ...fieldProps,
+          parsers,
+          validateOnChange,
+          validateOnBlur,
+          validateOnInit,
           validators: fieldValidators,
           value: newValue,
           formattedValue
@@ -283,7 +287,7 @@ class Formz extends Component {
 
   registerField = ({
     name, defaultValue = '', validateOnChange, validateOnBlur, validateOnInit,
-    validators = {}, asyncValidators = {}, formatters = [], parsers = [], ...props
+    validators = {}, formatters = [], parsers = [], ...props
   }) => {
     const { validateOnInit: formValidateOnInit } = this.props
     this.setState(state => ({
@@ -294,7 +298,6 @@ class Formz extends Component {
           name,
           defaultValue,
           validators,
-          asyncValidators,
           formatters,
           parsers,
           props,
