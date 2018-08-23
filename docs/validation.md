@@ -7,6 +7,10 @@ Each key in the map is used as the error key in the `errors` prop that is inject
 
 Each validation function is called with an object in the form of `{ value: any, allValues: object<string, any>, props: object<string, any> }`.
 
+<div class="alert alert-info">
+  <i class="fas fa-info-circle"></i> Due to the nature of validation, where one field validation may depend on other values of the form, the validation functions are executed on all fields every time.
+</div>
+
 There are 2 types of validations: synchronized (sync) and asynchronized (async).
  
 ## Sync validation

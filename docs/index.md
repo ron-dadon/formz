@@ -104,8 +104,6 @@ You can find this example and more under `examples` folder.
 
 Formz supports sync and async validations with a very simple API. you are encouraged to utilize client side validation where applicable.
 
-Due to the nature of validation, where one field validation may depend on other values of the form, the validation functions are executed on all fields every time.
-
 Each validation function is injected with the field value, form values and field props, to give a fine level of details for every validation use case. See `validators` prop on `Field` component and the [validation](/formz/validation.html) section for more information.
 
 # Data formatting and parsing
