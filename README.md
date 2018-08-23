@@ -1,16 +1,4 @@
-<h1>
-  Formz<br>
-  <small>
-    <small>
-      Painless react forms 
-      <small>
-        <small>
-          (v0.6.3)
-        </small>
-      </small>
-    </small>
-  </small>
-</h1>
+# Formz 
 
 ## Another form library? Why?!
 
