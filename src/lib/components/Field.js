@@ -9,6 +9,12 @@ const fieldComponentFactory = ({
   class Field extends Component {
     static propTypes = fieldPropTypes
 
+    static defaultProps = {
+      validators: {},
+      parsers: [],
+      formatters: []
+    }
+
     componentDidMount() {
       const {
         render, parsers, formatters, reInitialize, keepDirty, ...otherProps
