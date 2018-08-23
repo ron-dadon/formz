@@ -43,5 +43,5 @@ So when the field value changes, and sets the value to `{ id: 1, title: 'Title' 
 The value will be injected to the rendered field component as `rawValue`.
 
 <div class="alert alert-info">
-  <i class="fas fa-info-circle"></i> In must cases when you need to use `formatters` or `parsers`, you will need to implement both, so that Fromz can supply the currect value for your input and store the currect value for submission. 
+  <i class="fas fa-info-circle"></i> In must cases when you need to use <code>formatters</code> or <code>parsers</code>, you will need to implement both, so that Fromz can supply the currect value for your input and store the currect value for submission. 
 </div>
