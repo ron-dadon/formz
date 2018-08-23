@@ -1,6 +1,16 @@
-# Formz <small><small><small>👌 Painless react forms</small></small></small>
-
-![version 0.6.3](https://img.shields.io/badge/version-0.6.3-green.svg)
+<h1>
+  Formz<br>
+  <small>
+    <small>
+      Painless react forms 
+      <small>
+        <small>
+          (v0.6.3)
+        </small>
+      </small>
+    </small>
+  </small>
+</h1>
 
 ## Another form library? Why?!
 
