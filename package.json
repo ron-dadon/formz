@@ -43,6 +43,7 @@
     "build:docs": "webpack --mode production",
     "build:lib:patch": "yarn build:lib && npm version patch",
     "build:lib:minor": "yarn build:lib && npm version minor",
-    "build:lib:major": "yarn build:lib && npm version major"
+    "build:lib:major": "yarn build:lib && npm version major",
+    "publish": "npm publish && git push"
   }
 }
