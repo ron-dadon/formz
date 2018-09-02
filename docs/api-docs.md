@@ -87,10 +87,11 @@ The `Formz` component `render` prop will render the entire form. It will inject 
 |submitting|`boolean`|Is `true` when the form is submitting.
 |submitted|`boolean`|Is `true` when the form was already submitted, and the submission completed (successfully or not).
 |submitSuccess|`boolean`|If `true` when the form was successfully submitted.
-|fields|`object<string, object>`|A map object of the fields in the form. Each field contains the entire field meta data and data (state, validators, parsers, formatters, default value, value etc.). **This prop is designed mainly for debugging - DO NOT manipulate this object manually!**
+|~~fields~~|`object<string, object>`|~~A map object of the fields in the form. Each field contains the entire field meta data and data (state, validators, parsers, formatters, default value, value etc.). **This prop is designed mainly for debugging - DO NOT manipulate this object manually!**~~ **DEPRECATED**
+|values|`object<string, any>|A map of the form values|
 
 <div class="alert alert-info mt-3">
-    <i class="fas fa-info-circle"></i> Props from the Formz component that are not part of the Formz component props will be passed as well, as long as they don't conflict with the names of the render props.
+    <i class="fas fa-info-circle"></i> Props passed to the Formz component that are not part of the Formz component props will be passed as well, as long as they don't conflict with the names of the render props.
 </div>
 
 ### Field render props
@@ -121,5 +122,5 @@ The `Field` component `render` prop will render a single field. It will inject t
 |updateFieldValue|`({ name, value }) => void`|Call this function to update a field value. The function argument is an object of `{ name, value }` where `name` is the name of the field to update, and `value` is the new value. Calling `onChange` actually calls this function with the current field `name`.
 
 <div class="alert alert-info mt-3">
-    <i class="fas fa-info-circle"></i> Props from the Field component that are not part of the Field component props will be passed as well, as long as they don't conflict with the names of the render props.
+    <i class="fas fa-info-circle"></i> Props passed to the Field component that are not part of the Field component props will be passed as well, as long as they don't conflict with the names of the render props.
 </div>

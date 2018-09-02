@@ -13,7 +13,7 @@ const formzRenderPropTypes = {
   submitted: PropTypes.bool,
   submitSuccess: PropTypes.bool,
   errors: PropTypes.object,
-  fields: PropTypes.object,
+  values: PropTypes.object,
   submit: PropTypes.func,
   reset: PropTypes.func
 }

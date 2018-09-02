@@ -515,7 +515,7 @@ class Formz extends Component {
           submitting={submitting}
           submitted={submitted}
           submitSuccess={submitSuccess}
-          fields={fields}
+          values={getFormValues({ fields })}
         />
       </form>
     )
