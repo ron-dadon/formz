@@ -11,11 +11,11 @@
     <a href="https://www.npmjs.com/package/{{site.github.repository_name}}" class="btn"><i class="fab fa-npm"></i> NPM</a>
   </div>
   {% endif %}
-  <h3 class="project-tagline" id="package-json-data"></h3>
+  <h3 class="project-tagline" id="package-json-data">Currently v...</h3>
 </header>
 <script>
   window.addEventListener('load', function() {
-    $.getJSON('https://raw.githubusercontent.com/ron-dadon/formz/master/package.json', function (packageJson) {
+    $.getJSON('https://raw.githubusercontent.com/ron-dadon/formz/master/package.json?' + Date.now(), function (packageJson) {
       var version = packageJson.version
       document.querySelector('#package-json-data').innerHTML = 'Currently v' + version
     })
