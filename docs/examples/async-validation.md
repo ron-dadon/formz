@@ -10,7 +10,7 @@ import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import { Formz } from 'formz'
 
-const Input = ({ label, value, onChange, onFocus, onBlur, submitting, touched, errors, invalid, type = 'text' }) => (
+const Input = ({ label, value, onChange, onFocus, onBlur, submitting, touched, errors, invalid, pending, type = 'text' }) => (
   <div className='form-group'>
     <input
       className='form-control'
@@ -22,15 +22,17 @@ const Input = ({ label, value, onChange, onFocus, onBlur, submitting, touched, e
       placeholder={label}
       disabled={submitting}
     />
+    {touched && pending && <div>Checking...</div>}
     {touched && invalid && errors.required && <div>This is required</div>}
     {touched && invalid && errors.exists && <div>Already exists</div>}
     {touched && invalid && errors.strength && <div>Password not strong enough</div>}
+    {touched && invalid && errors.match && <div>Password does not match</div>}
   </div>
 )
 
 class RegistrationForm extends Component {
   validators = {
-    exists: ({ value }) => new Promise((resolve) => setTimeout(() => value === 'john' ? resolve(false) : resolve(true), 100))
+    exists: ({ value }) => new Promise((resolve) => setTimeout(() => value === 'john' ? resolve(false) : resolve(true), 1000))
   }
 
   passwordValidators = {
@@ -89,7 +91,7 @@ class BasicExampleWithAsyncValidation extends Component {
   onSubmit = values => new Promise((resolve) => {
     // Simulate server call with timeout
     console.log('Submitted form with values', values)
-    setTimeout(resolve, 500)
+    setTimeout(resolve, 1000)
   })
 
   render() {
