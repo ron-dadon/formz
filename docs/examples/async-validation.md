@@ -1,6 +1,14 @@
+---
+layout: example
+example_script: async-validation.js
+title: Async validation example
+description: A simple registration form with async validation that checks if the user exists, and confirm password matches.
+---
+
+```jsx
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
-import Formz from '../lib/components/Formz'
+import { Formz } from 'formz'
 
 const Input = ({ label, value, onChange, onFocus, onBlur, submitting, touched, errors, invalid, type = 'text' }) => (
   <div className='form-group'>
@@ -15,15 +23,13 @@ const Input = ({ label, value, onChange, onFocus, onBlur, submitting, touched, e
       disabled={submitting}
     />
     {touched && invalid && errors.required && <div>This is required</div>}
-    {touched && invalid && errors.email && <div>Invalid email</div>}
     {touched && invalid && errors.exists && <div>Already exists</div>}
     {touched && invalid && errors.strength && <div>Password not strong enough</div>}
   </div>
 )
 
-class LoginForm extends Component {
+class RegistrationForm extends Component {
   validators = {
-    email: ({ value }) => !value || value && /^[a-z0-9][a-z0-9\-.]+@[a-z0-9\-.]+\.[a-z]+/i.test(value),
     exists: ({ value }) => new Promise((resolve) => setTimeout(() => value === 'john' ? resolve(false) : resolve(true), 100))
   }
 
@@ -42,8 +48,8 @@ class LoginForm extends Component {
       <div className='col-xs-12 col-md-6 col-lg-3'>
         <Field
           render={Input}
-          name='email'
-          label='Email'
+          name='username'
+          label='Username'
           validators={this.validators}
           required
         />
@@ -80,16 +86,14 @@ class LoginForm extends Component {
 }
 
 class BasicExampleWithAsyncValidation extends Component {
-  onSubmit = values => new Promise((resolve, reject) => {
+  onSubmit = values => new Promise((resolve) => {
     // Simulate server call with timeout
     console.log('Submitted form with values', values)
-    const result = values.email === 'test@test.com' && values.password === '12345' ? resolve : reject
-    setTimeout(result, 100)
+    setTimeout(resolve, 500)
   })
 
   render() {
-    return <Formz render={LoginForm} onSubmit={this.onSubmit} />
+    return <Formz render={RegistrationForm} onSubmit={this.onSubmit} />
   }
 }
-
-ReactDOM.render(<BasicExampleWithAsyncValidation />, document.querySelector('div#live-example'))
+```
