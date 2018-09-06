@@ -23,7 +23,7 @@ const Input = ({ label, value, onChange, onFocus, onBlur, submitting, touched, e
 
 class RegistrationForm extends Component {
   validators = {
-    exists: ({ value }) => new Promise((resolve) => setTimeout(() => value === 'john' ? resolve(false) : resolve(true), 100))
+    exists: ({ value }) => new Promise((resolve) => setTimeout(() => value === 'john' ? resolve(false) : resolve(true), 1000))
   }
 
   passwordValidators = {
@@ -82,7 +82,7 @@ class BasicExampleWithAsyncValidation extends Component {
   onSubmit = values => new Promise((resolve) => {
     // Simulate server call with timeout
     console.log('Submitted form with values', values)
-    setTimeout(resolve, 500)
+    setTimeout(resolve, 1000)
   })
 
   render() {
