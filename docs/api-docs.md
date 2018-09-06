@@ -91,7 +91,7 @@ The `Formz` component `render` prop will render the entire form. It will inject 
 |values|`object<string, any>|A map of the form values|
 
 <div class="alert alert-info mt-3">
-    <i class="fas fa-info-circle"></i> Props passed to the Formz component that are not part of the Formz component props will be passed as well, as long as they don't conflict with the names of the render props.
+    <i class="fas fa-info-circle"></i> Props passed to the Formz component that are not a part of the Formz component props will be passed as well, as long as they don't conflict with the names of the render props.
 </div>
 
 ### Field render props
@@ -122,5 +122,5 @@ The `Field` component `render` prop will render a single field. It will inject t
 |updateFieldValue|`({ name, value }) => void`|Call this function to update a field value. The function argument is an object of `{ name, value }` where `name` is the name of the field to update, and `value` is the new value. Calling `onChange` actually calls this function with the current field `name`.
 
 <div class="alert alert-info mt-3">
-    <i class="fas fa-info-circle"></i> Props passed to the Field component that are not part of the Field component props will be passed as well, as long as they don't conflict with the names of the render props.
+    <i class="fas fa-info-circle"></i> Props passed to the Field component that are not a part of the Field component props will be passed as well, as long as they don't conflict with the names of the render props.
 </div>
