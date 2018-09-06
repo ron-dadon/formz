@@ -100,4 +100,4 @@ That is what Redux Form does - on every change, there is a complete Redux cycle 
 
 So, the why part is first because I wanted to stop using Redux for form state management, and second, because I could not found a library that gave me the AngularJS experience.
 
-<p>For more about the why, visit this <a href="https://medium.com/@ron.dadon/stop-using-redux-for-form-states-a953e43818da" class="btn m-0 mr-2">post on <i class="fab fa-medium"></i>edium</a></p>
+<p>For more about the why, visit this <a href="https://medium.com/@ron.dadon/stop-using-redux-for-form-states-a953e43818da">post on <i class="fab fa-medium"></i>edium</a>.</p>
