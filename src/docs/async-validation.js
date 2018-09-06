@@ -17,6 +17,7 @@ const Input = ({ label, value, onChange, onFocus, onBlur, submitting, touched, e
     {touched && invalid && errors.required && <div>This is required</div>}
     {touched && invalid && errors.exists && <div>Already exists</div>}
     {touched && invalid && errors.strength && <div>Password not strong enough</div>}
+    {touched && invalid && errors.match && <div>Password does not match</div>}
   </div>
 )
 
