@@ -18,15 +18,71 @@ There are 2 types of validations: synchronized (sync) and asynchronized (async).
 Sync validators should return `true` if the validation passed and `false` otherwise.
 All sync validators are executed sequentially.
 
+A simple validation function:
+
+```js
+// Validate that an object has at least one property
+const notEmptyObject = ({ value }) => Object.keys(value).length > 0
+```
+
+Additional props are passed to the `props` parameter and can be used to configure validations. A common example is a minimum value validation:
+
+```js
+// Validate that the value is at least `min`
+const isAtLeast = ({ value, props: { min } }) => value >= min
+```
+
+All the form values are passed as well and can be used for cross fields validation, a common example is password confirmation field:
+
+```js
+// Validate that the field matches the password field
+const passwordMatch = ({ value, allValues }) => value === allValues.password
+```
+
+You can also utilize `props` parameter to dynamically declare the field for the match:
+
+```js
+// Validate that the field matches the `match` field
+const isMatching = ({ value, allValues, props: { match } }) => value === allValues[match]
+```
+
+[Live example](examples/validation.html)
+
 ## Async validation
 
 Async validators should return a `Promise` that is resolved with `true` if validation passed or resolved with `false` if validation failed.
 
 Async validators SHOULD NOT reject the promise. The reason is that all async validators are executed in parallel (using `Promise.all`), so rejecting a single promise will cause `Promise.all` to reject only with the rejected result of that promise.
 
+A simple example, that simulate checking if a username is available:
+
+```js
+const isAvailable = user => new Promise((resolve) => {
+  // Simulate server call
+  setTimeout(() => resolve(user !== 'john'), 200)
+})
+
+// Validate that a username is available
+const available = ({ value }) => isAvailable(value)
+```
+
+[Live example](examples/async-validation.html)
+
 ## How to pass sync and async validations?
 
 Unlike other libraries, sync and async validators are passed together in the same object. Formz will take care of splitting them for you according to the returned value.
+
+```jsx
+const validators = {
+  sync: ({ value }) => value > 5, // Simple sync validation
+  async: ({ value }) => http('/is-valid', value).then(res => res.data.isValid) // Simple async server validation
+}
+
+<Field
+  name="myField"
+  validators={validators}
+/>
+```
 
 ## I have async validation, how do I know it is processing?
 
