@@ -4,7 +4,7 @@ with_header: true
 
 # Installation
 
-That one is easy. Like must libraries, just use `npm` or `yarn`.
+That one is easy. Like most libraries, just use `npm` or `yarn`.
 
 ```bash
 $ npm i formz --save
