@@ -2,7 +2,7 @@
 layout: example
 example_script: async-validation.js
 title: Async validation example
-description: A simple registration form with async validation that checks if the user exists, and confirm password matches.
+description: A simple registration form with async validation that checks if the user exists, and confirm password matches. Try to type 'john' as username to see the 'already exists' error.
 ---
 
 ```jsx
