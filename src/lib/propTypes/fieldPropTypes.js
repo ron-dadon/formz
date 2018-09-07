@@ -11,6 +11,7 @@ const fieldPropTypes = {
   validateOnBlur: PropTypes.bool,
   validateOnInit: PropTypes.bool,
   reInitialize: PropTypes.bool,
+  reValidateOnFormChanges: PropTypes.oneOfType([PropTypes.bool, PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
   keepDirty: PropTypes.bool,
   required: PropTypes.bool
 }

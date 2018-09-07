@@ -36,6 +36,7 @@ const calculateFieldErrors = ({
   return Object.keys(validators).reduce((errors, validatorKey) => {
     const validatorResult = validators[validatorKey]({ value, allValues, props })
     if (validatorResult === true) return errors
+    if (typeof validatorResult === 'string') return { ...errors, [validatorKey]: validatorResult }
     if (validatorResult instanceof Promise) return { ...errors, [validatorKey]: validatorResult }
     return { ...errors, [validatorKey]: true }
   }, {})
@@ -143,7 +144,7 @@ class Formz extends Component {
       }
     })
     if (fieldValidateOnBlur || (fieldValidateOnBlur === undefined && validateOnBlur)) {
-      this.validateAllFields()
+      this.validateAllFields(name)
     }
   }
 
@@ -177,7 +178,7 @@ class Formz extends Component {
 
   createNewField = ({
     defaultValue, validators = {}, asyncValidators = {}, formatters = [], parsers = [],
-    validateOnChange, validateOnBlur, validateOnInit, props = {}
+    validateOnChange, validateOnBlur, validateOnInit, reValidateOnFormChanges, props = {}
   }) => {
     const allValues = getFormValues(this.state)
     const errors = {}
@@ -204,7 +205,8 @@ class Formz extends Component {
       props,
       validateOnChange,
       validateOnBlur,
-      validateOnInit
+      validateOnInit,
+      reValidateOnFormChanges
     }
   }
 
@@ -239,7 +241,7 @@ class Formz extends Component {
       }
     }, () => this.onValuesChange(name))
     if (fieldValidateOnChange || (fieldValidateOnChange === undefined && validateOnChange)) {
-      this.validateAllFields()
+      this.validateAllFields(name)
     }
   }
 
@@ -251,7 +253,8 @@ class Formz extends Component {
       if (!field) return state
       const allValues = getFormValues(this.state)
       const {
-        formatters, defaultValue: newDefaultValue, validators, parsers, validateOnChange, validateOnBlur, validateOnInit, ...props
+        formatters, defaultValue: newDefaultValue, validators, parsers,
+        validateOnChange, validateOnBlur, validateOnInit, reValidateOnFormChanges, ...props
       } = fieldProps
       const { value, defaultValue, pristine } = field
       const newValue = reInitialize && ((keepDirty && pristine) || !keepDirty) && defaultValue !== newDefaultValue ? newDefaultValue : value
@@ -272,6 +275,7 @@ class Formz extends Component {
           validateOnChange,
           validateOnBlur,
           validateOnInit,
+          reValidateOnFormChanges,
           validators: fieldValidators,
           value: newValue,
           formattedValue
@@ -282,12 +286,12 @@ class Formz extends Component {
         fields
       }
     })
-    this.validateAllFields()
+    this.validateAllFields(name)
   }
 
   registerField = ({
     name, defaultValue = '', validateOnChange, validateOnBlur, validateOnInit,
-    validators = {}, formatters = [], parsers = [], ...props
+    reValidateOnFormChanges, validators = {}, formatters = [], parsers = [], ...props
   }) => {
     const { validateOnInit: formValidateOnInit } = this.props
     this.setState(state => ({
@@ -303,12 +307,13 @@ class Formz extends Component {
           props,
           validateOnChange,
           validateOnBlur,
-          validateOnInit
+          validateOnInit,
+          reValidateOnFormChanges
         })
       }
     }))
     if (validateOnInit || (validateOnInit === undefined && formValidateOnInit)) {
-      this.validateAllFields()
+      this.validateAllFields(name)
     }
   }
 
@@ -318,7 +323,7 @@ class Formz extends Component {
       delete fields[fieldName]
       return { ...state, fields }
     })
-    this.validateAllFields()
+    this.validateAllFields(fieldName)
   }
 
   resetField = (fieldName) => {
@@ -326,10 +331,10 @@ class Formz extends Component {
       ...state,
       fields: { ...state.fields, [fieldName]: this.createNewField(state.fields[fieldName].defaultValue) }
     }))
-    this.validateAllFields()
+    this.validateAllFields(fieldName)
   }
 
-  validateAllFields = () => new Promise((resolve) => {
+  validateAllFields = (changedField) => new Promise((resolve) => {
     const asyncValidations = []
     const asyncValidationsFields = []
     this.setState((state) => {
@@ -337,6 +342,13 @@ class Formz extends Component {
       const allValues = getFormValues({ fields })
       Object.keys(fields).forEach((fieldName) => {
         const field = fields[fieldName]
+        const isNotChangedField = changedField && fieldName !== changedField
+        if (isNotChangedField) {
+          const hasReValidateProp = !!field.reValidateOnFormChanges
+          const isNotTheRevalidateField = (typeof field.reValidateOnFormChanges === 'string' && changedField !== field.reValidateOnFormChanges)
+            || (Array.isArray(field.reValidateOnFormChanges) && !field.reValidateOnFormChanges.includes(changedField))
+          if (!hasReValidateProp || isNotTheRevalidateField) return
+        }
         const { value, validators, props } = field
         const errors = calculateFieldErrors({
           value, validators, props, allValues
