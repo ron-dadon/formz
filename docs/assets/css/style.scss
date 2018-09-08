@@ -8,6 +8,10 @@ $blockquote-text-color: #819198;
 
 @import "{{ site.theme }}";
 
+a {
+  color: $body-link-color !important;
+}
+
 .page-header {
   background: #91a3a8;
   background-image: linear-gradient(120deg, #63757a, #d8ddde);
