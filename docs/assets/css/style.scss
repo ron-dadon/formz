@@ -1,16 +1,16 @@
 ---
 ---
 
-$section-headings-color: #007bff;
+$section-headings-color: #0071BC;
 $body-text-color: #3b464b;
-$body-link-color: #007bff;
+$body-link-color: #0071BC;
 $blockquote-text-color: #819198;
 
 @import "{{ site.theme }}";
 
 .page-header {
   background: #91a3a8;
-  background-image: linear-gradient(120deg, #63757a, #91a3a8);
+  background-image: linear-gradient(120deg, #63757a, #d8ddde);
 
   img {
     max-height: 300px;
@@ -20,4 +20,8 @@ $blockquote-text-color: #819198;
 
 .main-content code {
   word-break: keep-all;
+}
+
+.btn-primary {
+  background: #0071BC !important;
 }
