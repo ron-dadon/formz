@@ -8,14 +8,14 @@ Each key in the map is used as the error key in the `errors` prop that is inject
 Each validation function is called with an object in the form of `{ value: any, allValues: object<string, any>, props: object<string, any> }`.
 
 <div class="alert alert-info">
-  <i class="fas fa-info-circle"></i> Due to the nature of validation, where one field validation may depend on other values of the form, the validation functions are executed on all fields every time.
+  <i class="fas fa-info-circle"></i> Due to the nature of validation, where one field validation may depend on other values of the form, there is a special prop <code>reValidateOnFormChanges</code> that is used to control if validation for the field should be executed when other fields change.
 </div>
 
 There are 2 types of validations: synchronized (sync) and asynchronized (async).
  
 ## Sync validation
 
-Sync validators should return `true` if the validation passed and `false` otherwise.
+Sync validators should return `true` if the validation passed and `false` or a `string` with the error description otherwise.
 All sync validators are executed sequentially.
 
 A simple validation function:
@@ -46,13 +46,20 @@ You can also utilize `props` parameter to dynamically declare the field for the 
 const isMatching = ({ value, allValues, props: { match } }) => value === allValues[match]
 ```
 
+A simple way to return a `string` with the error description if validation fails is to use the `or` (`||`) operator:
+
+```js
+// Validate that the value is at least `min` and return an error message if not
+const isAtLeast = ({ value, props: { min } }) => value >= min || `Must be at least ${min}`
+```
+
 [Live example](examples/validation.html)
 
 ## Async validation
 
-Async validators should return a `Promise` that is resolved with `true` if validation passed or resolved with `false` if validation failed.
+Async validators should return a `Promise` that is resolved with `true` if validation passed or resolved with `false` or a `string` of the description if validation failed.
 
-Async validators SHOULD NOT reject the promise. The reason is that all async validators are executed in parallel (using `Promise.all`), so rejecting a single promise will cause `Promise.all` to reject only with the rejected result of that promise.
+Async validators SHOULD NOT reject the promise. The reason is that **all async validators are executed in parallel** (using `Promise.all`), so rejecting a single promise will cause `Promise.all` to reject only with the rejected result of that promise.
 
 A simple example, that simulate checking if a username is available:
 
@@ -97,3 +104,39 @@ When validation fails, `valid` will be `false`, `invalid` will be `true` and `er
 `errors = { required: true, email: true }` is the result of failed `required` and `email` validators.
 
 When validation passes, `valid` will be `true`, `invalid` will be `false` and `errors` will be an empty object `{}`.
+
+## Executing validation when other field changes
+
+There maybe some cases that you would want to validate a field value when another value changes, a simple example is a password confirmation field that should match the password field.
+
+To execute validation when another field changes, set the `reValidateOnFormChanges` prop of the `Field` component to `true`, a `string` with the name of the field that should trigger the validation or an `array` of `string` containing the fields that should trigger the validation.
+
+- When setting `reValidateOnFormChanges` to `true`, every field in the form will trigger the validation for that field.
+
+- When setting `reValidateOnFormChanges` to a `string` with the name of the field, the field validation will be triggered by changes to the field itself and by changes to the field set in `reValidateOnFormChanges`.
+
+- When setting `reValidateOnFormChanges` to a `array<string>` with the names of the fields, the field validation will be triggered by changes to the field itself and by changes to the fields set in `reValidateOnFormChanges`.
+
+For example:
+
+```jsx
+// Validate that the field matches the `match` field
+const isMatching = ({ value, allValues, props: { match } }) => value === allValues[match]
+const validators = {
+  isMatching
+}
+
+// In the Formz render...
+<Field
+  name="password"
+  ...
+/>
+<Field
+  name="passwordConfirm"
+  validators={validators}
+  match="password"
+  reValidateOnFormChanges="password"
+/>  
+```
+
+In this example, any change in the `password` field will also trigger the validation in the `passwordConfirm` field.

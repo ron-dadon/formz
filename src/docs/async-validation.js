@@ -62,6 +62,7 @@ class RegistrationForm extends Component {
           label='Confirm Password'
           validators={this.passwordConfirmValidators}
           match="password"
+          reValidateOnFormChanges='password'
           required
         />
         <div>
