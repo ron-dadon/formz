@@ -343,8 +343,8 @@ class Formz extends Component {
       Object.keys(fields).forEach((fieldName) => {
         const field = fields[fieldName]
         const isNotChangedField = changedField && fieldName !== changedField
+        const hasReValidateProp = !!field.reValidateOnFormChanges
         if (isNotChangedField) {
-          const hasReValidateProp = !!field.reValidateOnFormChanges
           const isNotTheRevalidateField = (typeof field.reValidateOnFormChanges === 'string' && changedField !== field.reValidateOnFormChanges)
             || (Array.isArray(field.reValidateOnFormChanges) && !field.reValidateOnFormChanges.includes(changedField))
           if (!hasReValidateProp || isNotTheRevalidateField) return
@@ -362,7 +362,8 @@ class Formz extends Component {
             this.setFieldNotPending(fieldName)
             return pendingValidators.reduce((resolveErrors, pendingValidator) => {
               const error = asyncErrors[pendingValidators.indexOf(pendingValidator)]
-              if (error) return resolveErrors
+              if (error === true) return resolveErrors
+              if (typeof error === 'string') return { ...resolveErrors, [pendingValidator]: error }
               return { ...resolveErrors, [pendingValidator]: true }
             }, {})
           })
