@@ -21,6 +21,7 @@ The main form component. This component is responsible for managing the form sta
 |validateOnBlur|`boolean`|No|`true`|If set to `true`, the form would validate upon every blur of a field. Please note that this may cause an additional render, and validation runs on all fields.
 |validateOnInit|`boolean`|No|`true`|If set to `true`, the form would validate after each field initialization. Please note that this may cause an additional render, runs for every field that is registered in the form (for example, form with 7 fields will execute validation 7 times on initialization), and validation runs on all fields.
 |validateOnSubmit|`boolean`|No|`true`|If set to `true`, the form would validate before submitting. Please note that this may cause an additional render and validation runs on all fields. It is a good practice to leave this option set to `true`, as it should prevent unneeded API requests to your form endpoint if client side validation fails.
+|html5Validation|`boolean`|No|`false`|Set to `true` to enable browser built-in HTML5 validations for the form. This may cause UX problems if you implement your own validations.
 
 <div class="alert alert-info mt-3">
     <i class="fas fa-info-circle"></i> Any other props that are passed to the Formz component will be passed to the render props.

@@ -12,7 +12,8 @@ const formzPropTypes = {
   validateOnChange: PropTypes.bool,
   validateOnBlur: PropTypes.bool,
   validateOnInit: PropTypes.bool,
-  validateOnSubmit: PropTypes.bool
+  validateOnSubmit: PropTypes.bool,
+  html5Validation: PropTypes.bool
 }
 
 export default formzPropTypes

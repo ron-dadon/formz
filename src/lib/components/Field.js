@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
+import cleanProps from '../propTypes/cleanProps'
 import fieldPropTypes from '../propTypes/fieldPropTypes'
+import fieldRenderPropTypes from '../propTypes/fieldRenderPropTypes'
 
 const forceFunctionsArray = val => (Array.isArray(val) ? val : ((typeof val === 'function' && [val]) || []))
 
@@ -72,10 +74,8 @@ const fieldComponentFactory = ({
 
     render() {
       if (!isRegistered(this.props.name)) return null
-      const {
-        render: FieldRender, name, defaultValue, validators, parsers, formatters,
-        validateOnChange, validateOnBlur, validateOnInit, reInitialize, keepDirty, ...props
-      } = this.props
+      const { render: FieldRender } = this.props
+      const props = cleanProps(this.props, fieldPropTypes, fieldRenderPropTypes)
       const {
         formattedValue, value, active, valid, pristine, touched, errors, pending
       } = getField(this.props.name)
