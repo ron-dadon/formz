@@ -7,7 +7,6 @@ description: A simple login form with required and email validation on the email
 
 ```jsx
 import React, { Component } from 'react'
-import ReactDOM from 'react-dom'
 import { Formz } from 'formz'
 
 const Input = ({ label, value, onChange, onFocus, onBlur, submitting, touched, errors, invalid, type = 'text' }) => (
