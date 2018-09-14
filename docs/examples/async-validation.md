@@ -7,7 +7,6 @@ description: A simple registration form with async validation that checks if the
 
 ```jsx
 import React, { Component } from 'react'
-import ReactDOM from 'react-dom'
 import { Formz } from 'formz'
 
 const Input = ({ label, value, onChange, onFocus, onBlur, submitting, touched, errors, invalid, pending, type = 'text' }) => (

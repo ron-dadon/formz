@@ -7,7 +7,6 @@ description: A simple form with date range that parses the date to UNIX timestam
 
 ```jsx
 import React, { Component } from 'react'
-import ReactDOM from 'react-dom'
 import { Formz } from 'formz'
 
 const Input = ({ label, value, onChange, onFocus, onBlur, submitting, type = 'text' }) => (
