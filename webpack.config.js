@@ -2,6 +2,7 @@ const path = require('path')
 
 module.exports = {
   entry: {
+    'field-dependency': path.resolve(__dirname, 'src/docs/field-dependency.js'),
     'parse-format': path.resolve(__dirname, 'src/docs/parse-format.js'),
     'async-validation': path.resolve(__dirname, 'src/docs/async-validation.js'),
     validation: path.resolve(__dirname, 'src/docs/validation.js'),
