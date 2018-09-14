@@ -6,6 +6,9 @@
 # lib
 /lib
 
+# docs testing
+/docs-test
+
 # ide
 /.idea
 
