@@ -16,7 +16,7 @@ const fieldRenderPropTypes = {
   value: PropTypes.any,
   rawValue: PropTypes.any,
   errors: PropTypes.object,
-  fromValues: PropTypes.object,
+  formValues: PropTypes.object,
   onChange: PropTypes.func,
   onFocus: PropTypes.func,
   onBlur: PropTypes.func,
