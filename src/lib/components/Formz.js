@@ -66,9 +66,9 @@ class Formz extends Component {
   static propTypes = formzPropTypes
 
   static defaultProps = {
+    validateOnInit: false,
     validateOnChange: true,
     validateOnBlur: true,
-    validateOnInit: true,
     validateOnSubmit: true
   }
 
