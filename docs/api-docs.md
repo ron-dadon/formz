@@ -17,10 +17,10 @@ The main form component. This component is responsible for managing the form sta
 |onValidation|`({ errors: {}, valid: boolean }) => void`|No| |A callback to be called when the form has finished a validation phase. The callback will get a single object as a parameter, with `errors`, which is the form errors object, and `valid` that states if the form is valid or not.
 |onReset|`() => void`|No| |A callback to be called when the form has been reset.
 |autoReset|`boolean`|No|`false`|If set to `true`, the form would automatically reset upon a successful submit.
-|validateOnChange|`boolean`|No|`true`|If set to `true`, the form would validate upon every change in a field. Please note that this may cause an additional render, and validation runs on all fields.
-|validateOnBlur|`boolean`|No|`true`|If set to `true`, the form would validate upon every blur of a field. Please note that this may cause an additional render, and validation runs on all fields.
-|validateOnInit|`boolean`|No|`true`|If set to `true`, the form would validate after each field initialization. Please note that this may cause an additional render, runs for every field that is registered in the form (for example, form with 7 fields will execute validation 7 times on initialization), and validation runs on all fields.
-|validateOnSubmit|`boolean`|No|`true`|If set to `true`, the form would validate before submitting. Please note that this may cause an additional render and validation runs on all fields. It is a good practice to leave this option set to `true`, as it should prevent unneeded API requests to your form endpoint if client side validation fails.
+|validateOnInit|`boolean`|No|`false`|If set to `true`, the form would validate after each field initialization. Please note that this may cause an additional renders as it runs for every field that is registered in the form (for example, form with 7 fields will execute validation 7 times on initialization).
+|validateOnChange|`boolean`|No|`true`|If set to `true`, the form would validate upon every change in a field. Please note that this may cause an additional render.
+|validateOnBlur|`boolean`|No|`true`|If set to `true`, the form would validate upon every blur of a field. Please note that this may cause an additional render.
+|validateOnSubmit|`boolean`|No|`true`|If set to `true`, the form would validate before submitting. Please note that this may cause an additional render. It is a good practice to leave this option set to `true`, as it should prevent unneeded API requests to your form endpoint if client side validation fails.
 |html5Validation|`boolean`|No|`false`|Set to `true` to enable browser built-in HTML5 validations for the form. This may cause UX problems if you implement your own validations.
 
 <div class="alert alert-info mt-3">
@@ -89,7 +89,6 @@ The `Formz` component `render` prop will render the entire form. It will inject 
 |submitting|`boolean`|Is `true` when the form is submitting.
 |submitted|`boolean`|Is `true` when the form was already submitted, and the submission completed (successfully or not).
 |submitSuccess|`boolean`|If `true` when the form was successfully submitted.
-|~~fields~~|`object<string, object>`|~~A map object of the fields in the form. Each field contains the entire field meta data and data (state, validators, parsers, formatters, default value, value etc.). **This prop is designed mainly for debugging - DO NOT manipulate this object manually!**~~ **DEPRECATED**
 |values|`object<string, any>|A map of the form values|
 
 <div class="alert alert-info mt-3">

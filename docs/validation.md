@@ -99,7 +99,7 @@ Each field has a `pending` prop that is injected to the rendered component. This
 
 Each field has `errors`, `valid` and `invalid` props.
 
-When validation fails, `valid` will be `false`, `invalid` will be `true` and `errors` will contain an object with the keys of the failed validations with the value `true`. For example:
+When validation fails, `valid` will be `false`, `invalid` will be `true` and `errors` will contain an object with the keys of the failed validations with the value `true` or a `string` with the error description returned by the validation function. For example:
 
 `errors = { required: true, email: true }` is the result of failed `required` and `email` validators.
 
