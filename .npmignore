@@ -1,5 +1,7 @@
 docs
 src
+tests
+docs-test
 .idea
 .babelrc
 .gitignore
