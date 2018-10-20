@@ -1,5 +1,7 @@
 # Formz 
 
+[![Build Status](https://semaphoreci.com/api/v1/ron-dadon/formz/branches/master/badge.svg)](https://semaphoreci.com/ron-dadon/formz)
+
 ## Another form library? Why?!
 
 First, because I can...
