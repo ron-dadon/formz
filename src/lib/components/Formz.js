@@ -7,7 +7,7 @@ import fieldComponentFactory from './Field'
 const required = ({ value }) => {
   if (typeof value === 'string') return value !== ''
   if (Array.isArray(value)) return !!value.length
-  if (typeof value === 'object') return !!Object.keys(value.length)
+  if (typeof value === 'object' && value) return !!Object.keys(value).length
   return value !== null && value !== undefined
 }
 
@@ -179,15 +179,17 @@ class Formz extends Component {
   }
 
   createNewField = ({
-    defaultValue, validators = {}, asyncValidators = {}, formatters = [], parsers = [],
+    defaultValue = '', validators = {}, formatters = [], parsers = [],
     validateOnChange, validateOnBlur, validateOnInit, reValidateOnFormChanges, props = {}
   }) => {
     const allValues = getFormValues(this.state)
     const errors = {}
     const valid = true
-    const value = defaultValue
+    const parsedValue = executeModifiersPipeline({
+      modifiers: parsers, value: defaultValue, allValues, props
+    })
     const formattedValue = executeModifiersPipeline({
-      modifiers: formatters, value, allValues, props
+      modifiers: formatters, value: parsedValue, allValues, props
     })
     const fieldValidators = props.required && !validators.required ? { ...validators, required } : validators
     return {
@@ -198,10 +200,9 @@ class Formz extends Component {
       pristine: true,
       touched: false,
       defaultValue,
-      value,
+      value: parsedValue,
       formattedValue,
       validators: fieldValidators,
-      asyncValidators,
       parsers,
       formatters,
       props,
@@ -331,7 +332,7 @@ class Formz extends Component {
   resetField = (fieldName) => {
     this.setState(state => ({
       ...state,
-      fields: { ...state.fields, [fieldName]: this.createNewField(state.fields[fieldName].defaultValue) }
+      fields: { ...state.fields, [fieldName]: this.createNewField({ defaultValue: state.fields[fieldName].defaultValue }) }
     }))
     this.validateAllFields(fieldName)
   }
