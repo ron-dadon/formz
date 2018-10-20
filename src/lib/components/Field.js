@@ -74,7 +74,7 @@ const fieldComponentFactory = ({
 
     render() {
       if (!isRegistered(this.props.name)) return null
-      const { render: FieldRender } = this.props
+      const { render: FieldRender, name } = this.props
       const props = cleanProps(this.props, fieldPropTypes, fieldRenderPropTypes)
       const {
         formattedValue, value, active, valid, pristine, touched, errors, pending
@@ -83,6 +83,7 @@ const fieldComponentFactory = ({
       return (
         <FieldRender
           {...props}
+          name={name}
           value={formattedValue}
           rawValue={value}
           errors={errors}
