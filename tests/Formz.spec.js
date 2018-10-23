@@ -415,7 +415,7 @@ describe('Formz submit form', () => {
   const onSubmitAsync = jest.fn(values => values.test === true ? Promise.resolve() : Promise.reject(false))
   const FieldRender = () => <div />
   const FormRenderComponentWithField = ({ Field }) => (
-    <div><Field name="test" render={FieldRender} /></div>
+    <div><Field name="test" render={FieldRender} required /></div>
   )
   const comp = mount(<Formz
     render={FormRenderComponentWithField}
@@ -429,7 +429,47 @@ describe('Formz submit form', () => {
   const fieldComponent = formComponentWithField.find('Field')
   const fieldRenderComponent = fieldComponent.find('FieldRender')
 
+  const resetMocksAndForm = () => {
+    onSubmitSync.mockClear()
+    onSubmitSuccess.mockClear()
+    onSubmitError.mockClear()
+    comp.instance().resetForm()
+    comp.setProps({ validateOnSubmit: true })
+  }
+
+  describe('validate form before submit', () => {
+    beforeEach(resetMocksAndForm)
+
+    it('should fail to submit the form due to required validation', () => {
+      formComponentWithField.props().submit()
+      expect(comp.state().submitting).toBeTruthy()
+      setTimeout(() => {
+        expect(comp.state().submitting).toBeFalsy()
+        expect(comp.state().submitted).toBeTruthy()
+        expect(comp.state().submitSuccess).toBeFalsy()
+        expect(comp.state().valid).toBeFalsy()
+        expect(onSubmitSync).not.toBeCalled()
+        expect(onSubmitSuccess).not.toBeCalled()
+        expect(onSubmitError).toBeCalledTimes(1)
+      }, 0)
+    })
+
+    it('should not fail to submit the form due to required validation when validateOnSubmit flag is false', () => {
+      comp.setProps({ validateOnSubmit: false })
+      comp.instance().resetForm()
+      formComponentWithField.props().submit()
+      expect(comp.state().submitting).toBeFalsy()
+      expect(comp.state().submitted).toBeTruthy()
+      expect(comp.state().submitSuccess).toBeFalsy() // Fails in "server mock"
+      expect(onSubmitSuccess).not.toBeCalled()
+      expect(onSubmitError).toBeCalledTimes(1)
+      expect(onSubmitSync).toBeCalledTimes(1)
+    })
+  })
+
   describe('sync', () => {
+    beforeEach(resetMocksAndForm)
+
     it('should submit form with values and success', () => {
       fieldRenderComponent.props().onChange(true)
       expect(comp.state().fields.test.value).toBeTruthy()
@@ -466,9 +506,10 @@ describe('Formz submit form', () => {
   })
 
   describe('async', () => {
-    onSubmitSuccess.mockClear()
-    onSubmitError.mockClear()
+    beforeEach(resetMocksAndForm)
+
     comp.setProps({ onSubmit: onSubmitAsync })
+
     it('should submit form with values and success', () => {
       fieldRenderComponent.props().onChange(true)
       expect(comp.state().fields.test.value).toBeTruthy()
@@ -500,6 +541,23 @@ describe('Formz submit form', () => {
         expect(onSubmitError).toBeCalledTimes(1)
         expect(onSubmitError).toBeCalledWith(false)
         expect(onSubmitSuccess).not.toBeCalled()
+      }, 0)
+    })
+  })
+
+  describe('reset form after submit', () => {
+    beforeEach(resetMocksAndForm)
+
+    comp.setProps({ onSubmit: onSubmitSync, autoReset: true })
+
+    it('should reset the form after submit when autoReset flag is true', () => {
+      fieldRenderComponent.props().onChange(true)
+      expect(comp.state().fields.test.value).toBeTruthy()
+      expect(comp.state().pristine).toBeFalsy()
+      formComponentWithField.props().submit()
+      setTimeout(() => {
+        expect(comp.state().pristine).toBeTruthy()
+        expect(comp.state().fields.test.value).toEqual('')
       }, 0)
     })
   })
