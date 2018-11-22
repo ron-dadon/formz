@@ -69,7 +69,9 @@ class Formz extends Component {
     validateOnInit: false,
     validateOnChange: true,
     validateOnBlur: true,
-    validateOnSubmit: true
+    validateOnSubmit: true,
+    formNoValidate: true,
+    formNative: true
   }
 
   constructor(props) {
@@ -507,32 +509,46 @@ class Formz extends Component {
   }
 
   render() {
-    const { render: RenderComponent, html5Validation } = this.props
+    const { render: RenderComponent, formNative, formNoValidate, formAction, formMethod, formEnctype, formTarget } = this.props
     const props = cleanProps(this.props, formzPropTypes, formzRenderPropTypes)
     const {
       errors, valid, pristine, touched, pending,
       submitting, submitted, submitSuccess, fields
     } = this.state
+    const renderedComponent = (
+      <RenderComponent
+        {...props}
+        Field={this.Field}
+        reset={this.resetForm}
+        submit={this.startSubmit}
+        errors={errors}
+        valid={valid}
+        invalid={!valid}
+        pristine={pristine}
+        dirty={!pristine}
+        touched={touched}
+        untouched={!touched}
+        pending={pending}
+        submitting={submitting}
+        submitted={submitted}
+        submitSuccess={submitSuccess}
+        values={getFormValues({ fields })}
+      />
+    )
+    if (!formNative) {
+      return renderedComponent
+    }
     return (
-      <form onSubmit={this.startSubmit} onReset={this.resetForm} noValidate={!html5Validation}>
-        <RenderComponent
-          {...props}
-          Field={this.Field}
-          reset={this.resetForm}
-          submit={this.startSubmit}
-          errors={errors}
-          valid={valid}
-          invalid={!valid}
-          pristine={pristine}
-          dirty={!pristine}
-          touched={touched}
-          untouched={!touched}
-          pending={pending}
-          submitting={submitting}
-          submitted={submitted}
-          submitSuccess={submitSuccess}
-          values={getFormValues({ fields })}
-        />
+      <form
+        onSubmit={this.startSubmit}
+        onReset={this.resetForm}
+        noValidate={formNoValidate}
+        action={formAction}
+        method={formMethod}
+        target={formTarget}
+        encType={formEnctype}
+      >
+        {renderedComponent}
       </form>
     )
   }

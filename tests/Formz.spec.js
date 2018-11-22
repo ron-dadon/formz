@@ -55,6 +55,10 @@ describe('Formz render', () => {
   it('should render form tag', () => {
     expect(comp.find('form').length).toEqual(1)
   })
+  it('should not render form tag if formNative prop is off', () => {
+    const compWithoutForm = shallow(<Formz render={FormRenderComponent} onSubmit={jest.fn()} formNative={false} />)
+    expect(compWithoutForm.find('form').length).toEqual(0)
+  })
   it('should render the render prop', () => {
     expect(comp.find('FormRenderComponent').length).toEqual(1)
   })
@@ -67,7 +71,11 @@ describe('Formz pass props', () => {
       const formTag = comp.find('form')
       expect(formTag.props().onSubmit).toEqual(comp.instance().startSubmit)
       expect(formTag.props().onReset).toEqual(comp.instance().resetForm)
-      expect(formTag.props().noValidate).toEqual(!comp.instance().html5Validation)
+      expect(formTag.props().noValidate).toEqual(comp.instance().props.formNoValidate)
+      expect(formTag.props().action).toEqual(comp.instance().props.formAction)
+      expect(formTag.props().method).toEqual(comp.instance().props.formMethod)
+      expect(formTag.props().encType).toEqual(comp.instance().props.formEnctype)
+      expect(formTag.props().target).toEqual(comp.instance().props.formTarget)
     })
   })
   describe('to render prop component', () => {

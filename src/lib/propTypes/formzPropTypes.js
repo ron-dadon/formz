@@ -13,7 +13,12 @@ const formzPropTypes = {
   validateOnBlur: PropTypes.bool,
   validateOnInit: PropTypes.bool,
   validateOnSubmit: PropTypes.bool,
-  html5Validation: PropTypes.bool
+  formNative: PropTypes.bool,
+  formNoValidate: PropTypes.bool,
+  formAction: PropTypes.string,
+  formMethod: PropTypes.oneOf(['get', 'post', 'GET', 'POST']),
+  formEnctype: PropTypes.oneOf(['application/x-www-form-urlencoded', 'multipart/form-data', 'text/plain']),
+  formTarget: PropTypes.oneOfType([PropTypes.oneOf(['_self', '_blank', '_parent', '_top']), PropTypes.string])
 }
 
 export default formzPropTypes

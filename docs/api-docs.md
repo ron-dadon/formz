@@ -21,7 +21,12 @@ The main form component. This component is responsible for managing the form sta
 |validateOnChange|`boolean`|No|`true`|If set to `true`, the form would validate upon every change in a field. Please note that this may cause an additional render.
 |validateOnBlur|`boolean`|No|`true`|If set to `true`, the form would validate upon every blur of a field. Please note that this may cause an additional render.
 |validateOnSubmit|`boolean`|No|`true`|If set to `true`, the form would validate before submitting. Please note that this may cause an additional render. It is a good practice to leave this option set to `true`, as it should prevent unneeded API requests to your form endpoint if client side validation fails.
-|html5Validation|`boolean`|No|`false`|Set to `true` to enable browser built-in HTML5 validations for the form. This may cause UX problems if you implement your own validations.
+|formNative|`boolean`|No|`true`|Set to `false` to disable native form element generation. By default, Formz wraps the rendered form component with `form` HTML element to enable native HTML form features.
+|formNoValidate|`boolean`|No|`true`|Set to `false` to enable browser built-in HTML5 validations for the form. This may cause UX problems if you implement your own validations.
+|formAction|`string`|No| |Set the action of the native form element.
+|formMethod|`'get' / 'post' / 'GET' / 'POST'`|No| |Set the method of the native form element.
+|formEnctype|`'application/x-www-form-urlencoded' / 'multipart/form-data' / 'text/plain'`|No| |Set the enctype of the native form element.
+|formTarget|`'_self' / '_blank' / '_parent' / '_top' / string`|No| |Set the target of the native form element.
 
 <div class="alert alert-info mt-3">
     <i class="fas fa-info-circle"></i> Any other props that are passed to the Formz component will be passed to the render props.
@@ -89,7 +94,7 @@ The `Formz` component `render` prop will render the entire form. It will inject 
 |submitting|`boolean`|Is `true` when the form is submitting.
 |submitted|`boolean`|Is `true` when the form was already submitted, and the submission completed (successfully or not).
 |submitSuccess|`boolean`|If `true` when the form was successfully submitted.
-|values|`object<string, any>|A map of the form values|
+|values|`object<string, any>`|A map of the form values|
 
 <div class="alert alert-info mt-3">
     <i class="fas fa-info-circle"></i> Props passed to the Formz component that are not a part of the Formz component props will be passed as well, as long as they don't conflict with the names of the render props.
