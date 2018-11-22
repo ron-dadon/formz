@@ -496,7 +496,8 @@ class Formz extends Component {
   }
 
   startSubmit = (e) => {
-    const { validateOnSubmit } = this.props
+    const { validateOnSubmit, formNative, formAction } = this.props
+    if (formNative && formAction) return true
     if (e) e.preventDefault()
     this.setState({ submitting: true, touched: true }, () => {
       if (validateOnSubmit) {

@@ -32,6 +32,10 @@ The main form component. This component is responsible for managing the form sta
     <i class="fas fa-info-circle"></i> Any other props that are passed to the Formz component will be passed to the render props.
 </div>
 
+<div class="alert alert-info mt-3">
+    <i class="fas fa-info-circle"></i> Setting <code>formAction</code> and <code>formNative</code> will force the form to use the native submission. The side effects of the native submit are that <code>onSubmit</code> function will not be executed and fields will NOT be validated on submission. 
+</div>
+
 ### Field component
 
 The `Field` component is injected as a prop into your form component via the render prop of the `Form` component. Each form gets a `Field` component that is bounded to that form.

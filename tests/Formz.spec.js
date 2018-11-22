@@ -171,7 +171,7 @@ describe('Formz field', () => {
 })
 
 describe('Formz validation', () => {
-  describe('custom validatiors', () => {
+  describe('custom validators', () => {
     const testValidators = {
       startWithA: ({ value }) => value.startsWith('A') || 'Must start with A',
       endWithB: ({ value }) => new Promise((resolve) => {
