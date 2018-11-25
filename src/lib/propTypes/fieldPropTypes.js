@@ -13,7 +13,8 @@ const fieldPropTypes = {
   reInitialize: PropTypes.bool,
   reValidateOnFormChanges: PropTypes.oneOfType([PropTypes.bool, PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
   keepDirty: PropTypes.bool,
-  required: PropTypes.bool
+  required: PropTypes.bool,
+  synthetic: PropTypes.oneOfType([PropTypes.bool, PropTypes.string])
 }
 
 export default fieldPropTypes

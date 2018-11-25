@@ -69,6 +69,7 @@ Regardless of the fact that this is a bad practice in React in general, that mea
 |reValidateOnFormChanges|`boolean`/`string`/`array<string>`|No|`false`|If set to `true`, this field validation will be executed for every change in any field. If set to a `string`, this field validation will be executed only if a field with the name of this prop is changed. If set to `array<string>`, you can set more than 1 field that will trigger the validation.
 |reInitialize|`boolean`|No|`false`|If set to `true`, a change in the `defaultValue` prop will change the `value` of the field to the new default value.
 |keepDirty|`boolean`|No|`false`|If set to `true`, a change in the `defaultValue` prop will change the `value` of the field to the new default value, **ONLY IF** the field is not `dirty`.
+|synthetic|`boolean / string`|No| |Set to `true` to handle synthetic events `value` field automatically in `onChange`, or set to custom string value to extract that field from the synthetic event `target` object.
 
 <div class="alert alert-info mt-3">
     <i class="fas fa-info-circle"></i> Any other props that are passed to the Field component will be passed to the render props.

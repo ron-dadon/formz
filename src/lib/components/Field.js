@@ -45,8 +45,15 @@ const fieldComponentFactory = ({
     }
 
     onChange = (value) => {
-      const { name } = this.props
-      updateFieldValue({ name, value })
+      const { name, synthetic } = this.props
+      if (!synthetic) {
+        updateFieldValue({ name, value })
+        return
+      }
+      updateFieldValue({
+        name,
+        value: value && value.target && value.target[typeof synthetic === 'string' ? synthetic : 'value']
+      })
     }
 
     onFocus = () => {
