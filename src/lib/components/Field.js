@@ -83,6 +83,10 @@ const fieldComponentFactory = ({
       if (!isRegistered(this.props.name)) return null
       const { render: FieldRender, name } = this.props
       const props = cleanProps(this.props, fieldPropTypes, fieldRenderPropTypes)
+      // Set back the required prop if one is present to pass it into the rendered component
+      if (this.props.required !== undefined) {
+        props.required = this.props.required
+      }
       const {
         formattedValue, value, active, valid, pristine, touched, errors, pending
       } = getField(this.props.name)
