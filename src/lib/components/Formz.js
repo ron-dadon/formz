@@ -4,6 +4,17 @@ import formzPropTypes from '../propTypes/formzPropTypes'
 import formzRenderPropTypes from '../propTypes/formzRenderPropTypes'
 import fieldComponentFactory from './Field'
 
+// Use simple memorize method instead of pulling reselect / lodash into the project
+const memorizeValues = (calcValue) => {
+  const cache = { lastValue: null, result: null }
+  return ({ fields }) => {
+    if (cache.lastValue === fields) return cache.result
+    cache.lastValue = fields
+    cache.result = calcValue({ fields })
+    return cache.result
+  }
+}
+
 const required = ({ value }) => {
   if (typeof value === 'string') return value !== ''
   if (Array.isArray(value)) return !!value.length
@@ -11,9 +22,9 @@ const required = ({ value }) => {
   return value !== null && value !== undefined
 }
 
-const getFormValues = ({ fields }) => Object.keys(fields).reduce((values, fieldName) => ({
+const getFormValues = memorizeValues(({ fields }) => Object.keys(fields).reduce((values, fieldName) => ({
   ...values, [fieldName]: fields[fieldName].value
-}), {})
+}), {}))
 
 const getFormErrors = fields => Object.keys(fields).reduce((values, fieldName) => ({
   ...values,
