@@ -27,6 +27,7 @@ The main form component. This component is responsible for managing the form sta
 |formMethod|`'get' / 'post' / 'GET' / 'POST'`|No| |Set the method of the native form element.
 |formEnctype|`'application/x-www-form-urlencoded' / 'multipart/form-data' / 'text/plain'`|No| |Set the enctype of the native form element.
 |formTarget|`'_self' / '_blank' / '_parent' / '_top' / string`|No| |Set the target of the native form element.
+|formProps|`object`|No| |Spread all properties of this object onto the `form` element.
 
 <div class="alert alert-info mt-3">
     <i class="fas fa-info-circle"></i> Any other props that are passed to the Formz component will be passed to the render props.
