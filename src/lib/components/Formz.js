@@ -521,7 +521,7 @@ class Formz extends Component {
   }
 
   render() {
-    const { render: RenderComponent, formNative, formNoValidate, formAction, formMethod, formEnctype, formTarget } = this.props
+    const { render: RenderComponent, formNative, formNoValidate, formAction, formMethod, formEnctype, formTarget, formProps } = this.props
     const props = cleanProps(this.props, formzPropTypes, formzRenderPropTypes)
     const {
       errors, valid, pristine, touched, pending,
@@ -559,6 +559,7 @@ class Formz extends Component {
         method={formMethod}
         target={formTarget}
         encType={formEnctype}
+        {...formProps}
       >
         {renderedComponent}
       </form>
