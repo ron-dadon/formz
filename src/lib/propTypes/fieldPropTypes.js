@@ -1,7 +1,14 @@
 import PropTypes from 'prop-types'
 
+const renderForwardRefShape = PropTypes.shape({
+  '$$typeof': PropTypes.any,
+  displayName: PropTypes.string,
+  propTypes: PropTypes.any,
+  render: PropTypes.func
+})
+
 const fieldPropTypes = {
-  render: PropTypes.oneOfType([PropTypes.element, PropTypes.func]).isRequired,
+  render: PropTypes.oneOfType([PropTypes.element, PropTypes.func, renderForwardRefShape]).isRequired,
   name: PropTypes.string.isRequired,
   defaultValue: PropTypes.oneOfType([PropTypes.array, PropTypes.object, PropTypes.string, PropTypes.number, PropTypes.bool]),
   validators: PropTypes.object,
