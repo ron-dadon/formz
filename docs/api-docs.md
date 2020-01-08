@@ -15,6 +15,7 @@ The main form component. This component is responsible for managing the form sta
 |onSubmitSuccess|`(result: any) => void`|No| |A callback to be called when the submission of the form is successful. If your `onSubmit` returned a `Promise`, it will be called with the resolved value. If your `onSubmit` returned `true`, it will be called with the submitted form values.
 |onSubmitError|`(error: any) => void`|No| |A callback to be called when the submission of the form failed. If the form is invalid, it will be called when attempting to submit the form, and will get the form errors object as parameter. If your `onSubmit` returned a `Promise`, it will be called with the rejected value. If your `onSubmit` returned `false`, it will be called with `false`.
 |onValidation|`({ errors: {}, valid: boolean }) => void`|No| |A callback to be called when the form has finished a validation phase. The callback will get a single object as a parameter, with `errors`, which is the form errors object, and `valid` that states if the form is valid or not.
+|onValuesChange|`({ values: {}, field: string, updateFieldValue: ({ name: string, value:any }) => void }) => void`|No| |A callback to be called when a field value was changed. This allows you to update other fields based on the change using the `updateFieldValue` function that is provided to the callback.
 |onReset|`() => void`|No| |A callback to be called when the form has been reset.
 |autoReset|`boolean`|No|`false`|If set to `true`, the form would automatically reset upon a successful submit.
 |validateOnInit|`boolean`|No|`false`|If set to `true`, the form would validate after each field initialization. Please note that this may cause an additional renders as it runs for every field that is registered in the form (for example, form with 7 fields will execute validation 7 times on initialization).
@@ -71,6 +72,7 @@ Regardless of the fact that this is a bad practice in React in general, that mea
 |reInitialize|`boolean`|No|`false`|If set to `true`, a change in the `defaultValue` prop will change the `value` of the field to the new default value.
 |keepDirty|`boolean`|No|`false`|If set to `true`, a change in the `defaultValue` prop will change the `value` of the field to the new default value, **ONLY IF** the field is not `dirty`.
 |synthetic|`boolean / string`|No| |Set to `true` to handle synthetic events `value` field automatically in `onChange`, or set to custom string value to extract that field from the synthetic event `target` object.
+|onValueChange|`({ value: any, allValues: {}, submit: () => void, reset: () => void, updateFieldValue: ({ name: string, value:any }) => void }) => void`|No| |A callback to be called when a the field value was changed. This allows you to update other fields based on the change using the `updateFieldValue` function that is provided to the callback, submit the form using `submit` or reset it using `reset`.
 
 <div class="alert alert-info mt-3">
     <i class="fas fa-info-circle"></i> Any other props that are passed to the Field component will be passed to the render props.
@@ -132,6 +134,8 @@ The `Field` component `render` prop will render a single field. It will inject t
 |onFocus|`() => void`|Call this function when the field is focused. 
 |reset|`() => void`|Call this function the reset the field. 
 |updateFieldValue|`({ name, value }) => void`|Call this function to update a field value. The function argument is an object of `{ name, value }` where `name` is the name of the field to update, and `value` is the new value. Calling `onChange` actually calls this function with the current field `name`.
+|resetForm|`function`|A function that will reset the form when called.
+|submit|`function`|A function that will trigger the form submission when called.
 
 <div class="alert alert-info mt-3">
     <i class="fas fa-info-circle"></i> Props passed to the Field component that are not a part of the Field component props will be passed as well, as long as they don't conflict with the names of the render props.
