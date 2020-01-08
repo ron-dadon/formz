@@ -2,11 +2,13 @@ import React, { Component } from 'react'
 import cleanProps from '../propTypes/cleanProps'
 import fieldPropTypes from '../propTypes/fieldPropTypes'
 import fieldRenderPropTypes from '../propTypes/fieldRenderPropTypes'
+import { isFunction } from '../utils'
 
 const forceFunctionsArray = val => (Array.isArray(val) ? val : ((typeof val === 'function' && [val]) || []))
 
 const fieldComponentFactory = ({
-  registerField, unregisterField, isRegistered, resetField, updateField, updateFieldValue, setFieldTouched, setFieldActive, getField, formValues, getFormState
+  registerField, unregisterField, isRegistered, resetField, updateField, updateFieldValue,
+  setFieldTouched, setFieldActive, getField, formValues, getFormState, submit, reset
 }) => {
   class Field extends Component {
     static propTypes = fieldPropTypes
@@ -48,12 +50,22 @@ const fieldComponentFactory = ({
       const { name, synthetic } = this.props
       if (!synthetic) {
         updateFieldValue({ name, value })
+        this.onValueChange(value)
         return
       }
+      const fieldValue = value && value.target && value.target[typeof synthetic === 'string' ? synthetic : 'value']
       updateFieldValue({
         name,
-        value: value && value.target && value.target[typeof synthetic === 'string' ? synthetic : 'value']
+        value: fieldValue
       })
+      this.onValueChange(fieldValue)
+    }
+
+    onValueChange = (value) => {
+      const { onValueChange } = this.props
+      if (isFunction(onValueChange)) {
+        onValueChange({ value, allValues: formValues(), updateFieldValue, submit, reset })
+      }
     }
 
     onFocus = () => {
@@ -115,6 +127,8 @@ const fieldComponentFactory = ({
           submitting={submitting}
           submitted={submitted}
           submitSuccess={submitSuccess}
+          submit={submit}
+          resetForm={reset}
         />
       )
     }

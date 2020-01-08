@@ -2,76 +2,11 @@ import React, { Component } from 'react'
 import cleanProps from '../propTypes/cleanProps'
 import formzPropTypes from '../propTypes/formzPropTypes'
 import formzRenderPropTypes from '../propTypes/formzRenderPropTypes'
+import { isFunction, required, getFormValues, getFormErrors, getFormIsValid,
+  getFormPristine, getFormTouched, isFieldValid, calculateFieldErrors,
+  executeModifiersPipeline, extractAsyncErrors, extractSyncErrors
+} from '../utils'
 import fieldComponentFactory from './Field'
-
-// Use simple memorize method instead of pulling reselect / lodash into the project
-const memorizeValues = (calcValue) => {
-  const cache = { lastValue: null, result: null }
-  return ({ fields }) => {
-    if (cache.lastValue === fields) return cache.result
-    cache.lastValue = fields
-    cache.result = calcValue({ fields })
-    return cache.result
-  }
-}
-
-const required = ({ value }) => {
-  if (typeof value === 'string') return value !== ''
-  if (Array.isArray(value)) return !!value.length
-  if (typeof value === 'object' && value) return !!Object.keys(value).length
-  return value !== null && value !== undefined
-}
-
-const getFormValues = memorizeValues(({ fields }) => Object.keys(fields).reduce((values, fieldName) => ({
-  ...values, [fieldName]: fields[fieldName].value
-}), {}))
-
-const getFormErrors = fields => Object.keys(fields).reduce((values, fieldName) => ({
-  ...values,
-  [fieldName]: Object.keys(fields[fieldName].errors).length ? fields[fieldName].errors : undefined
-}), {})
-
-const getFormIsValid = errors => Object.keys(errors).reduce(
-  (isValid, fieldName) => isValid && (!errors[fieldName] || !Object.keys(errors[fieldName]).length),
-  true
-)
-
-const getFormPristine = fields => Object.keys(fields).reduce((isPristine, fieldName) => isPristine && fields[fieldName].pristine, true)
-
-const getFormTouched = fields => Object.keys(fields).reduce((isTouched, fieldName) => isTouched || fields[fieldName].touched, false)
-
-const isFieldValid = ({ errors }) => !Object.keys(errors).length
-
-const calculateFieldErrors = ({
-  validators, value, allValues, props
-}) => {
-  if (!validators) return {}
-  return Object.keys(validators).reduce((errors, validatorKey) => {
-    const validatorResult = validators[validatorKey]({ value, allValues, props })
-    if (validatorResult === true) return errors
-    if (typeof validatorResult === 'string') return { ...errors, [validatorKey]: validatorResult }
-    if (validatorResult instanceof Promise) return { ...errors, [validatorKey]: validatorResult }
-    return { ...errors, [validatorKey]: true }
-  }, {})
-}
-
-const executeModifiersPipeline = ({
-  modifiers, value, allValues, props
-}) => modifiers.reduce((finalValue, modifier) => modifier({
-  value: finalValue,
-  allValues,
-  props
-}), value)
-
-const extractAsyncErrors = obj => Object.keys(obj).reduce((promises, objKey) => (obj[objKey] instanceof Promise ? {
-  ...promises,
-  [objKey]: obj[objKey]
-} : promises), {})
-
-const extractSyncErrors = obj => Object.keys(obj).reduce((errors, objKey) => (obj[objKey] instanceof Promise ? errors : {
-  ...errors,
-  [objKey]: obj[objKey]
-}), {})
 
 class Formz extends Component {
   static propTypes = formzPropTypes
@@ -98,7 +33,9 @@ class Formz extends Component {
       setFieldTouched: this.setFieldTouched,
       getField: this.getField,
       getFormState: this.getFormState,
-      formValues: this.formValues
+      formValues: this.formValues,
+      submit: this.startSubmit,
+      reset: this.resetForm
     })
     this.state = {
       fields: {},
@@ -114,7 +51,7 @@ class Formz extends Component {
   }
 
   onValuesChange = (field) => {
-    if (typeof this.props.onValuesChange === 'function') {
+    if (isFunction(this.props.onValuesChange)) {
       const values = this.formValues()
       this.props.onValuesChange({ values, field, updateFieldValue: this.updateFieldValue })
     }
@@ -441,14 +378,14 @@ class Formz extends Component {
   })
 
   callOnValidation = () => {
-    if (typeof this.props.onValidation === 'function') {
+    if (isFunction(this.props.onValidation)) {
       const { errors, valid } = this.state
       this.props.onValidation({ errors, valid })
     }
   }
 
   callOnReset = () => {
-    if (typeof this.props.onReset === 'function') {
+    if (isFunction(this.props.onReset)) {
       this.props.onReset(this.formValues())
     }
   }
@@ -479,10 +416,10 @@ class Formz extends Component {
 
   finishSubmit = submitSuccess => (args) => {
     const { onSubmitSuccess, onSubmitError } = this.props
-    if (submitSuccess && typeof onSubmitSuccess === 'function') {
+    if (submitSuccess && isFunction(onSubmitSuccess)) {
       onSubmitSuccess(args)
     }
-    if (!submitSuccess && typeof onSubmitError === 'function') {
+    if (!submitSuccess && isFunction(onSubmitError)) {
       onSubmitError(args)
     }
     this.setState(state => ({
