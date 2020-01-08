@@ -50,6 +50,14 @@ class Formz extends Component {
     }
   }
 
+  componentWillUnmount () {
+    this.isUnmounted = true
+  }
+
+  setMountedState (state, callback) {
+    if (!this.isUnmounted) this.setState(state, callback)
+  }
+
   onValuesChange = (field) => {
     if (isFunction(this.props.onValuesChange)) {
       const values = this.formValues()
@@ -77,7 +85,7 @@ class Formz extends Component {
   setFieldTouched = ({ name }) => {
     const { validateOnBlur } = this.props
     const { validateOnBlur: fieldValidateOnBlur } = this.state.fields[name]
-    this.setState((state) => {
+    this.setMountedState((state) => {
       const field = state.fields[name]
       if (!field) return state
       const fields = {
@@ -101,7 +109,7 @@ class Formz extends Component {
   }
 
   setFieldNotPending = (name) => {
-    this.setState((state) => {
+    this.setMountedState((state) => {
       const fields = { ...state.fields }
       fields[name] = { ...fields[name], pending: false }
       return {
@@ -112,7 +120,7 @@ class Formz extends Component {
   }
 
   setFieldActive = ({ name }) => {
-    this.setState((state) => {
+    this.setMountedState((state) => {
       const field = state.fields[name]
       if (!field) return state
       return {
@@ -166,7 +174,7 @@ class Formz extends Component {
   updateFieldValue = ({ name, value }) => {
     const { validateOnChange } = this.props
     const { validateOnChange: fieldValidateOnChange } = this.state.fields[name]
-    this.setState((state) => {
+    this.setMountedState((state) => {
       const field = state.fields[name]
       if (!field) return state
       const { parsers, formatters, props } = field
@@ -201,7 +209,7 @@ class Formz extends Component {
   updateField = ({
     name, reInitialize, keepDirty, ...fieldProps
   }) => {
-    this.setState((state) => {
+    this.setMountedState((state) => {
       const field = state.fields[name]
       if (!field) return state
       const allValues = getFormValues(this.state)
@@ -247,7 +255,7 @@ class Formz extends Component {
     reValidateOnFormChanges, validators = {}, formatters = [], parsers = [], ...props
   }) => {
     const { validateOnInit: formValidateOnInit } = this.props
-    this.setState(state => ({
+    this.setMountedState(state => ({
       ...state,
       fields: {
         ...state.fields,
@@ -271,7 +279,7 @@ class Formz extends Component {
   }
 
   unregisterField = (fieldName) => {
-    this.setState((state) => {
+    this.setMountedState((state) => {
       const fields = { ...state.fields }
       delete fields[fieldName]
       return { ...state, fields }
@@ -280,7 +288,7 @@ class Formz extends Component {
   }
 
   resetField = (fieldName) => {
-    this.setState(state => ({
+    this.setMountedState(state => ({
       ...state,
       fields: { ...state.fields, [fieldName]: this.createNewField({ defaultValue: state.fields[fieldName].defaultValue }) }
     }))
@@ -290,7 +298,7 @@ class Formz extends Component {
   validateAllFields = (changedField) => new Promise((resolve) => {
     const asyncValidations = []
     const asyncValidationsFields = []
-    this.setState((state) => {
+    this.setMountedState((state) => {
       const fields = { ...state.fields }
       const allValues = getFormValues({ fields })
       Object.keys(fields).forEach((fieldName) => {
@@ -347,7 +355,7 @@ class Formz extends Component {
     }, () => {
       if (asyncValidations.length) {
         Promise.all(asyncValidations).then((asyncValidationsErrors) => {
-          this.setState((state) => {
+          this.setMountedState((state) => {
             const fields = { ...state.fields }
             asyncValidationsErrors.forEach((errors, index) => {
               const fieldName = asyncValidationsFields[index]
@@ -392,7 +400,7 @@ class Formz extends Component {
 
   resetForm = (e) => {
     if (e) e.preventDefault()
-    this.setState((state) => {
+    this.setMountedState((state) => {
       const fields = { ...state.fields }
       Object.keys(fields).forEach((field) => {
         fields[field] = this.createNewField({ name: field, ...fields[field] })
@@ -422,7 +430,7 @@ class Formz extends Component {
     if (!submitSuccess && isFunction(onSubmitError)) {
       onSubmitError(args)
     }
-    this.setState(state => ({
+    this.setMountedState(state => ({
       ...state, submitting: false, submitted: true, submitSuccess
     }))
     if (submitSuccess && this.props.autoReset) {
@@ -447,7 +455,7 @@ class Formz extends Component {
     const { validateOnSubmit, formNative, formAction } = this.props
     if (formNative && formAction) return true
     if (e) e.preventDefault()
-    this.setState({ submitting: true, touched: true }, () => {
+    this.setMountedState({ submitting: true, touched: true }, () => {
       if (validateOnSubmit) {
         this.validateAllFields().then(this.onSubmit)
         return
