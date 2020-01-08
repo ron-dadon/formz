@@ -21,7 +21,8 @@ const fieldPropTypes = {
   reValidateOnFormChanges: PropTypes.oneOfType([PropTypes.bool, PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
   keepDirty: PropTypes.bool,
   required: PropTypes.bool,
-  synthetic: PropTypes.oneOfType([PropTypes.bool, PropTypes.string])
+  synthetic: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
+  onValueChange: PropTypes.func
 }
 
 export default fieldPropTypes
