@@ -2,7 +2,6 @@ import React from 'react'
 import './init'
 import { shallow, mount } from 'enzyme'
 import Formz from '../src/lib/components/Formz'
-import Field from '../src/lib/components/Field'
 import formzRenderPropTypes from '../src/lib/propTypes/formzRenderPropTypes'
 import fieldRenderPropTypes from '../src/lib/propTypes/fieldRenderPropTypes'
 
