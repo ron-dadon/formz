@@ -32,7 +32,7 @@ const initialFieldState = {
   validators: {},
   parsers: [],
   formatters: [],
-  props: {},
+  props: { myProp: 1 },
   validateOnChange: undefined,
   validateOnBlur: undefined,
   validateOnInit: undefined,
@@ -103,12 +103,12 @@ describe('Formz pass props', () => {
 
 describe('Formz field', () => {
   const FieldRender = () => <div />
-  const FormRenderComponentWithField = ({ Field, withFields }) => (
+  const FormRenderComponentWithField = ({ Field, withFields, myProp }) => (
     <div>
-      {withFields && <Field name="test" render={FieldRender} />}
+      {withFields && <Field name="test" render={FieldRender} myProp={myProp} />}
     </div>
   )
-  const comp = mount(<Formz render={FormRenderComponentWithField} onSubmit={jest.fn()} withFields={true} />)
+  const comp = mount(<Formz render={FormRenderComponentWithField} onSubmit={jest.fn()} withFields={true} myProp={1} />)
 
   const fieldComponent = comp
     .find('FormRenderComponentWithField')
@@ -151,6 +151,12 @@ describe('Formz field', () => {
     it('should set field active in Formz', () => {
       fieldRenderComponent.props().onFocus()
       expect(comp.state().fields.test.active).toBeTruthy()
+    })
+    it('should update field pass props on field props update', () => {
+      comp.setProps({ myProp: 1 })
+      expect(comp.state().fields.test.props.myProp).toEqual(1)
+      comp.setProps({ myProp: 2 })
+      expect(comp.state().fields.test.props.myProp).toEqual(2)
     })
     it('should reset field in Formz', () => {
       fieldRenderComponent.props().reset()

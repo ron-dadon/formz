@@ -200,10 +200,12 @@ class Formz extends Component {
         fields,
         pristine: formPristine
       }
-    }, () => this.onValuesChange(name))
-    if (fieldValidateOnChange || (fieldValidateOnChange === undefined && validateOnChange)) {
-      this.validateAllFields(name)
-    }
+    }, () => {
+      this.onValuesChange(name)
+      if (fieldValidateOnChange || (fieldValidateOnChange === undefined && validateOnChange)) {
+        this.validateAllFields(name)
+      }
+    })
   }
 
   updateField = ({
@@ -231,7 +233,6 @@ class Formz extends Component {
         ...state.fields,
         [name]: {
           ...field,
-          ...fieldProps,
           parsers,
           validateOnChange,
           validateOnBlur,
@@ -239,15 +240,16 @@ class Formz extends Component {
           reValidateOnFormChanges,
           validators: fieldValidators,
           value: newValue,
-          formattedValue
+          formattedValue,
+          defaultValue: newDefaultValue,
+          props
         }
       }
       return {
         ...state,
         fields
       }
-    })
-    this.validateAllFields(name)
+    }, () => this.validateAllFields(name))
   }
 
   registerField = ({
@@ -272,10 +274,11 @@ class Formz extends Component {
           reValidateOnFormChanges
         })
       }
-    }))
-    if (validateOnInit || (validateOnInit === undefined && formValidateOnInit)) {
-      this.validateAllFields(name)
-    }
+    }), () => {
+      if (validateOnInit || (validateOnInit === undefined && formValidateOnInit)) {
+        this.validateAllFields(name)
+      }
+    })
   }
 
   unregisterField = (fieldName) => {
@@ -283,16 +286,49 @@ class Formz extends Component {
       const fields = { ...state.fields }
       delete fields[fieldName]
       return { ...state, fields }
-    })
-    this.validateAllFields(fieldName)
+    }, () => this.validateAllFields(fieldName))
   }
 
   resetField = (fieldName) => {
-    this.setMountedState(state => ({
-      ...state,
-      fields: { ...state.fields, [fieldName]: this.createNewField({ defaultValue: state.fields[fieldName].defaultValue }) }
-    }))
-    this.validateAllFields(fieldName)
+    this.setMountedState(state => {
+        const currentField = state.fields[fieldName]
+        const allValues = getFormValues(state)
+        const parsedValue = executeModifiersPipeline({
+          modifiers: currentField.parsers,
+          value: currentField.defaultValue,
+          props: currentField.props,
+          allValues
+        })
+        const formattedValue = executeModifiersPipeline({
+          modifiers: currentField.formatters,
+          value: parsedValue,
+          props: currentField.props,
+          allValues
+        })
+        const fieldValidators = currentField.props.required && !currentField.validators.required
+          ? { ...currentField.validators, required }
+          : currentField.validators
+        return {
+        ...state,
+        fields: {
+          ...state.fields,
+          [fieldName]: {
+            ...state.fields[fieldName],
+            pending: false,
+            active: false,
+            pristine: true,
+            touched: false,
+            valid: true,
+            value: parsedValue,
+            formattedValue,
+            validators: fieldValidators,
+            errors: {}
+          }
+        }
+      }
+    },
+      () => this.validateAllFields(fieldName)
+    )
   }
 
   validateAllFields = (changedField) => new Promise((resolve) => {
@@ -386,14 +422,14 @@ class Formz extends Component {
   })
 
   callOnValidation = () => {
-    if (isFunction(this.props.onValidation)) {
+    if (!this.isUnmounted && isFunction(this.props.onValidation)) {
       const { errors, valid } = this.state
       this.props.onValidation({ errors, valid })
     }
   }
 
   callOnReset = () => {
-    if (isFunction(this.props.onReset)) {
+    if (!this.isUnmounted && isFunction(this.props.onReset)) {
       this.props.onReset(this.formValues())
     }
   }

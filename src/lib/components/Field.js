@@ -16,7 +16,8 @@ const fieldComponentFactory = ({
     static defaultProps = {
       validators: {},
       parsers: [],
-      formatters: []
+      formatters: [],
+      defaultValue: ''
     }
 
     componentDidMount() {
