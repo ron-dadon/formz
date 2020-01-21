@@ -14,11 +14,11 @@ const Input = ({ label, value, onChange, onFocus, onBlur, submitting, touched, e
       placeholder={label}
       disabled={submitting}
     />
-    {touched && pending && <div>Checking...</div>}
-    {touched && invalid && errors.required && <div>This is required</div>}
-    {touched && invalid && errors.exists && <div>Already exists</div>}
-    {touched && invalid && errors.strength && <div>Password not strong enough</div>}
-    {touched && invalid && errors.match && <div>Password does not match</div>}
+    {!submitting && touched && pending && <div>Checking...</div>}
+    {!submitting && touched && invalid && errors.required && <div>This is required</div>}
+    {!submitting && touched && invalid && errors.exists && <div>Already exists</div>}
+    {!submitting && touched && invalid && errors.strength && <div>Password not strong enough</div>}
+    {!submitting && touched && invalid && errors.match && <div>Password does not match</div>}
   </div>
 )
 
