@@ -7,6 +7,7 @@ module.exports = {
     'async-validation': path.resolve(__dirname, 'src/docs/async-validation.js'),
     validation: path.resolve(__dirname, 'src/docs/validation.js'),
     basic: path.resolve(__dirname, 'src/docs/basic.js'),
+    debounced: path.resolve(__dirname, 'src/docs/debounced.js'),
   },
   output: {
     path: path.resolve(__dirname, 'docs'),

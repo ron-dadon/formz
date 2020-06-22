@@ -2,7 +2,9 @@ import React, { Component } from 'react'
 import cleanProps from '../propTypes/cleanProps'
 import fieldPropTypes from '../propTypes/fieldPropTypes'
 import fieldRenderPropTypes from '../propTypes/fieldRenderPropTypes'
-import { isFunction } from '../utils'
+import { isFunction, debounce } from '../utils'
+
+const DEFAULT_DEBOUNCE_RATE = 100
 
 const forceFunctionsArray = val => (Array.isArray(val) ? val : ((typeof val === 'function' && [val]) || []))
 
@@ -20,16 +22,22 @@ const fieldComponentFactory = ({
       defaultValue: ''
     }
 
+    constructor (props) {
+      super(props)
+      const { debounce: debounceProp } = props
+      if (debounceProp) this.setupDebouncedChange(debounceProp)
+    }
+
     componentDidMount() {
       const {
-        render, parsers, formatters, reInitialize, keepDirty, ...otherProps
+        render, parsers, formatters, reInitialize, keepDirty, debounce: debounceProp, ...otherProps
       } = this.props
       registerField({ ...otherProps, parsers: forceFunctionsArray(parsers), formatters: forceFunctionsArray(formatters) })
     }
 
     componentDidUpdate(oldProps) {
       const {
-        render, name, parsers, formatters, reInitialize, keepDirty, ...otherProps
+        render, name, parsers, formatters, reInitialize, keepDirty, debounce: debounceProp,...otherProps
       } = this.props
       if (this.propsChanged(oldProps)) {
         updateField({
@@ -41,10 +49,29 @@ const fieldComponentFactory = ({
           ...otherProps
         })
       }
+      if (debounceProp !== oldProps.debounce) {
+        if (debounceProp)
+          this.setupDebouncedChange(debounceProp)
+        else
+          this.clearDebouncedChange()
+      }
     }
 
     componentWillUnmount() {
+      if (this.props.debounce) this.clearDebouncedChange()
       unregisterField(this.props.name)
+    }
+
+    setupDebouncedChange = (debounceProp) => {
+      const debounceRate = debounceProp === true ? DEFAULT_DEBOUNCE_RATE : (debounceProp > 0 ? debounceProp : DEFAULT_DEBOUNCE_RATE)
+      this.debouncedOnChange = debounce(this.onChange, debounceRate)
+    }
+
+    clearDebouncedChange = () => {
+      if (this.debouncedOnChange) {
+        if (this.debouncedOnChange.cleanup) this.debouncedOnChange.cleanup()
+        delete this.debouncedOnChange
+      }
     }
 
     onChange = (value) => {
@@ -104,6 +131,7 @@ const fieldComponentFactory = ({
         formattedValue, value, active, valid, pristine, touched, errors, pending
       } = getField(this.props.name)
       const { submitting, submitted, submitSuccess } = getFormState()
+      const onChangeFn = this.debouncedOnChange || this.onChange
       return (
         <FieldRender
           {...props}
@@ -119,7 +147,7 @@ const fieldComponentFactory = ({
           dirty={!pristine}
           active={active}
           pending={pending}
-          onChange={this.onChange}
+          onChange={onChangeFn}
           onFocus={this.onFocus}
           onBlur={this.onBlur}
           reset={this.reset}
