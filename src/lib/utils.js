@@ -68,23 +68,3 @@ export const extractSyncErrors = obj => Object.keys(obj).reduce((errors, objKey)
   ...errors,
   [objKey]: obj[objKey]
 }), {})
-
-export const debounce = (func, wait, immediate) => {
-  let timeout
-  const debouncedFn = (...args) => {
-    const later = function() {
-      timeout = null
-      if (!immediate) func.apply(this, args)
-    }
-    const callNow = immediate && !timeout
-    clearTimeout(timeout)
-    timeout = setTimeout(later, wait)
-    if (callNow) func.apply(this, args)
-  }
-  debouncedFn.cleanup = {
-    if (timeout) {
-      clearTimeout(timeout)
-    }
-  }
-  return debouncedFn
-}

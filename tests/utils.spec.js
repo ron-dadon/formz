@@ -1,8 +1,7 @@
 import './init'
-import {
-  isFunction, required, getFormValues, getFormErrors, getFormIsValid,
+import { isFunction, required, getFormValues, getFormErrors, getFormIsValid,
   getFormPristine, getFormTouched, isFieldValid, calculateFieldErrors,
-  executeModifiersPipeline, extractAsyncErrors, extractSyncErrors, debounce
+  executeModifiersPipeline, extractAsyncErrors, extractSyncErrors
 } from '../src/lib/utils'
 
 describe('isFunction', () => {
@@ -174,18 +173,5 @@ describe('extractErrors', () => {
     const syncErrors = extractSyncErrors(errors)
     expect(syncErrors).toHaveProperty('b')
     expect(syncErrors).not.toHaveProperty('a')
-  })
-})
-
-describe('debounce', () => {
-  const testFunc = jest.fn()
-
-  it('should be called after 10 ms', (done) => {
-    const debounceTestFunc = debounce(testFunc, 10)
-    debounceTestFunc()
-    setTimeout(() => {
-      expect(testFunc).toHaveBeenCalled()
-      done()
-    }, 20)
   })
 })

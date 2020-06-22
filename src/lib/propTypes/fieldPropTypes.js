@@ -22,8 +22,7 @@ const fieldPropTypes = {
   keepDirty: PropTypes.bool,
   required: PropTypes.bool,
   synthetic: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
-  onValueChange: PropTypes.func,
-  debounce: PropTypes.oneOfType([PropTypes.bool, PropTypes.number])
+  onValueChange: PropTypes.func
 }
 
 export default fieldPropTypes

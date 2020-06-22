@@ -23,12 +23,12 @@ const formzFunctions = {
 
 const Field = fieldComponentFactory(formzFunctions)
 
-const renderField = (props) => mount(<Field name='test' render={FieldRenderComponent} {...props} />)
-
 describe('Field component', () => {
   beforeEach(() => {
     Object.values(formzFunctions).forEach(mockFn => mockFn.mockClear())
   })
+
+  const renderField = (props) => shallow(<Field name='test' render={FieldRenderComponent} {...props} />)
 
   it('should call registerField on componentDidMount', () => {
     renderField()
@@ -62,11 +62,6 @@ describe('Field component', () => {
     expect(comp.find('FieldRenderComponent').length).toEqual(1)
   })
 
-  it('should create debounce onChange function', () => {
-    const comp = renderField({ debounce: true })
-    expect(comp.instance().debouncedOnChange).toBeDefined()
-  })
-
   describe('Field injected props', () => {
     const comp = renderField()
     const compInstance = comp.instance()
@@ -74,20 +69,6 @@ describe('Field component', () => {
 
     it('should pass field properties', () => {
       expect(renderedComponent.props.onChange).toBe(compInstance.onChange)
-      expect(renderedComponent.props.onFocus).toBe(compInstance.onFocus)
-      expect(renderedComponent.props.onBlur).toBe(compInstance.onBlur)
-      expect(renderedComponent.props.reset).toBe(compInstance.reset)
-    })
-  })
-
-  describe('Debounced Field injected props', () => {
-    const props = { debounce: true }
-    const comp = renderField(props)
-    const compInstance = comp.instance()
-    const renderedComponent = comp.find('FieldRenderComponent').get(0)
-
-    it('should pass field properties', () => {
-      expect(renderedComponent.props.onChange).toBe(compInstance.debouncedOnChange)
       expect(renderedComponent.props.onFocus).toBe(compInstance.onFocus)
       expect(renderedComponent.props.onBlur).toBe(compInstance.onBlur)
       expect(renderedComponent.props.reset).toBe(compInstance.reset)
