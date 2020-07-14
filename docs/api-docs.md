@@ -93,7 +93,7 @@ The `Formz` component `render` prop will render the entire form. It will inject 
 |Field|`React element`|A React component `Field` that is used to define fields for the form and is tightly coupled to the providing `Formz` instance.
 |reset|`function`|A function that will reset the form when called.
 |submit|`function`|A function that will trigger the form submission when called.
-|errors|`object<string, object<string, boolean>>`|A map object of the current form field errors. Each object key is a name of a field, and each value is a map from the error name to `true` if the error is relevant to the field.
+|errors|`object<string, object<string, boolean/string>>`|A map object of the current form field errors. Each object key is a name of a field, and each value is a map from the error name to `true` or the error string if the error is relevant to the field.
 |valid|`boolean`|Is the form valid (no errors are present for all fields).
 |invalid|`boolean`|The opposite of `valid`. Is `true` if there is at least one field with one error.
 |pristine|`boolean`|Is the form pristine (no values were changed). Is `true` if all fields in the form are in `pristine` state.
