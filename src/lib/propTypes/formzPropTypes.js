@@ -10,6 +10,7 @@ const formzPropTypes = {
   onValuesChange: PropTypes.func,
   autoReset: PropTypes.bool,
   validateOnChange: PropTypes.bool,
+  validateOnPropsChange: PropTypes.bool,
   validateOnBlur: PropTypes.bool,
   validateOnInit: PropTypes.bool,
   validateOnSubmit: PropTypes.bool,

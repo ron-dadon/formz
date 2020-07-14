@@ -1,7 +1,8 @@
 import './init'
-import { isFunction, required, getFormValues, getFormErrors, getFormIsValid,
+import {
+  isFunction, required, getFormValues, getFormErrors, getFormIsValid,
   getFormPristine, getFormTouched, isFieldValid, calculateFieldErrors,
-  executeModifiersPipeline, extractAsyncErrors, extractSyncErrors
+  executeModifiersPipeline, extractAsyncErrors, extractSyncErrors, shallowEqualObjects
 } from '../src/lib/utils'
 
 describe('isFunction', () => {
@@ -174,4 +175,46 @@ describe('extractErrors', () => {
     expect(syncErrors).toHaveProperty('b')
     expect(syncErrors).not.toHaveProperty('a')
   })
+})
+
+describe('shallowCompareObjects', () => {
+  const baseObj = { a: 1, b: 'b', c: true, d: null }
+  const emptyObj = {}
+
+  it('different key count should return false', () => {
+    const obj1 = { ...baseObj }
+    const obj2 = { ...baseObj, e: 1 }
+    expect(shallowEqualObjects(obj1, obj2)).toBeFalsy()
+  })
+
+  it('same key count but different keys should return false', () => {
+    const obj1 = { ...baseObj, e: 1}
+    const obj2 = { ...baseObj, f: 1 }
+    expect(shallowEqualObjects(obj1, obj2)).toBeFalsy()
+  })
+
+  it('equal primitives values should return true', () => {
+    const obj1 = { ...baseObj }
+    const obj2 = { ...baseObj }
+    expect(shallowEqualObjects(obj1, obj2)).toBeTruthy()
+  })
+
+  it('non equal primitives values should return false', () => {
+    const obj1 = { ...baseObj }
+    const obj2 = { ...baseObj, a: 2 }
+    expect(shallowEqualObjects(obj1, obj2)).toBeFalsy()
+  })
+
+  it('equal reference values should return true', () => {
+    const obj1 = { ...baseObj, e: emptyObj }
+    const obj2 = { ...baseObj, e: emptyObj }
+    expect(shallowEqualObjects(obj1, obj2)).toBeTruthy()
+  })
+
+  it('non equal reference values should return false', () => {
+    const obj1 = { ...baseObj, e: {} }
+    const obj2 = { ...baseObj, e: {} }
+    expect(shallowEqualObjects(obj1, obj2)).toBeFalsy()
+  })
+
 })

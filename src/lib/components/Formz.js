@@ -2,9 +2,10 @@ import React, { Component } from 'react'
 import cleanProps from '../propTypes/cleanProps'
 import formzPropTypes from '../propTypes/formzPropTypes'
 import formzRenderPropTypes from '../propTypes/formzRenderPropTypes'
-import { isFunction, required, getFormValues, getFormErrors, getFormIsValid,
+import {
+  isFunction, required, getFormValues, getFormErrors, getFormIsValid,
   getFormPristine, getFormTouched, isFieldValid, calculateFieldErrors,
-  executeModifiersPipeline, extractAsyncErrors, extractSyncErrors
+  executeModifiersPipeline, extractAsyncErrors, extractSyncErrors, shallowEqualObjects
 } from '../utils'
 import fieldComponentFactory from './Field'
 
@@ -14,6 +15,7 @@ class Formz extends Component {
   static defaultProps = {
     validateOnInit: false,
     validateOnChange: true,
+    validateOnPropsChange: true,
     validateOnBlur: true,
     validateOnSubmit: true,
     formNoValidate: true,
@@ -137,8 +139,8 @@ class Formz extends Component {
   }
 
   createNewField = ({
-    defaultValue = '', validators = {}, formatters = [], parsers = [],
-    validateOnChange, validateOnBlur, validateOnInit, reValidateOnFormChanges, props = {}
+    defaultValue = '', validators = {}, formatters = [], parsers = [], validateOnChange,
+    validateOnPropsChange, validateOnBlur, validateOnInit, reValidateOnFormChanges, props = {}
   }) => {
     const allValues = getFormValues(this.state)
     const errors = {}
@@ -165,6 +167,7 @@ class Formz extends Component {
       formatters,
       props,
       validateOnChange,
+      validateOnPropsChange,
       validateOnBlur,
       validateOnInit,
       reValidateOnFormChanges
@@ -211,15 +214,17 @@ class Formz extends Component {
   updateField = ({
     name, reInitialize, keepDirty, ...fieldProps
   }) => {
+    let shouldValidate = false
+    const { validateOnPropsChange: formValidateOnPropsChange } = this.props
     this.setMountedState((state) => {
       const field = state.fields[name]
       if (!field) return state
-      const allValues = getFormValues(this.state)
+      const allValues = getFormValues(state)
       const {
         formatters, defaultValue: newDefaultValue, validators, parsers,
-        validateOnChange, validateOnBlur, validateOnInit, reValidateOnFormChanges, ...props
+        validateOnChange, validateOnPropsChange, validateOnBlur, validateOnInit, reValidateOnFormChanges, ...props
       } = fieldProps
-      const { value, defaultValue, pristine } = field
+      const { value, defaultValue, pristine, props: oldProps } = field
       const newValue = reInitialize && ((keepDirty && pristine) || !keepDirty) && defaultValue !== newDefaultValue ? newDefaultValue : value
       const formattedValue = executeModifiersPipeline({
         modifiers: formatters, value: newValue, allValues, props
@@ -229,6 +234,7 @@ class Formz extends Component {
         const { required: requiredFn, ...otherValidators } = validators
         fieldValidators = otherValidators
       }
+      shouldValidate = (formValidateOnPropsChange || validateOnPropsChange) && !shallowEqualObjects(props, oldProps)
       const fields = {
         ...state.fields,
         [name]: {
@@ -249,11 +255,11 @@ class Formz extends Component {
         ...state,
         fields
       }
-    }, () => this.validateAllFields(name))
+    }, () => shouldValidate && this.validateAllFields(name))
   }
 
   registerField = ({
-    name, defaultValue = '', validateOnChange, validateOnBlur, validateOnInit,
+    name, defaultValue = '', validateOnChange, validateOnPropsChange, validateOnBlur, validateOnInit,
     reValidateOnFormChanges, validators = {}, formatters = [], parsers = [], ...props
   }) => {
     const { validateOnInit: formValidateOnInit } = this.props
@@ -269,6 +275,7 @@ class Formz extends Component {
           parsers,
           props,
           validateOnChange,
+          validateOnPropsChange,
           validateOnBlur,
           validateOnInit,
           reValidateOnFormChanges
@@ -410,21 +417,21 @@ class Formz extends Component {
               pending: false
             }
           }, () => {
-            this.callOnValidation()
+            this.callOnValidation(changedField)
             resolve()
           })
         })
       } else {
-        this.callOnValidation()
+        this.callOnValidation(changedField)
         resolve()
       }
     })
   })
 
-  callOnValidation = () => {
+  callOnValidation = (trigger) => {
     if (!this.isUnmounted && isFunction(this.props.onValidation)) {
       const { errors, valid } = this.state
-      this.props.onValidation({ errors, valid })
+      this.props.onValidation({ errors, valid, trigger })
     }
   }
 

@@ -181,13 +181,15 @@ describe('Formz validation', () => {
       startWithA: ({ value }) => value.startsWith('A') || 'Must start with A',
       endWithB: ({ value }) => new Promise((resolve) => {
         setTimeout(() => resolve(value.endsWith('B') || 'Must end with B'), 0)
-      })
+      }),
+      dependOnProp: ({ value, props: { maxlen } }) => value.length <= maxlen || `Value is longer than ${maxlen}`,
     }
+
     const FieldRender = () => <div />
-    const FormRenderComponentWithField = ({ Field }) => (
-      <div><Field name="test" render={FieldRender} validators={testValidators} /></div>
+    const FormRenderComponentWithField = ({ Field, maxlen }) => (
+      <div><Field name="test" render={FieldRender} validators={testValidators} maxlen={maxlen} /></div>
     )
-    const comp = mount(<Formz render={FormRenderComponentWithField} onSubmit={jest.fn()} />)
+    const comp = mount(<Formz render={FormRenderComponentWithField} onSubmit={jest.fn()} maxlen={8} />)
 
     const fieldComponent = comp
       .find('FormRenderComponentWithField')
@@ -201,6 +203,7 @@ describe('Formz validation', () => {
         expect(testFieldState.value).toEqual('testValue')
         expect(testFieldState.valid).toBeFalsy()
         expect(testFieldState.errors.startWithA).toEqual('Must start with A')
+        expect(testFieldState.errors.dependOnProp).toEqual('Value is longer than 8')
       })
       it('should run validation on change of field value and pass validation', () => {
         fieldRenderComponent.props().onChange('A test')
@@ -209,9 +212,34 @@ describe('Formz validation', () => {
         expect(testFieldState.valid).toBeTruthy()
         expect(Object.keys(testFieldState.errors).length).toEqual(0)
       })
+      it('should run validation on change of field prop and pass validation', () => {
+        comp.setProps({ maxlen: 9})
+        const testFieldState = comp.state().fields.test
+        expect(testFieldState.value).toEqual('A test')
+        expect(testFieldState.valid).toBeTruthy()
+        expect(Object.keys(testFieldState.errors).length).toEqual(0)
+      })
+      it('should not run validation on change of field prop', () => {
+        comp.setProps({ maxlen: 2, validateOnPropsChange: false })
+        const testFieldState = comp.state().fields.test
+        expect(testFieldState.value).toEqual('A test')
+        expect(testFieldState.valid).toBeTruthy()
+        expect(Object.keys(testFieldState.errors).length).toEqual(0)
+      })
+      it('should run validation on change of field prop and fail', () => {
+        comp.setProps({ maxlen: 3, validateOnPropsChange: true })
+        const testFieldState = comp.state().fields.test
+        expect(testFieldState.value).toEqual('A test')
+        expect(testFieldState.valid).toBeFalsy()
+        expect(Object.keys(testFieldState.errors).length).toEqual(1)
+        expect(testFieldState.errors.dependOnProp).toEqual('Value is longer than 3')
+      })
     })
 
     describe('async validation', () => {
+      beforeAll(() => {
+        comp.setProps({ maxlen: 8, validateOnPropsChange: true })
+      })
       it('should run validation on change of field value and fail both sync and async validation', () => {
         fieldRenderComponent.props().onChange('testValue')
         const testFieldState = comp.state().fields.test
@@ -265,6 +293,7 @@ describe('Formz validation', () => {
     comp.setProps({ onValidation })
     fieldRenderComponent.props().onChange('test')
     expect(onValidation).toBeCalledTimes(1)
+    expect(onValidation).toBeCalledWith({ errors: {}, valid: true, trigger: 'test' })
   })
 
   describe('built in required validator', () => {

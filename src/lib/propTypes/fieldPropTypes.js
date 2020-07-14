@@ -15,6 +15,7 @@ const fieldPropTypes = {
   parsers: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.func), PropTypes.func]),
   formatters: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.func), PropTypes.func]),
   validateOnChange: PropTypes.bool,
+  validateOnPropsChange: PropTypes.bool,
   validateOnBlur: PropTypes.bool,
   validateOnInit: PropTypes.bool,
   reInitialize: PropTypes.bool,

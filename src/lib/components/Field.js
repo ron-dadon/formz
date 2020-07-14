@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import cleanProps from '../propTypes/cleanProps'
 import fieldPropTypes from '../propTypes/fieldPropTypes'
 import fieldRenderPropTypes from '../propTypes/fieldRenderPropTypes'
-import { isFunction } from '../utils'
+import { isFunction, shallowEqualObjects } from '../utils'
 
 const forceFunctionsArray = val => (Array.isArray(val) ? val : ((typeof val === 'function' && [val]) || []))
 
@@ -28,10 +28,10 @@ const fieldComponentFactory = ({
     }
 
     componentDidUpdate(oldProps) {
-      const {
-        render, name, parsers, formatters, reInitialize, keepDirty, ...otherProps
-      } = this.props
-      if (this.propsChanged(oldProps)) {
+      if (!shallowEqualObjects(oldProps, this.props)) {
+        const {
+          render, name, parsers, formatters, reInitialize, keepDirty, ...otherProps
+        } = this.props
         updateField({
           name,
           parsers: forceFunctionsArray(parsers),
@@ -79,30 +79,21 @@ const fieldComponentFactory = ({
       setFieldTouched({ name })
     }
 
-    propsChanged = (oldProps) => {
-      const newPropsKeys = Object.keys(oldProps)
-      if (newPropsKeys.length !== Object.keys(this.props).length) return true
-      return newPropsKeys.reduce((changed, key) => {
-        const keyChanged = oldProps[key] !== this.props[key]
-        return changed || keyChanged
-      }, false)
-    }
-
     reset = () => {
       resetField(this.props.name)
     }
 
     render() {
-      if (!isRegistered(this.props.name)) return null
-      const { render: FieldRender, name } = this.props
+      const { render: FieldRender, name, required } = this.props
+      if (!isRegistered(name)) return null
       const props = cleanProps(this.props, fieldPropTypes, fieldRenderPropTypes)
       // Set back the required prop if one is present to pass it into the rendered component
-      if (this.props.required !== undefined) {
-        props.required = this.props.required
+      if (required !== undefined) {
+        props.required = required
       }
       const {
         formattedValue, value, active, valid, pristine, touched, errors, pending
-      } = getField(this.props.name)
+      } = getField(name)
       const { submitting, submitted, submitSuccess } = getFormState()
       return (
         <FieldRender
