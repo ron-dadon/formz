@@ -118,7 +118,7 @@ The `Field` component `render` prop will render a single field. It will inject t
 |------|:----:|------------|
 |value|`any`|The formatted value of the field for display to the user.
 |rawValue|`any`|The actual value of the field.
-|errors|`object<string, boolean>`|A map object with all the active errors of the field.
+|errors|`object<string, boolean/string>`|A map object with all the active errors of the field.
 |valid|`boolean`|Is `true` if the field is valid (no errors).
 |invalid|`boolean`|The opposite of `valid`. Is `true` if the field has at least one active error.
 |touched|`boolean`|Is `true` if the field was touched by the user.
