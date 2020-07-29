@@ -180,7 +180,7 @@ describe('Formz validation', () => {
     const testValidators = {
       startWithA: ({ value }) => value.startsWith('A') || 'Must start with A',
       endWithB: ({ value }) => new Promise((resolve) => {
-        setTimeout(() => resolve(value.endsWith('B') || 'Must end with B'), 0)
+        setImmediate(() => resolve(value.endsWith('B') || 'Must end with B'))
       }),
       dependOnProp: ({ value, props: { maxlen } }) => value.length <= maxlen || `Value is longer than ${maxlen}`,
     }
@@ -240,7 +240,7 @@ describe('Formz validation', () => {
       beforeAll(() => {
         comp.setProps({ maxlen: 8, validateOnPropsChange: true })
       })
-      it('should run validation on change of field value and fail both sync and async validation', () => {
+      it('should run validation on change of field value and fail both sync and async validation', (done) => {
         fieldRenderComponent.props().onChange('testValue')
         const testFieldState = comp.state().fields.test
         expect(testFieldState.value).toEqual('testValue')
@@ -248,30 +248,36 @@ describe('Formz validation', () => {
         expect(testFieldState.errors.startWithA).toEqual('Must start with A')
         expect(testFieldState.errors.endWithB).not.toBeDefined()
         setTimeout(() => {
-          expect(testFieldState.errors.endWithB).toEqual('Must start with B')
+          const testFieldUpdatedState = comp.state().fields.test
+          expect(testFieldUpdatedState.errors.endWithB).toEqual('Must end with B')
+          done()
         }, 0)
       })
-      it('should run validation on change of field value and pass sync validation and fail async validation', () => {
+      it('should run validation on change of field value and pass sync validation and fail async validation', (done) => {
         fieldRenderComponent.props().onChange('A test')
         const testFieldState = comp.state().fields.test
         expect(testFieldState.value).toEqual('A test')
         expect(testFieldState.valid).toBeTruthy()
         expect(testFieldState.errors.startWithA).not.toBeDefined()
         setTimeout(() => {
-          expect(testFieldState.valid).toBeFalsy()
-          expect(testFieldState.errors.startWithA).not.toBeDefined()
-          expect(testFieldState.errors.endWithB).toEqual('Must start with B')
+          const testFieldUpdatedState = comp.state().fields.test
+          expect(testFieldUpdatedState.valid).toBeFalsy()
+          expect(testFieldUpdatedState.errors.startWithA).not.toBeDefined()
+          expect(testFieldUpdatedState.errors.endWithB).toEqual('Must end with B')
+          done()
         }, 0)
       })
-      it('should run validation on change of field value and pass both sync and async validation', () => {
+      it('should run validation on change of field value and pass both sync and async validation', (done) => {
         fieldRenderComponent.props().onChange('A test B')
         const testFieldState = comp.state().fields.test
         expect(testFieldState.value).toEqual('A test B')
         expect(testFieldState.valid).toBeTruthy()
         expect(Object.keys(testFieldState.errors).length).toEqual(0)
         setTimeout(() => {
-          expect(testFieldState.valid).toBeTruthy()
-          expect(Object.keys(testFieldState.errors).length).toEqual(0)
+          const testFieldUpdatedState = comp.state().fields.test
+          expect(testFieldUpdatedState.valid).toBeTruthy()
+          expect(Object.keys(testFieldUpdatedState.errors).length).toEqual(0)
+          done()
         }, 0)
       })
     })
@@ -454,7 +460,10 @@ describe('Formz submit form', () => {
   const onSubmitSync = jest.fn(values => values.test === true)
   const onSubmitSuccess = jest.fn()
   const onSubmitError = jest.fn()
-  const onSubmitAsync = jest.fn(values => values.test === true ? Promise.resolve() : Promise.reject(false))
+  const onSubmitAsync = jest.fn(values => new Promise(((resolve, reject) => {
+    if (values.test === true) return resolve(true)
+    reject(false)
+  })))
   const FieldRender = () => <div />
   const FormRenderComponentWithField = ({ Field }) => (
     <div><Field name="test" render={FieldRender} required /></div>
@@ -472,6 +481,7 @@ describe('Formz submit form', () => {
   const fieldRenderComponent = fieldComponent.find('FieldRender')
 
   const resetMocksAndForm = () => {
+    onSubmitAsync.mockClear()
     onSubmitSync.mockClear()
     onSubmitSuccess.mockClear()
     onSubmitError.mockClear()
@@ -548,9 +558,10 @@ describe('Formz submit form', () => {
   })
 
   describe('async', () => {
-    beforeEach(resetMocksAndForm)
-
-    comp.setProps({ onSubmit: onSubmitAsync })
+    beforeEach(() => {
+      resetMocksAndForm()
+      comp.setProps({ onSubmit: onSubmitAsync })
+    })
 
     it('should submit form with values and success', () => {
       fieldRenderComponent.props().onChange(true)

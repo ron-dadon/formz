@@ -1,6 +1,6 @@
 import React from 'react'
 import './init'
-import { shallow, mount } from 'enzyme'
+import { shallow } from 'enzyme'
 import fieldComponentFactory from '../src/lib/components/Field'
 
 const FieldRenderComponent = () => <div />
@@ -15,7 +15,7 @@ const formzFunctions = {
   setFieldTouched: jest.fn(),
   setFieldActive: jest.fn(),
   getField: jest.fn(() => ({})),
-  formValues: jest.fn(),
+  formValues: jest.fn(() => ({ a: 1 })),
   getFormState: jest.fn(() => ({})),
   submit: jest.fn(),
   reset: jest.fn()
@@ -25,7 +25,7 @@ const Field = fieldComponentFactory(formzFunctions)
 
 describe('Field component', () => {
   beforeEach(() => {
-    Object.values(formzFunctions).forEach(mockFn => mockFn.mockClear())
+    jest.clearAllMocks()
   })
 
   const renderField = (props) => shallow(<Field name='test' render={FieldRenderComponent} {...props} />)
@@ -72,6 +72,54 @@ describe('Field component', () => {
       expect(renderedComponent.props.onFocus).toBe(compInstance.onFocus)
       expect(renderedComponent.props.onBlur).toBe(compInstance.onBlur)
       expect(renderedComponent.props.reset).toBe(compInstance.reset)
+    })
+  })
+
+  describe('Field update value', () => {
+    const comp = renderField({ synthetic: true })
+    const compInstance = comp.instance()
+
+    it('should call updateFieldValue with synthetic event', () => {
+      compInstance.onChange({ target: { value: 'test' } })
+      expect(formzFunctions.updateFieldValue).toHaveBeenCalledWith({ name: 'test', value: 'test' })
+    })
+
+    it('should call updateFieldValue with synthetic event custom key', () => {
+      comp.setProps({ synthetic: 'checked' })
+      compInstance.onChange({ target: { checked: true } })
+      expect(formzFunctions.updateFieldValue).toHaveBeenCalledWith({ name: 'test', value: true })
+    })
+
+    it('should call updateFieldValue without synthetic event', () => {
+      comp.setProps({ synthetic: false })
+      compInstance.onChange('test')
+      expect(formzFunctions.updateFieldValue).toHaveBeenCalledWith({ name: 'test', value: 'test' })
+    })
+
+    it('should call onValueChange if provided without synthetic', () => {
+      const onValueChange = jest.fn()
+      comp.setProps({ synthetic: false, onValueChange })
+      compInstance.onChange('test')
+      expect(onValueChange).toHaveBeenCalledWith({
+        value: 'test',
+        allValues: { a: 1 },
+        updateFieldValue: formzFunctions.updateFieldValue,
+        submit: formzFunctions.submit,
+        reset: formzFunctions.reset
+      })
+    })
+
+    it('should call onValueChange if provided with synthetic', () => {
+      const onValueChange = jest.fn()
+      comp.setProps({ synthetic: true, onValueChange })
+      compInstance.onChange({ target: { value: 'test' } })
+      expect(onValueChange).toHaveBeenCalledWith({
+        value: 'test',
+        allValues: { a: 1 },
+        updateFieldValue: formzFunctions.updateFieldValue,
+        submit: formzFunctions.submit,
+        reset: formzFunctions.reset
+      })
     })
   })
 })
