@@ -94,7 +94,9 @@ const fieldComponentFactory = ({
       const {
         formattedValue, value, active, valid, pristine, touched, errors, pending
       } = getField(name)
-      const { submitting, submitted, submitSuccess } = getFormState()
+      const { submitting, submitted, submitSuccess, formValid,
+        formPristine, formTouched, formPending, formErrors
+      } = getFormState()
       return (
         <FieldRender
           {...props}
@@ -121,6 +123,13 @@ const fieldComponentFactory = ({
           submitSuccess={submitSuccess}
           submit={submit}
           resetForm={reset}
+          formValid={formValid}
+          formInvalid={!formValid}
+          formPristine={formPristine}
+          formTouched={formTouched}
+          formUntouched={!formTouched}
+          formPending={formPending}
+          formErrors={formErrors}
         />
       )
     }

@@ -138,6 +138,14 @@ The `Field` component `render` prop will render a single field. It will inject t
 |updateFieldValue|`({ name, value }) => void`|Call this function to update a field value. The function argument is an object of `{ name, value }` where `name` is the name of the field to update, and `value` is the new value. Calling `onChange` actually calls this function with the current field `name`.
 |resetForm|`function`|A function that will reset the form when called.
 |submit|`function`|A function that will trigger the form submission when called.
+|formErrors|`object<string, object<string, boolean/string>>`|A map object with all the active errors of the form.
+|formValid|`boolean`|Is `true` if the form is valid (no errors).
+|formInvalid|`boolean`|The opposite of `formValid`. Is `true` if the form has at least one active error.
+|formTouched|`boolean`|Is `true` if the form was touched by the user.
+|formUntouched|`boolean`|The opposite of `formTouched`. Is `true` if the form was never touched by the user.
+|formPristine|`boolean`|Is `true` if the form was never changed.
+|formDirty|`boolean`|The opposite of `formPristine`. Is `true` if the form was changed.
+|formPending|`boolean`|Is `true` if the form has at least one async validation pending.
 
 <div class="alert alert-info mt-3">
     <i class="fas fa-info-circle"></i> Props passed to the Field component that are not a part of the Field component props will be passed as well, as long as they don't conflict with the names of the render props.

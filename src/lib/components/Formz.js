@@ -78,8 +78,10 @@ class Formz extends Component {
   }
 
   getFormState = () => {
-    const { submitting, submitted, submitSuccess } = this.state
-    return { submitting, submitted, submitSuccess }
+    const { submitting, submitted, submitSuccess, valid: formValid, pristine: formPristine,
+      touched: formTouched, pending: formPending, errors: formErrors
+    } = this.state
+    return { submitting, submitted, submitSuccess, formValid, formPristine, formTouched, formPending, formErrors }
   }
 
   getField = fieldName => this.state.fields[fieldName]
