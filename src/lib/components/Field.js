@@ -126,6 +126,7 @@ const fieldComponentFactory = ({
           formValid={formValid}
           formInvalid={!formValid}
           formPristine={formPristine}
+          formDirty={!formPristine}
           formTouched={formTouched}
           formUntouched={!formTouched}
           formPending={formPending}
