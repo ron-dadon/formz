@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types'
+import React from 'react'
 
 const fieldRenderPropTypes = {
   name: PropTypes.string,
@@ -21,7 +22,15 @@ const fieldRenderPropTypes = {
   onFocus: PropTypes.func,
   onBlur: PropTypes.func,
   reset: PropTypes.func,
-  updateFieldValue: PropTypes.func
+  updateFieldValue: PropTypes.func,
+  formValid: PropTypes.bool,
+  formInvalid: PropTypes.bool,
+  formPristine: PropTypes.bool,
+  formDirty: PropTypes.bool,
+  formTouched: PropTypes.bool,
+  formUntouched: PropTypes.bool,
+  formPending: PropTypes.bool,
+  formErrors: PropTypes.object
 }
 
 export default fieldRenderPropTypes
