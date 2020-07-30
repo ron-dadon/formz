@@ -95,32 +95,6 @@ describe('Field component', () => {
       compInstance.onChange('test')
       expect(formzFunctions.updateFieldValue).toHaveBeenCalledWith({ name: 'test', value: 'test' })
     })
-
-    it('should call onValueChange if provided without synthetic', () => {
-      const onValueChange = jest.fn()
-      comp.setProps({ synthetic: false, onValueChange })
-      compInstance.onChange('test')
-      expect(onValueChange).toHaveBeenCalledWith({
-        value: 'test',
-        allValues: { a: 1 },
-        updateFieldValue: formzFunctions.updateFieldValue,
-        submit: formzFunctions.submit,
-        reset: formzFunctions.reset
-      })
-    })
-
-    it('should call onValueChange if provided with synthetic', () => {
-      const onValueChange = jest.fn()
-      comp.setProps({ synthetic: true, onValueChange })
-      compInstance.onChange({ target: { value: 'test' } })
-      expect(onValueChange).toHaveBeenCalledWith({
-        value: 'test',
-        allValues: { a: 1 },
-        updateFieldValue: formzFunctions.updateFieldValue,
-        submit: formzFunctions.submit,
-        reset: formzFunctions.reset
-      })
-    })
   })
 })
 
