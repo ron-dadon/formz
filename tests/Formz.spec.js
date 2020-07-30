@@ -251,7 +251,7 @@ describe('Formz validation', () => {
           const testFieldUpdatedState = comp.state().fields.test
           expect(testFieldUpdatedState.errors.endWithB).toEqual('Must end with B')
           done()
-        }, 0)
+        }, 10)
       })
       it('should run validation on change of field value and pass sync validation and fail async validation', (done) => {
         fieldRenderComponent.props().onChange('A test')
@@ -265,7 +265,7 @@ describe('Formz validation', () => {
           expect(testFieldUpdatedState.errors.startWithA).not.toBeDefined()
           expect(testFieldUpdatedState.errors.endWithB).toEqual('Must end with B')
           done()
-        }, 0)
+        }, 10)
       })
       it('should run validation on change of field value and pass both sync and async validation', (done) => {
         fieldRenderComponent.props().onChange('A test B')
@@ -278,7 +278,7 @@ describe('Formz validation', () => {
           expect(testFieldUpdatedState.valid).toBeTruthy()
           expect(Object.keys(testFieldUpdatedState.errors).length).toEqual(0)
           done()
-        }, 0)
+        }, 10)
       })
     })
   })

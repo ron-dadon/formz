@@ -1,5 +1,4 @@
 import './init'
-import { formzRenderPropTypes } from '../lib'
 import {
   isFunction, required, getFormValues, getFormErrors, getFormIsValid,
   getFormPristine, getFormTouched, isFieldValid, calculateFieldErrors,
@@ -8,7 +7,9 @@ import {
 import {
   cleanFormzRenderPropTypes,
   cleanFieldRenderPropTypes,
-  cleanProps, fieldRenderPropTypes
+  cleanProps,
+  fieldRenderPropTypes,
+  formzRenderPropTypes
 } from '../src/lib'
 
 describe('isFunction', () => {
