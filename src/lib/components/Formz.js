@@ -60,10 +60,20 @@ class Formz extends Component {
     if (!this.isUnmounted) this.setState(state, callback)
   }
 
-  onValuesChange = (field) => {
+  onValuesChange = ({ field, value }) => {
     if (isFunction(this.props.onValuesChange)) {
+      const fieldProps = this.state.fields[field].props
       const values = this.formValues()
       this.props.onValuesChange({ values, field, updateFieldValue: this.updateFieldValue })
+      if (isFunction(fieldProps.onValueChange)) {
+        fieldProps.onValueChange({
+          value,
+          allValues: values,
+          updateFieldValue: this.updateFieldValue,
+          submit: this.startSubmit,
+          reset: this.resetForm
+        })
+      }
     }
   }
 
@@ -206,7 +216,7 @@ class Formz extends Component {
         pristine: formPristine
       }
     }, () => {
-      this.onValuesChange(name)
+      this.onValuesChange({ field: name, value })
       if (fieldValidateOnChange || (fieldValidateOnChange === undefined && validateOnChange)) {
         this.validateAllFields(name)
       }
