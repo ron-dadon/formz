@@ -1,9 +1,15 @@
 import './init'
+import { formzRenderPropTypes } from '../lib'
 import {
   isFunction, required, getFormValues, getFormErrors, getFormIsValid,
   getFormPristine, getFormTouched, isFieldValid, calculateFieldErrors,
   executeModifiersPipeline, extractAsyncErrors, extractSyncErrors, shallowEqualObjects
 } from '../src/lib/utils'
+import {
+  cleanFormzRenderPropTypes,
+  cleanFieldRenderPropTypes,
+  cleanProps, fieldRenderPropTypes
+} from '../src/lib'
 
 describe('isFunction', () => {
   it('should return true when provided with a function', () => {
@@ -216,5 +222,41 @@ describe('shallowCompareObjects', () => {
     const obj2 = { ...baseObj, e: {} }
     expect(shallowEqualObjects(obj1, obj2)).toBeFalsy()
   })
+})
 
+describe('clean props', () => {
+  describe('generic function', () => {
+    const props = { a: 1, b: 2, c: 3, d: 4 }
+    const propTypesA = { b: true, d: true }
+    const propTypesB = { e: true }
+    const cleanedProps = cleanProps(props, propTypesA, propTypesB)
+
+    it('should clean all props that exists in propTypes', () => {
+      expect(Object.keys(cleanedProps).length).toEqual(2)
+      expect(cleanedProps.a).toBeDefined()
+      expect(cleanedProps.c).toBeDefined()
+      expect(cleanedProps.b).not.toBeDefined()
+      expect(cleanedProps.d).not.toBeDefined()
+    })
+  })
+
+  describe('Formz render props clean function', () => {
+    const props = { ...formzRenderPropTypes, testing: 1 }
+    const cleanedProps = cleanFormzRenderPropTypes(props)
+
+    it('should clean all props that are part of the Formz render props', () => {
+      expect(Object.keys(cleanedProps).length).toEqual(1)
+      expect(cleanedProps.testing).toBeDefined()
+    })
+  })
+
+  describe('Field render props clean function', () => {
+    const props = { ...fieldRenderPropTypes, testing: 1 }
+    const cleanedProps = cleanFieldRenderPropTypes(props)
+
+    it('should clean all props that are part of the Field render props', () => {
+      expect(Object.keys(cleanedProps).length).toEqual(1)
+      expect(cleanedProps.testing).toBeDefined()
+    })
+  })
 })

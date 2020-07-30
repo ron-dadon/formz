@@ -1,3 +1,8 @@
+import fieldPropTypes from './fieldPropTypes'
+import fieldRenderPropTypes from './fieldRenderPropTypes'
+import formzPropTypes from './formzPropTypes'
+import formzRenderPropTypes from './formzRenderPropTypes'
+
 const cleanProps = (...args) => {
   const props = args.shift()
   const propTypes = args.reduce((finalPropTypes, propType) => ({ ...finalPropTypes, ...propType }), {})
@@ -7,5 +12,9 @@ const cleanProps = (...args) => {
     return { ...finalProps, [prop]: props[prop] }
   }, {})
 }
+
+export const cleanFieldRenderPropTypes = (props) => cleanProps(props, fieldRenderPropTypes)
+
+export const cleanFormzRenderPropTypes = (props) => cleanProps(props, formzRenderPropTypes)
 
 export default cleanProps
