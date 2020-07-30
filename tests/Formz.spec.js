@@ -406,9 +406,10 @@ describe('Formz parsing and formatting', () => {
 
 describe('Formz change field value', () => {
   const onValuesChange = jest.fn()
+  const onValueChange = jest.fn()
   const FieldRender = () => <div />
   const FormRenderComponentWithField = ({ Field }) => (
-    <div><Field name="test" render={FieldRender} /></div>
+    <div><Field name="test" onValueChange={onValueChange} render={FieldRender} /></div>
   )
   const comp = mount(<Formz render={FormRenderComponentWithField} onSubmit={jest.fn()} onValuesChange={onValuesChange} />)
 
@@ -424,6 +425,7 @@ describe('Formz change field value', () => {
     testFieldState = comp.state().fields.test // Must get again from .state() to get fresh value
     expect(testFieldState.value).toEqual('testValue')
     expect(onValuesChange).toBeCalledTimes(1)
+    expect(onValueChange).toBeCalledTimes(1)
   })
 })
 
