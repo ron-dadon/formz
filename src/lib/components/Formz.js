@@ -64,7 +64,6 @@ class Formz extends Component {
     if (isFunction(this.props.onValuesChange)) {
       const fieldProps = this.state.fields[field].props
       const values = this.formValues()
-      this.props.onValuesChange({ values, field, updateFieldValue: this.updateFieldValue })
       if (isFunction(fieldProps.onValueChange)) {
         fieldProps.onValueChange({
           value,
@@ -74,6 +73,7 @@ class Formz extends Component {
           reset: this.resetForm
         })
       }
+      this.props.onValuesChange({ values, field, updateFieldValue: this.updateFieldValue })
     }
   }
 

@@ -51,7 +51,6 @@ const fieldComponentFactory = ({
       const { name, synthetic } = this.props
       if (!synthetic) {
         updateFieldValue({ name, value })
-        this.onValueChange(value)
         return
       }
       const fieldValue = value && value.target && value.target[typeof synthetic === 'string' ? synthetic : 'value']
@@ -59,14 +58,6 @@ const fieldComponentFactory = ({
         name,
         value: fieldValue
       })
-      this.onValueChange(fieldValue)
-    }
-
-    onValueChange = (value) => {
-      const { onValueChange } = this.props
-      if (isFunction(onValueChange)) {
-        onValueChange({ value, allValues: formValues(), updateFieldValue, submit, reset })
-      }
     }
 
     onFocus = () => {
