@@ -1,21 +1,12 @@
-# Formz 
+<div style="text-align: center">
+    <div><img src="https://ron-dadon.github.io/formz/assets/formz-logo-full.svg" /></div>
+    <p>Painless React Forms</p>
+</div>
 
 [![Build Status](https://semaphoreci.com/api/v1/ron-dadon/formz/branches/master/badge.svg)](https://semaphoreci.com/ron-dadon/formz)
 
-## Another form library? Why?!
-
-First, because I can...
-
-But the real reason is that as a former AngularJS developer who made the switch to React about a year ago, I found myself straggling with forms management in React since day one.
-I've started with the commonly used Redux Form library, when I had just a basic understanding of Redux, and it looked pretty good, until I found myself working so damn hard for very basic things (why in the world I cannot get the field props in the field level validation function is baffling...).
-
-I've **LOVED** AngularJS forms, they were just easy to use!
-
-And much more important, after diving deep into Redux, and understanding the internal of Redux, _**WHY IN THE WORLD WOULD YOU GO THROUGH ALL THE MIDDLEWARE AND REDUCERS FOR EACH KEY TYPE?!**_
-That is what Redux Form does - on every change, there is a complete Redux cycle - that can include 100's of function calls in a large application, where all I wanted was to update my field value, in my form, and my form is the only one that cares about this value.
-
-So, the why part is first because I wanted to stop using Redux for form state management, and second, because I could not found a library that gave me the AngularJS experience.
-
+Formz is a React form library designed from the ground up to be as efficient, robust and easy to understand as possible. With a size of less than 60kb (**9.2kb gzipped**), it packs in a full form state management engine, including sync & async validations, values parsing & formatting and much more.
+ 
 ## Installation
 
 That one is easy. Like must libraries, just use `npm` or `yarn`.
@@ -27,6 +18,10 @@ $ npm i formz --save
 ```bash
 $ yarn add formz
 ```
+
+## Requirements
+
+To keep `formz` size to the minimum, it is not compiled with `react` and `prop-types`, but uses them as a peer dependency, so you must have `react` and `prop-types` as a dependency in your project.
 
 ## Basic Example
 
@@ -43,11 +38,12 @@ const Input = ({ label, value, onChange, onFocus, onBlur, submitting, type = 'te
     <input
       type={type}
       value={value}
-      onChange={e => onChange(e.target.value)}
+      onChange={onChange}
       onBlur={onBlur}
       onFocus={onFocus}
       placeholder={label}
       disabled={submitting}
+      synthetic
     />
   </div>
 )
@@ -98,4 +94,16 @@ export default class App extends Component {
 }
 ```
 
+## Why not use redux-form if I'm using redux?
+
+`redux-form`, as the name suggests, relays on `redux` state, reducers and actions to store and update the form state. While you might think this is nice to keep all the forms in one place, you should consider the performance & maintainability issues that this may cause.
+
+When a redux action gets called, it triggers a full redux cycle, which includes calling all the reducer functions. When combined with React using the go-to `react-redux` library and the `connect` HOC, after all the reducers where called, and redux now holds the updated state, all the "connected" components will be called, triggering all the `mapStateToProps` and `mapDispatchToProps`. In a large application, there can 100's of reducers and 100's of connected components rendered at a given time - THAT IS A LOT OF FUNCTION CALLS. The result is that for each key press inside an input for example, we get this huge overhead, where in most cases, we only want to update the input value.
+
+Unlike `redux-form`, Formz takes a different path. By understanding that in 99% of the time, the only section in the app that cares about the form state, it the actual form itself, it keeps the form state in an internal component state (in the `Formz` component) and gives the form component a way to interact with this state using the `Field` component. In that case, when you update a field value for example by typing into an input, ONLY THE FORM is re-rendered. That is a lot less performance demanding, and much easier to understand. If you still need some of the form data / state external to the form, you can always use the `Formz` callback props to "listen" to changes in the values, validations, submission etc.
+
+---
+
 For more information and API docs, visit [https://ron-dadon.github.io/formz](https://ron-dadon.github.io/formz)
+
+_Formz is still under active development, but it is stable and already used in production applications, so no breaking changes will be introduced unless those cannot be avoided._
