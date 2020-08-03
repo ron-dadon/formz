@@ -61,18 +61,18 @@ class Formz extends Component {
   }
 
   onValuesChange = ({ field, value }) => {
+    const fieldProps = this.state.fields[field].props
+    const values = this.formValues()
+    if (isFunction(fieldProps.onValueChange)) {
+      fieldProps.onValueChange({
+        value,
+        allValues: values,
+        updateFieldValue: this.updateFieldValue,
+        submit: this.startSubmit,
+        reset: this.resetForm
+      })
+    }
     if (isFunction(this.props.onValuesChange)) {
-      const fieldProps = this.state.fields[field].props
-      const values = this.formValues()
-      if (isFunction(fieldProps.onValueChange)) {
-        fieldProps.onValueChange({
-          value,
-          allValues: values,
-          updateFieldValue: this.updateFieldValue,
-          submit: this.startSubmit,
-          reset: this.resetForm
-        })
-      }
       this.props.onValuesChange({ values, field, updateFieldValue: this.updateFieldValue })
     }
   }
