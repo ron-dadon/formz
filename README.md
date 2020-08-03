@@ -1,4 +1,4 @@
-<div style="text-align: center">
+<div align="center">
     <div><img src="https://ron-dadon.github.io/formz/assets/formz-logo-full.svg" /></div>
     <p>Painless React Forms</p>
 </div>
