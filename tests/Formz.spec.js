@@ -418,6 +418,8 @@ describe('Formz change field value', () => {
     .find('Field')
   const fieldRenderComponent = fieldComponent.find('FieldRender')
 
+  beforeEach(() => jest.clearAllMocks())
+
   it('should set the field value and call onValuesChanged hook', () => {
     let testFieldState = comp.state().fields.test
     expect(testFieldState.value).toEqual('')
@@ -425,6 +427,13 @@ describe('Formz change field value', () => {
     testFieldState = comp.state().fields.test // Must get again from .state() to get fresh value
     expect(testFieldState.value).toEqual('testValue')
     expect(onValuesChange).toBeCalledTimes(1)
+    expect(onValueChange).toBeCalledTimes(1)
+  })
+
+  it('should call onValueChange for field level only', () => {
+    comp.setProps({ onValuesChange: null })
+    fieldRenderComponent.props().onChange('testValue')
+    expect(onValuesChange).not.toHaveBeenCalled()
     expect(onValueChange).toBeCalledTimes(1)
   })
 })
