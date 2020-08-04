@@ -61,9 +61,9 @@ class Formz extends Component {
   }
 
   onValuesChange = ({ field, value }) => {
-    const fieldProps = this.state.fields[field].props
+    const fieldProps = this.state.fields[field] && this.state.fields[field].props
     const values = this.formValues()
-    if (isFunction(fieldProps.onValueChange)) {
+    if (fieldProps && isFunction(fieldProps.onValueChange)) {
       fieldProps.onValueChange({
         value,
         allValues: values,
