@@ -19,7 +19,10 @@ const formzPropTypes = {
   formAction: PropTypes.string,
   formMethod: PropTypes.oneOf(['get', 'post', 'GET', 'POST']),
   formEnctype: PropTypes.oneOf(['application/x-www-form-urlencoded', 'multipart/form-data', 'text/plain']),
-  formTarget: PropTypes.oneOfType([PropTypes.oneOf(['_self', '_blank', '_parent', '_top']), PropTypes.string])
+  formTarget: PropTypes.oneOfType([PropTypes.oneOf(['_self', '_blank', '_parent', '_top']), PropTypes.string]),
+  onFieldAdded: PropTypes.func,
+  onFieldRemoved: PropTypes.func,
+  onFieldUpdated: PropTypes.func
 }
 
 export default formzPropTypes

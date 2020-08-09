@@ -108,7 +108,20 @@ describe('Formz field', () => {
       {withFields && <Field name="test" render={FieldRender} myProp={myProp} />}
     </div>
   )
-  const comp = mount(<Formz render={FormRenderComponentWithField} onSubmit={jest.fn()} withFields={true} myProp={1} />)
+  const onFieldAdded = jest.fn()
+  const onFieldRemoved = jest.fn()
+  const onFieldUpdated = jest.fn()
+  const comp = mount(
+    <Formz
+      render={FormRenderComponentWithField}
+      onSubmit={jest.fn()}
+      onFieldAdded={onFieldAdded}
+      onFieldRemoved={onFieldRemoved}
+      onFieldUpdated={onFieldUpdated}
+      withFields={true}
+      myProp={1}
+    />
+  )
 
   const fieldComponent = comp
     .find('FormRenderComponentWithField')
@@ -120,6 +133,9 @@ describe('Formz field', () => {
       expect(Object.keys(comp.state().fields).length).toEqual(1)
       expect(Object.keys(comp.state().fields)[0]).toEqual('test')
       expect(comp.state().fields.test).toMatchObject(initialFieldState)
+    })
+    it('should call onFieldAdded', () => {
+      expect(onFieldAdded).toHaveBeenCalledWith({ name: 'test' })
     })
   })
 
@@ -158,6 +174,9 @@ describe('Formz field', () => {
       comp.setProps({ myProp: 2 })
       expect(comp.state().fields.test.props.myProp).toEqual(2)
     })
+    it('should call onFieldUpdated after props update', () => {
+      expect(onFieldUpdated).toHaveBeenCalledWith({ name: 'test' })
+    })
     it('should reset field in Formz', () => {
       fieldRenderComponent.props().reset()
       expect(comp.state().fields.test.value).toEqual('')
@@ -171,6 +190,9 @@ describe('Formz field', () => {
     it('should unregister field when Field is unmounted', () => {
       comp.setProps({ withFields: false })
       expect(Object.keys(comp.state().fields).length).toEqual(0)
+    })
+    it('should call onFieldRemoved', () => {
+      expect(onFieldRemoved).toHaveBeenCalledWith({ name: 'test' })
     })
   })
 })

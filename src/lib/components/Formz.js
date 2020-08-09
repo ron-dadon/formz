@@ -227,7 +227,7 @@ class Formz extends Component {
     name, reInitialize, keepDirty, ...fieldProps
   }) => {
     let shouldValidate = false
-    const { validateOnPropsChange: formValidateOnPropsChange } = this.props
+    const { validateOnPropsChange: formValidateOnPropsChange, onFieldUpdated } = this.props
     this.setMountedState((state) => {
       const field = state.fields[name]
       if (!field) return state
@@ -267,14 +267,19 @@ class Formz extends Component {
         ...state,
         fields
       }
-    }, () => shouldValidate && this.validateAllFields(name))
+    }, () => {
+      if (isFunction(onFieldUpdated)) {
+        onFieldUpdated({ name })
+      }
+      shouldValidate && this.validateAllFields(name)
+    })
   }
 
   registerField = ({
     name, defaultValue = '', validateOnChange, validateOnPropsChange, validateOnBlur, validateOnInit,
     reValidateOnFormChanges, validators = {}, formatters = [], parsers = [], ...props
   }) => {
-    const { validateOnInit: formValidateOnInit } = this.props
+    const { validateOnInit: formValidateOnInit, onFieldAdded } = this.props
     this.setMountedState(state => ({
       ...state,
       fields: {
@@ -294,23 +299,32 @@ class Formz extends Component {
         })
       }
     }), () => {
+      if (isFunction(onFieldAdded)) {
+        onFieldAdded({ name })
+      }
       if (validateOnInit || (validateOnInit === undefined && formValidateOnInit)) {
         this.validateAllFields(name)
       }
     })
   }
 
-  unregisterField = (fieldName) => {
+  unregisterField = (name) => {
+    const { onFieldRemoved } = this.props
     this.setMountedState((state) => {
       const fields = { ...state.fields }
-      delete fields[fieldName]
+      delete fields[name]
       return { ...state, fields }
-    }, () => this.validateAllFields(fieldName))
+    }, () => {
+      if (isFunction(onFieldRemoved)) {
+        onFieldRemoved({ name })
+      }
+      this.validateAllFields(name)
+    })
   }
 
-  resetField = (fieldName) => {
+  resetField = (name) => {
     this.setMountedState(state => {
-        const currentField = state.fields[fieldName]
+        const currentField = state.fields[name]
         const allValues = getFormValues(state)
         const parsedValue = executeModifiersPipeline({
           modifiers: currentField.parsers,
@@ -331,8 +345,8 @@ class Formz extends Component {
         ...state,
         fields: {
           ...state.fields,
-          [fieldName]: {
-            ...state.fields[fieldName],
+          [name]: {
+            ...state.fields[name],
             pending: false,
             active: false,
             pristine: true,
@@ -346,7 +360,7 @@ class Formz extends Component {
         }
       }
     },
-      () => this.validateAllFields(fieldName)
+      () => this.validateAllFields(name)
     )
   }
 
