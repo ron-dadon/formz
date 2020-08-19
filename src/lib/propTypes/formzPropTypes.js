@@ -22,7 +22,9 @@ const formzPropTypes = {
   formTarget: PropTypes.oneOfType([PropTypes.oneOf(['_self', '_blank', '_parent', '_top']), PropTypes.string]),
   onFieldAdded: PropTypes.func,
   onFieldRemoved: PropTypes.func,
-  onFieldUpdated: PropTypes.func
+  onFieldUpdated: PropTypes.func,
+  onFieldBlur: PropTypes.func,
+  onFieldActive: PropTypes.func
 }
 
 export default formzPropTypes

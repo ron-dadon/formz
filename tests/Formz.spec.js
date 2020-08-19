@@ -111,6 +111,9 @@ describe('Formz field', () => {
   const onFieldAdded = jest.fn()
   const onFieldRemoved = jest.fn()
   const onFieldUpdated = jest.fn()
+  const onFieldBlur = jest.fn()
+  const onFieldActive = jest.fn()
+
   const comp = mount(
     <Formz
       render={FormRenderComponentWithField}
@@ -118,6 +121,8 @@ describe('Formz field', () => {
       onFieldAdded={onFieldAdded}
       onFieldRemoved={onFieldRemoved}
       onFieldUpdated={onFieldUpdated}
+      onFieldBlur={onFieldBlur}
+      onFieldActive={onFieldActive}
       withFields={true}
       myProp={1}
     />
@@ -161,12 +166,16 @@ describe('Formz field', () => {
       expect(comp.state().fields.test.pristine).toBeFalsy()
     })
     it('should set field touched in Formz', () => {
+      onFieldBlur.mockClear()
       fieldRenderComponent.props().onBlur()
       expect(comp.state().fields.test.touched).toBeTruthy()
+      expect(onFieldBlur).toBeCalledWith({ name: 'test', value: 'testValue'})
     })
     it('should set field active in Formz', () => {
+      onFieldActive.mockClear()
       fieldRenderComponent.props().onFocus()
       expect(comp.state().fields.test.active).toBeTruthy()
+      expect(onFieldActive).toBeCalledWith({ name: 'test', value: 'testValue'})
     })
     it('should update field pass props on field props update', () => {
       comp.setProps({ myProp: 1 })

@@ -97,7 +97,7 @@ class Formz extends Component {
   getField = fieldName => this.state.fields[fieldName]
 
   setFieldTouched = ({ name }) => {
-    const { validateOnBlur } = this.props
+    const { validateOnBlur, onFieldBlur } = this.props
     const { validateOnBlur: fieldValidateOnBlur } = this.state.fields[name]
     this.setMountedState((state) => {
       const field = state.fields[name]
@@ -115,6 +115,10 @@ class Formz extends Component {
         ...state,
         fields,
         touched: formTouched
+      }
+    }, () => {
+      if (isFunction(onFieldBlur)) {
+        onFieldBlur({ name, value: this.formValues()[name] })
       }
     })
     if (fieldValidateOnBlur || (fieldValidateOnBlur === undefined && validateOnBlur)) {
@@ -134,6 +138,7 @@ class Formz extends Component {
   }
 
   setFieldActive = ({ name }) => {
+    const { onFieldActive } = this.props
     this.setMountedState((state) => {
       const field = state.fields[name]
       if (!field) return state
@@ -146,6 +151,10 @@ class Formz extends Component {
             active: true
           }
         }
+      }
+    }, () => {
+      if (isFunction(onFieldActive)) {
+        onFieldActive({ name, value: this.formValues()[name] })
       }
     })
   }
