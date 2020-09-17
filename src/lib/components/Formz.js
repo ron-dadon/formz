@@ -118,7 +118,8 @@ class Formz extends Component {
       }
     }, () => {
       if (isFunction(onFieldBlur)) {
-        onFieldBlur({ name, value: this.formValues()[name] })
+        const values = this.formValues()
+        onFieldBlur({ name, value: values[name], values })
       }
     })
     if (fieldValidateOnBlur || (fieldValidateOnBlur === undefined && validateOnBlur)) {
@@ -154,7 +155,8 @@ class Formz extends Component {
       }
     }, () => {
       if (isFunction(onFieldActive)) {
-        onFieldActive({ name, value: this.formValues()[name] })
+        const values = this.formValues()
+        onFieldActive({ name, value: values[name], values })
       }
     })
   }

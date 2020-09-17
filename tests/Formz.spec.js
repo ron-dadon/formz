@@ -169,13 +169,13 @@ describe('Formz field', () => {
       onFieldBlur.mockClear()
       fieldRenderComponent.props().onBlur()
       expect(comp.state().fields.test.touched).toBeTruthy()
-      expect(onFieldBlur).toBeCalledWith({ name: 'test', value: 'testValue'})
+      expect(onFieldBlur).toBeCalledWith({ name: 'test', value: 'testValue', values: { test: 'testValue' } })
     })
     it('should set field active in Formz', () => {
       onFieldActive.mockClear()
       fieldRenderComponent.props().onFocus()
       expect(comp.state().fields.test.active).toBeTruthy()
-      expect(onFieldActive).toBeCalledWith({ name: 'test', value: 'testValue'})
+      expect(onFieldActive).toBeCalledWith({ name: 'test', value: 'testValue', values: { test: 'testValue' } })
     })
     it('should update field pass props on field props update', () => {
       comp.setProps({ myProp: 1 })
