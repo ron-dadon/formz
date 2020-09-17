@@ -33,8 +33,8 @@ The main form component. This component is responsible for managing the form sta
 |onFieldAdded|`({ name: string }) => void`|No| |A callback to be called when a new field is registered in the form (Field component first rendered).
 |onFieldUpdated|`({ name: string }) => void`|No| |A callback to be called when a field is updated in the form (Field component props where updated).
 |onFieldRemoved|`({ name: string }) => void`|No| |A callback to be called when a field is removed from the form (Field component unmounted).
-|onFieldBlur|`({ name: string, value: any }) => void`|No| |A callback to be called when a field was blurred in the form. The callback will be provided with the field name and value.
-|onFieldActive|`({ name: string, value: any }) => void`|No| |A callback to be called when a field was activated in the form. The callback will be provided with the field name and value.
+|onFieldBlur|`({ name: string, value: any, values: {} }) => void`|No| |A callback to be called when a field was blurred in the form. The callback will be provided with the field name and value, and all current values of the form.
+|onFieldActive|`({ name: string, value: any, values: {} }) => void`|No| |A callback to be called when a field was activated in the form. The callback will be provided with the field name and value, and all current values of the form.
 
 <div class="alert alert-info mt-3">
     <i class="fas fa-info-circle"></i> Any other props that are passed to the Formz component will be passed to the render props.
