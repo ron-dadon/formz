@@ -247,11 +247,14 @@ class Formz extends Component {
         formatters, defaultValue: newDefaultValue, validators, parsers,
         validateOnChange, validateOnPropsChange, validateOnBlur, validateOnInit, reValidateOnFormChanges, ...props
       } = fieldProps
-      const { value, defaultValue, pristine, props: oldProps } = field
-      const newValue = reInitialize && ((keepDirty && pristine) || !keepDirty) && defaultValue !== newDefaultValue ? newDefaultValue : value
-      const formattedValue = executeModifiersPipeline({
+      const { value, defaultValue, formattedValue, pristine, props: oldProps } = field
+      const shouldSetNewValue = reInitialize && ((keepDirty && pristine) || !keepDirty) && defaultValue !== newDefaultValue
+      const newValue = shouldSetNewValue ? executeModifiersPipeline({
+        modifiers: parsers, value: newDefaultValue, allValues, props
+      }) : value
+      const newFormattedValue = shouldSetNewValue ? executeModifiersPipeline({
         modifiers: formatters, value: newValue, allValues, props
-      })
+      }) : formattedValue
       let fieldValidators = props && validators && props.required && !validators.required ? { ...validators, required } : validators
       if (props && fieldValidators && !props.required && fieldValidators.required === required) {
         const { required: requiredFn, ...otherValidators } = validators
@@ -269,7 +272,7 @@ class Formz extends Component {
           reValidateOnFormChanges,
           validators: fieldValidators,
           value: newValue,
-          formattedValue,
+          formattedValue: newFormattedValue,
           defaultValue: newDefaultValue,
           props
         }

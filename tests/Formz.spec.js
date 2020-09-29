@@ -407,8 +407,17 @@ describe('Formz parsing and formatting', () => {
     jest.fn(({ value }) => (value && (new Date(value)).getTime()) || value)
   ]
   const FieldRender = () => <div />
-  const FormRenderComponentWithField = ({ Field }) => (
-    <div><Field name="test" render={FieldRender} formatters={formatters} parsers={parsers} /></div>
+  const FormRenderComponentWithField = ({ Field, fieldDefaultValue, fieldReinitialize }) => (
+    <div>
+      <Field
+        name="test"
+        render={FieldRender}
+        formatters={formatters}
+        parsers={parsers}
+        defaultValue={fieldDefaultValue}
+        reInitialize={fieldReinitialize}
+      />
+    </div>
   )
   const comp = mount(<Formz render={FormRenderComponentWithField} onSubmit={jest.fn()} />)
 
@@ -418,20 +427,53 @@ describe('Formz parsing and formatting', () => {
   const fieldRenderComponent = fieldComponent.find('FieldRender')
 
   fieldRenderComponent.props().onChange(1535019565628)
-  const testFieldState = comp.state().fields.test
 
   it('should have formatted ISO string value and raw unix timestamp value', () => {
+    const testFieldState = comp.state().fields.test
     expect(testFieldState.formattedValue).toEqual('2018-08-23T10:19:25.628Z')
     expect(testFieldState.value).toEqual(1535019565628)
   })
   // Calls should be 2 times because it runs once on registration and again on value change
   it('should run formatters', () => {
+    const testFieldState = comp.state().fields.test
     expect(testFieldState.formatters[0]).toBeCalled()
     expect(testFieldState.formatters[0]).toBeCalledTimes(2)
   })
   it('should run parsers', () => {
+    const testFieldState = comp.state().fields.test
     expect(testFieldState.parsers[0]).toBeCalled()
     expect(testFieldState.parsers[0]).toBeCalledTimes(2)
+  })
+  it('should run formatters & parsers when updating default value with reInitialize', () => {
+    let testFieldState = comp.state().fields.test
+    testFieldState.parsers[0].mockClear()
+    testFieldState.formatters[0].mockClear()
+    comp.setProps({ fieldDefaultValue: 1535019565628, fieldReinitialize: true })
+    testFieldState = comp.state().fields.test
+    expect(testFieldState.parsers[0]).toBeCalled()
+    expect(testFieldState.parsers[0]).toBeCalledTimes(1)
+    expect(testFieldState.formatters[0]).toBeCalled()
+    expect(testFieldState.formatters[0]).toBeCalledTimes(1)
+  })
+
+  it('should not run formatters & parsers when updating default value with reInitialize = false', () => {
+    let testFieldState = comp.state().fields.test
+    testFieldState.parsers[0].mockClear()
+    testFieldState.formatters[0].mockClear()
+    comp.setProps({ fieldDefaultValue: 1535019565629, fieldReinitialize: false })
+    testFieldState = comp.state().fields.test
+    expect(testFieldState.parsers[0]).not.toBeCalled()
+    expect(testFieldState.formatters[0]).not.toBeCalled()
+  })
+
+  it('should not run formatters & parsers when default value does not change with reInitialize', () => {
+    let testFieldState = comp.state().fields.test
+    testFieldState.parsers[0].mockClear()
+    testFieldState.formatters[0].mockClear()
+    comp.setProps({ fieldDefaultValue: 1535019565629, fieldReinitialize: false })
+    testFieldState = comp.state().fields.test
+    expect(testFieldState.parsers[0]).not.toBeCalled()
+    expect(testFieldState.formatters[0]).not.toBeCalled()
   })
 })
 
