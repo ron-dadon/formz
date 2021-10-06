@@ -14,13 +14,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-
-      - name: yarn install
-        uses: Borales/actions-yarn@v2.3.0
+      - uses: actions/setup-node@v2
         with:
-          cmd: yarn
-
-      - name: yarn test
-        uses: Borales/actions-yarn@v2.3.0
-        with:
-          cmd: yarn test
+          node-version: "14"
+      - run: yarn install
+      - run: yarn test
