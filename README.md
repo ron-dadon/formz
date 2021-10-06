@@ -3,6 +3,7 @@
     <p>Painless React Forms</p>
 </div>
 
+![build](https://github.com/ron-dadon/formz/actions/workflows/build.yml/badge.svg)
 ![unit test](https://github.com/ron-dadon/formz/actions/workflows/unit-tests.yml/badge.svg)
 ![code ql](https://github.com/ron-dadon/formz/actions/workflows/codeql-analysis.yml/badge.svg)
 
