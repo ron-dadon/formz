@@ -1,13 +1,6 @@
----
-layout: example
-example_script: parseFormat
-title: Parse / Format example
-description: A simple form with date range that parses the date to UNIX timestamp and formats it to YYYY-MM-DD format. The submit will succeed only if the from date is earlier than the to date.
----
-
-```jsx
 import React from 'react'
 import { Formz } from 'formz'
+import { onSubmit} from './utils'
 
 const Input = ({ label, value, onChange, onFocus, onBlur, submitting, type = 'text' }) => (
   <div className="form-group">
@@ -65,14 +58,4 @@ const DateForm = ({ Field, submitting, submitted, submitSuccess }) => (
   </div>
 )
 
-const awaitTimeout = ms => new Promise(resolve => setTimeout(resolve, ms))
-
-const onSubmit = async (values) => {
-  // Simulate server call with timeout
-  console.log('Submitted form with values', values)
-  await awaitTimeout(100)
-  return true
-}
-
 export const ParseFormatExample = () => <Formz render={DateForm} onSubmit={onSubmit}/>
-```

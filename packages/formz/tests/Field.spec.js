@@ -1,7 +1,7 @@
 import React from 'react'
 import './init'
 import { shallow } from 'enzyme'
-import fieldComponentFactory from '../src/lib/components/Field'
+import fieldComponentFactory from '../src/components/Field'
 
 const FieldRenderComponent = () => <div />
 
@@ -97,4 +97,3 @@ describe('Field component', () => {
     })
   })
 })
-

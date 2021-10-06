@@ -1,13 +1,6 @@
----
-layout: example
-example_script: basic
-title: Basic example
-description: A simple login form
----
-
-```jsx
 import React from 'react'
 import { Formz } from 'formz'
+import { onLoginSubmitSync } from "./utils"
 
 const Input = ({label, value, onChange, onFocus, onBlur, submitting, type = 'text'}) => (
   <div className='form-group'>
@@ -50,10 +43,4 @@ const LoginForm = ({Field, submitting, submitted, submitSuccess}) => (
   </div>
 )
 
-export const onLoginSubmitSync = (values) => {
-  console.log('Submitted form with values', values)
-  return (values.email === 'test@test.com' && values.password === '12345')
-}
-
 export const BasicExample = () => <Formz render={LoginForm} onSubmit={onLoginSubmitSync}/>
-```

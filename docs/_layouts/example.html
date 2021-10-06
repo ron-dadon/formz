@@ -32,6 +32,9 @@
   {% include ga.html %}}
 {% endif %}
 {% include scripts.html %}
-<script src="/formz/examples/{{ page.example_script }}"></script>
+<script src="/formz/examples/app.js"></script>
+<script>
+  window.formzExamples[{{ page.example_script }}]()
+</script>
 </body>
 </html>

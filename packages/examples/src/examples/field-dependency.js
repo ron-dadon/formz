@@ -1,8 +1,7 @@
-import React, { PureComponent, Component } from 'react'
-import ReactDOM from 'react-dom'
+import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
-import Formz from '../lib/components/Formz'
-import fieldRenderPropTypes from '../lib/propTypes/fieldRenderPropTypes'
+import { Formz, fieldRenderPropTypes } from 'formz'
+import { onSubmit } from './utils'
 
 const genderOptions = [
   {
@@ -88,10 +87,10 @@ class Select extends PureComponent {
   render() {
     const { options, label, value, emptyOption } = this.props
     return (
-      <div className='form-group'>
+      <div className="form-group">
         <label>{label}</label>
-        <select className='form-control' onChange={this.onChange} value={value}>
-          {emptyOption && <option value=''>-</option>}
+        <select className="form-control" onChange={this.onChange} value={value}>
+          {emptyOption && <option value="">-</option>}
           {options.map(option => this.isValidOption(option) && (
             <option key={option.value} value={option.value}>{option.label}</option>
           ))}
@@ -101,53 +100,35 @@ class Select extends PureComponent {
   }
 }
 
-class DependenciesForm extends Component {
-  render() {
-    // The Field prop is the unique form field component bound to the wrapping form
-    const { Field, submitting, submitted, submitSuccess } = this.props
-    return (
-      <div className='col-xs-12 col-md-6 col-lg-3'>
-        <Field
-          render={Select}
-          name='gender'
-          label='Gender'
-          options={genderOptions}
-          defaultValue='male'
-        />
-        <Field
-          render={Select}
-          name='size'
-          label='Shirt Size'
-          options={sizeOptions}
-          parent='gender'
-          defaultValue='l'
-          emptyOption
-        />
-        <div>
-          <button className='btn btn-light' type='reset' disabled={submitting}>Reset</button>
-          <button className='btn btn-primary' type='submit' disabled={submitting}>Send Order</button>
-        </div>
-        {
-          <p>
-            {submitted && !submitting && `Order ${submitSuccess ? 'saved successfully' : 'saving failed'}`}
-            {submitted && submitting && 'Saving...'}
-          </p>
-        }
-      </div>
-    )
-  }
-}
+const DependenciesForm = ({ Field, submitting, submitted, submitSuccess }) => (
+  <div className="col-xs-12 col-md-6 col-lg-3">
+    <Field
+      render={Select}
+      name="gender"
+      label="Gender"
+      options={genderOptions}
+      defaultValue="male"
+    />
+    <Field
+      render={Select}
+      name="size"
+      label="Shirt Size"
+      options={sizeOptions}
+      parent="gender"
+      defaultValue="l"
+      emptyOption
+    />
+    <div>
+      <button className="btn btn-light" type="reset" disabled={submitting}>Reset</button>
+      <button className="btn btn-primary" type="submit" disabled={submitting}>Send Order</button>
+    </div>
+    {
+      <p>
+        {submitted && !submitting && `Order ${submitSuccess ? 'saved successfully' : 'saving failed'}`}
+        {submitted && submitting && 'Saving...'}
+      </p>
+    }
+  </div>
+)
 
-class FieldDependencyExample extends Component {
-  onSubmit = values => new Promise((resolve) => {
-    // Simulate server call with timeout
-    console.log('Submitted form with values', values)
-    setTimeout(resolve, 100)
-  })
-
-  render() {
-    return <Formz render={DependenciesForm} onSubmit={this.onSubmit} />
-  }
-}
-
-ReactDOM.render(<FieldDependencyExample />, document.querySelector('div#live-example'))
+export const FieldDependencyExample = () => <Formz render={DependenciesForm} onSubmit={onSubmit}/>

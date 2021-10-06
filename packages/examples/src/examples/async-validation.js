@@ -1,13 +1,6 @@
----
-layout: example
-example_script: basicWithAsyncValidation
-title: Async validation example
-description: A simple registration form with async validation that checks if the user exists, and confirm password matches. Try to type 'john' as username to see the 'already exists' error.
----
-
-```jsx
 import React from 'react'
 import { Formz } from 'formz'
+import { onSubmit } from "./utils"
 
 const Input = ({
    label,
@@ -21,7 +14,7 @@ const Input = ({
    invalid,
    pending,
    type = 'text'
-  }) => (
+ }) => (
   <div className="form-group">
     <input
       className="form-control"
@@ -93,14 +86,4 @@ const RegistrationForm = ({ Field, invalid, submitting, submitted, submitSuccess
   </div>
 )
 
-const awaitTimeout = ms => new Promise(resolve => setTimeout(resolve, ms))
-
-const onSubmit = async (values) => {
-  // Simulate server call with timeout
-  console.log('Submitted form with values', values)
-  await awaitTimeout(100)
-  return true
-}
-
 export const BasicExampleWithAsyncValidation = () => <Formz render={RegistrationForm} onSubmit={onSubmit}/>
-```

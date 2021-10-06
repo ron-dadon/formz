@@ -1,13 +1,6 @@
----
-layout: example
-example_script: basicWithValidation
-title: Validation example
-description: A simple login form with required and email validation on the email field.
----
-
-```jsx
 import React from 'react'
 import { Formz } from 'formz'
+import { onLoginSubmit } from './utils'
 
 const Input = ({ label, value, onChange, onFocus, onBlur, submitting, touched, errors, invalid, type = 'text' }) => (
   <div className="form-group">
@@ -58,15 +51,4 @@ const LoginForm = ({ Field, invalid, submitting, submitted, submitSuccess }) => 
   </div>
 )
 
-const awaitTimeout = ms => new Promise(resolve => setTimeout(resolve, ms))
-
-const onLoginSubmit = async (values) => {
-  console.log('Submitted form with values', values)
-  // Simulate server call with timeout
-  await awaitTimeout(100)
-  if (values.email === 'test@test.com' && values.password === '12345') return true
-  throw new Error('Invalid credentials')
-}
-
 export const BasicExampleWithValidation = () => <Formz render={LoginForm} onSubmit={onLoginSubmit}/>
-```

@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import cleanProps from '../propTypes/cleanProps'
 import fieldPropTypes from '../propTypes/fieldPropTypes'
 import fieldRenderPropTypes from '../propTypes/fieldRenderPropTypes'
-import { isFunction, shallowEqualObjects } from '../utils'
+import { shallowEqualObjects } from '../utils'
 
 const forceFunctionsArray = val => (Array.isArray(val) ? val : ((typeof val === 'function' && [val]) || []))
 

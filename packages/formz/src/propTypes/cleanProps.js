@@ -1,6 +1,4 @@
-import fieldPropTypes from './fieldPropTypes'
 import fieldRenderPropTypes from './fieldRenderPropTypes'
-import formzPropTypes from './formzPropTypes'
 import formzRenderPropTypes from './formzRenderPropTypes'
 
 const cleanProps = (...args) => {
