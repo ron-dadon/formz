@@ -3,7 +3,9 @@
     <p>Painless React Forms</p>
 </div>
 
-[![Build Status](https://semaphoreci.com/api/v1/ron-dadon/formz/branches/master/badge.svg)](https://semaphoreci.com/ron-dadon/formz)
+![unit test](https://github.com/ron-dadon/formz/actions/workflows/unit-tests.yml/badge.svg)
+![code ql](https://github.com/ron-dadon/formz/actions/workflows/codeql-analysis.yml/badge.svg)
+
 
 Formz is a React form library designed from the ground up to be as efficient, robust and easy to understand as possible. With a size of less than 60kb (**9.2kb gzipped**), it packs in a full form state management engine, including sync & async validations, values parsing & formatting and much more.
  
