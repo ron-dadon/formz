@@ -8,7 +8,7 @@
 ![code ql](https://github.com/ron-dadon/formz/actions/workflows/codeql-analysis.yml/badge.svg)
 
 
-Formz is a React form library designed from the ground up to be as efficient, robust and easy to understand as possible. With a size of less than 60kb (**9.2kb gzipped**), it packs in a full form state management engine, including sync & async validations, values parsing & formatting and much more.
+Formz is a React form library designed from the ground up to be as efficient, robust and easy to understand as possible. With a size of less than 40kb (**7.2kb gzipped**), it packs in a full form state management engine, including sync & async validations, values parsing & formatting and much more.
  
 ## Installation
 
@@ -33,68 +33,56 @@ Formz make use of render prop pattern to inject a unique `Field` component for e
 So, a basic form would look like this:
 
 ```jsx
-import React, { Component } from 'react'
+import React from 'react'
 import { Formz } from 'formz'
 
-const Input = ({ label, value, onChange, onFocus, onBlur, submitting, type = 'text' }) => (
-  <div>
+const Input = ({label, value, onChange, onFocus, onBlur, submitting, type = 'text'}) => (
+  <div className='form-group'>
     <input
+      className='form-control'
       type={type}
       value={value}
-      onChange={onChange}
+      onChange={e => onChange(e.target.value)}
       onBlur={onBlur}
       onFocus={onFocus}
       placeholder={label}
       disabled={submitting}
-      synthetic
     />
   </div>
 )
 
-class LoginForm extends Component {
-  render() {
-    // The Field prop is the unique form field component bound to the wrapping form
-    const { Field, submitting, submitted, submitSuccess } = this.props
-    return (
-      <div>
-        <Field
-          render={Input}
-          name='email'
-          label='Email'
-        />
-        <Field
-          render={Input}
-          name='password'
-          type='password'
-          label='Password'
-        />
-        <div>
-          <button type='reset' disabled={submitting}>Reset</button>
-          <button type='submit' disabled={submitting}>Login</button>
-        </div>
-        {
-          <p>
-            {submitted && !submitting && `Login ${submitSuccess ? 'OK' : 'FAIL'}`}
-            {submitted && submitting && 'Logging in...'}
-          </p>
-        }
-      </div>
-    )
-  }
+const LoginForm = ({Field, submitting, submitted, submitSuccess}) => (
+  <div className='col-xs-12 col-md-6 col-lg-3'>
+    <Field
+      render={Input}
+      name='email'
+      label='Email'
+    />
+    <Field
+      render={Input}
+      name='password'
+      type='password'
+      label='Password'
+    />
+    <div>
+      <button className='btn btn-light' type='reset' disabled={submitting}>Reset</button>
+      <button className='btn btn-primary' type='submit' disabled={submitting}>Login</button>
+    </div>
+    {
+      <p>
+        {submitted && !submitting && `Login ${submitSuccess ? 'OK' : 'FAIL'}`}
+        {submitted && submitting && 'Logging in...'}
+      </p>
+    }
+  </div>
+)
+
+export const onLoginSubmitSync = (values) => {
+  console.log('Submitted form with values', values)
+  return (values.email === 'test@test.com' && values.password === '12345')
 }
 
-export default class App extends Component {
-  onSubmit = values => new Promise((resolve, reject) => {
-    // Simulate server call with timeout
-    console.log('Submitted form with values', values)
-    const result = values.email === 'test@test.com' && values.password === '12345' ? resolve : reject
-    setTimeout(result, 100)
-  })
-
-  render() {
-    return <Formz render={LoginForm} onSubmit={this.onSubmit} />
-  }
-}
+export const BasicExample = () => <Formz render={LoginForm} onSubmit={onLoginSubmitSync}/>
 ```
 
 ## Why not use redux-form if I'm using redux?
@@ -103,10 +91,8 @@ export default class App extends Component {
 
 When a redux action gets called, it triggers a full redux cycle, which includes calling all the reducer functions. When combined with React using the go-to `react-redux` library and the `connect` HOC, after all the reducers where called, and redux now holds the updated state, all the "connected" components will be called, triggering all the `mapStateToProps` and `mapDispatchToProps`. In a large application, there can 100's of reducers and 100's of connected components rendered at a given time - THAT IS A LOT OF FUNCTION CALLS. The result is that for each key press inside an input for example, we get this huge overhead, where in most cases, we only want to update the input value.
 
-Unlike `redux-form`, Formz takes a different path. By understanding that in 99% of the time, the only section in the app that cares about the form state, it the actual form itself, it keeps the form state in an internal component state (in the `Formz` component) and gives the form component a way to interact with this state using the `Field` component. In that case, when you update a field value for example by typing into an input, ONLY THE FORM is re-rendered. That is a lot less performance demanding, and much easier to understand. If you still need some of the form data / state external to the form, you can always use the `Formz` callback props to "listen" to changes in the values, validations, submission etc.
+Unlike `redux-form`, Formz takes a different path. By understanding that in 99% of the time, the only section in the app that cares about the form state, is the actual form itself, it keeps the form state in an internal component state (in the `Formz` component) and gives the form component a way to interact with this state using the `Field` component. In that case, when you update a field value for example by typing into an input, ONLY THE FORM is re-rendered. That is a lot less performance demanding, and much easier to understand. If you still need some form data / state external to the form, you can always use the `Formz` callback props to "listen" to changes in the values, validations, submission etc.
 
 ---
 
 For more information and API docs, visit [https://ron-dadon.github.io/formz](https://ron-dadon.github.io/formz)
-
-_Formz is still under active development, but it is stable and already used in production applications, so no breaking changes will be introduced unless those cannot be avoided._
