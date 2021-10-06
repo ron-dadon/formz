@@ -1,9 +1,9 @@
 import React from 'react'
 import './init'
 import { shallow, mount } from 'enzyme'
-import Formz from '../src/lib/components/Formz'
-import formzRenderPropTypes from '../src/lib/propTypes/formzRenderPropTypes'
-import fieldRenderPropTypes from '../src/lib/propTypes/fieldRenderPropTypes'
+import Formz from '../src/components/Formz'
+import formzRenderPropTypes from '../src/propTypes/formzRenderPropTypes'
+import fieldRenderPropTypes from '../src/propTypes/fieldRenderPropTypes'
 
 const FormRenderComponent = () => <div />
 
@@ -211,7 +211,7 @@ describe('Formz validation', () => {
     const testValidators = {
       startWithA: ({ value }) => value.startsWith('A') || 'Must start with A',
       endWithB: ({ value }) => new Promise((resolve) => {
-        setImmediate(() => resolve(value.endsWith('B') || 'Must end with B'))
+        setTimeout(() => resolve(value.endsWith('B') || 'Must end with B'), 0)
       }),
       dependOnProp: ({ value, props: { maxlen } }) => value.length <= maxlen || `Value is longer than ${maxlen}`,
     }
@@ -388,7 +388,6 @@ describe('Formz validation', () => {
     const fieldComponent = comp
       .find('FormRenderComponentWithField')
       .find('Field')
-    const fieldRenderComponent = fieldComponent.find('FieldRender')
 
     it('should fail required validation after it is registered', () => {
       const testFieldState = comp.state().fields.test
@@ -699,4 +698,3 @@ describe('Formz submit form', () => {
     })
   })
 })
-

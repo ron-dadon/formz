@@ -1,9 +1,0 @@
-docs
-src
-tests
-docs-test
-.idea
-.babelrc
-.gitignore
-webpack.config.js
-yarn-error.log

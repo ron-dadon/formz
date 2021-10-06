@@ -1,16 +1,10 @@
 # See https://help.github.com/ignore-files/ for more about ignoring files.
 
-# dependencies
-/node_modules
-
-# lib
-/lib
-
-# docs testing
-/docs-test
-
-# ide
-/.idea
+node_modules
+build
+dist
+.cache
+.idea
 
 # misc
 .DS_Store

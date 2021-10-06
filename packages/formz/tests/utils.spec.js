@@ -3,14 +3,14 @@ import {
   isFunction, required, getFormValues, getFormErrors, getFormIsValid,
   getFormPristine, getFormTouched, isFieldValid, calculateFieldErrors,
   executeModifiersPipeline, extractAsyncErrors, extractSyncErrors, shallowEqualObjects
-} from '../src/lib/utils'
+} from '../src/utils'
 import {
   cleanFormzRenderPropTypes,
   cleanFieldRenderPropTypes,
   cleanProps,
   fieldRenderPropTypes,
   formzRenderPropTypes
-} from '../src/lib'
+} from '../src'
 
 describe('isFunction', () => {
   it('should return true when provided with a function', () => {

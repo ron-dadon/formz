@@ -1,0 +1,51 @@
+{
+  "name": "formz",
+  "description": "Painless React forms",
+  "version": "1.0.0",
+  "license": "MIT",
+  "repository": "https://github.com/ron-dadon/formz",
+  "keywords": [
+    "formz",
+    "react",
+    "react-dom",
+    "form",
+    "forms",
+    "field",
+    "fields",
+    "validation",
+    "validations",
+    "parser",
+    "parsers",
+    "formatter",
+    "formatters"
+  ],
+  "main": "dist/index.js",
+  "devDependencies": {
+    "@babel/cli": "7.15.7",
+    "@babel/core": "7.15.5",
+    "babel-jest": "27.2.4",
+    "babel-loader": "8.1.0",
+    "@babel/preset-env": "7.15.6",
+    "@babel/preset-react": "7.14.5",
+    "enzyme": "3.11.0",
+    "@wojtekmaj/enzyme-adapter-react-17": "0.6.3",
+    "enzyme-to-json": "3.6.2",
+    "jest": "27.2.4",
+    "jsdom": "17.0.0",
+    "jsdom-global": "3.0.2"
+  },
+  "peerDependencies": {
+    "prop-types": ">= 16",
+    "react": ">= 16"
+  },
+  "jest": {
+    "testEnvironment": "jsdom"
+  },
+  "scripts": {
+    "build": "babel src --out-dir dist",
+    "build:patch": "yarn build && npm version patch",
+    "build:minor": "yarn build && npm version minor",
+    "build:major": "yarn build && npm version major",
+    "test": "jest ."
+  }
+}
