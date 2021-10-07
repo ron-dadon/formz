@@ -388,6 +388,7 @@ describe('Formz validation', () => {
     const fieldComponent = comp
       .find('FormRenderComponentWithField')
       .find('Field')
+    const fieldRenderComponent = fieldComponent.find('FieldRender')
 
     it('should fail required validation after it is registered', () => {
       const testFieldState = comp.state().fields.test
