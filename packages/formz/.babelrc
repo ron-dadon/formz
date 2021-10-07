@@ -1,7 +1,17 @@
 {
-  "presets": [
-    "@babel/env",
-    "@babel/react",
-    "minify"
-  ]
+  "env": {
+    "development": {
+      "presets": [
+        "@babel/env",
+        "@babel/react",
+        "minify"
+      ]
+    },
+    "test": {
+      "presets": [
+        "@babel/env",
+        "@babel/react"
+      ]
+    }
+  }
 }

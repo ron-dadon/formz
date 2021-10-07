@@ -315,7 +315,7 @@ describe('Formz validation', () => {
   })
 
   describe('onValidation hook', () => {
-    const FieldRender = () => <div />
+    const FieldRender = () => <div>Render</div>
     const FormRenderComponentWithField = ({ Field }) => (
       <div><Field name="test" render={FieldRender} required /></div>
     )
@@ -388,7 +388,6 @@ describe('Formz validation', () => {
     const fieldComponent = comp
       .find('FormRenderComponentWithField')
       .find('Field')
-    const fieldRenderComponent = fieldComponent.find('FieldRender')
 
     it('should fail required validation after it is registered', () => {
       const testFieldState = comp.state().fields.test
