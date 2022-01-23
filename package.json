@@ -1,7 +1,7 @@
 {
   "private": "true",
   "workspaces": [
-    "packages/*"
+    "packages/**/*"
   ],
   "license": "MIT",
   "repository": "https://github.com/ron-dadon/formz",
