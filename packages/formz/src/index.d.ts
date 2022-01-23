@@ -4,6 +4,8 @@ export declare function useFormzContext(): FormzContextResult
 
 export declare function useFormzField(field: FieldInput): FieldResult
 
+type ValuesType = { [field: string]: any }
+
 interface OnSubmitArguments {
   values: object
 }
@@ -22,31 +24,34 @@ interface FormzResult {
 interface FormzContextResult {
   form: FormState
   fields: { [fieldName: string]: FieldState }
-  values: object
+  values: ValuesType
 }
 
-interface FormState {
+interface MetaState {
   valid: boolean
   invalid: boolean
   touched: boolean
   untouched: boolean
   pristine: boolean
+}
+
+interface FormState extends MetaState {
   errors: { [fieldName: string]: string }
+  submitCount: number
+  submitting: boolean
+  submitted: boolean
+  submitSuccess: boolean
+  submitError: boolean | Error
 }
 
-interface FieldState {
-  valid: boolean
-  invalid: boolean
-  touched: boolean
-  untouched: boolean
-  pristine: boolean
-  error: string
+interface FieldState extends MetaState {
+  error?: boolean | string
 }
 
 interface ValidateInput {
   name: string
   value: any
-  values: { [key: string]: any }
+  values: ValuesType
 }
 
 interface FieldInput {

@@ -280,6 +280,7 @@ const createFormzProvider = () => {
         },
       }))
       try {
+        const submitValues = convertToDeepObject(state.values)
         await Promise.all(
           Object.entries(state.fields).map(async ([name, { validate }]) => {
             try {
@@ -296,7 +297,7 @@ const createFormzProvider = () => {
             }
           })
         )
-        const submitResult = await onSubmit({ values: convertToDeepObject(state.values) })
+        const submitResult = await onSubmit({ values: submitValues })
         setState((current) => ({
           ...current,
           form: { ...current.form, submitSuccess: true },
