@@ -1,6 +1,6 @@
 {
-  "name": "@formz/core",
-  "description": "Painless React forms with the magic of hooks",
+  "name": "@formz/utils",
+  "description": "Utilities for quick @formz development",
   "version": "1.0.0",
   "license": "MIT",
   "repository": "https://github.com/ron-dadon/formz",
@@ -21,7 +21,6 @@
   ],
   "type": "module",
   "main": "src/index.js",
-  "typings": "src/index.d.ts",
   "devDependencies": {
     "@babel/cli": "7.16.8",
     "@babel/core": "7.16.10",
@@ -33,7 +32,8 @@
     "prettier": "2.5.1"
   },
   "peerDependencies": {
-    "react": ">= 17"
+    "react": ">= 17",
+    "@formz/core": "1.0.0"
   },
   "jest": {
     "testEnvironment": "jsdom"
