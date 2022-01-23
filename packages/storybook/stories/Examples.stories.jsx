@@ -103,28 +103,3 @@ export const Simple = () => {
     </Form>
   )
 }
-
-export const SubmitError = () => {
-  const { Form } = useFormz()
-
-  const onSubmit = async ({ values }) => {
-    console.log('VALUES', values)
-    await sleep(1000)
-  }
-
-  return (
-    <Form
-      onSubmit={onSubmit}
-      formProps={{
-        noValidate: true,
-      }}
-    >
-      <ValidatedNameField />
-      <DateField />
-      <AgeField />
-      <Gender />
-      <SubmitResult />
-      <FormButtons />
-    </Form>
-  )
-}

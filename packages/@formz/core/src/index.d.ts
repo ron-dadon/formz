@@ -92,7 +92,6 @@ interface FieldInput {
   validate?: ValidationFunction
   parse?: (value: any) => any
   format?: (value: any) => any
-  validateOnInit?: boolean
   validateOnBlur?: boolean
   validateOnChange?: boolean
 }
@@ -100,7 +99,7 @@ interface FieldInput {
 interface FieldInputProps {
   value: any
   onChange: (value: any) => void
-  onBlur: (event: object) => void
+  onBlur: (event?: object) => void
 }
 
 interface FieldResult extends FormzContextResult {

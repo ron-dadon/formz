@@ -43,28 +43,24 @@ export const useFormzField = ({
 
   useEffect(() => {
     formState.mountField({ name, defaultValue, validate })
-    validateOnInit &&
-      triggerValidation({
-        value: defaultValue,
-        values: { ...values, [name]: defaultValue },
-        validate,
-      })
     return () => formState.unmountField({ name })
   }, [])
 
   const onChangeHandler = (e) => {
-    const newValue = parse ? parse(e) : e?.target?.value || null
+    const newValue = parse ? parse(e) : e?.target?.value || e
     setFieldValue({ name, value: newValue })
-    validateOnChange &&
+    return (
+      validateOnChange &&
       triggerValidation({
         value: newValue,
         values: { ...values, [name]: newValue },
       })
+    )
   }
 
   const onBlur = () => {
     setFieldTouched({ name })
-    validateOnBlur && triggerValidation({ value, values })
+    return validateOnBlur && triggerValidation({ value, values })
   }
 
   const currentValue = mounted ? value : defaultValue
