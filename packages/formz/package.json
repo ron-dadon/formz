@@ -20,8 +20,8 @@
     "formatters"
   ],
   "type": "module",
-  "main": "src/index.js",
-  "typings": "src/index.d.ts",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
   "devDependencies": {
     "@babel/cli": "7.16.8",
     "@babel/core": "7.16.10",
@@ -48,7 +48,7 @@
     "singleQuote": true
   },
   "scripts": {
-    "build": "NODE_ENV=production babel src --out-dir dist",
+    "build": "NODE_ENV=production babel src --out-dir dist && cp src/index.d.ts dist/index.d.ts",
     "test": "jest ."
   }
 }

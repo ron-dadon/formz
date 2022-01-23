@@ -3,6 +3,12 @@
     "development": {
       "presets": [
         "@babel/env",
+        "@babel/react"
+      ]
+    },
+    "production": {
+      "presets": [
+        "@babel/env",
         "@babel/react",
         "minify"
       ]
