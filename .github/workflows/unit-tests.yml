@@ -19,5 +19,5 @@ jobs:
           node-version: "16"
       - run: yarn install
       - run: yarn build:core
-      - run: yarn build:storybook
+      - run: yarn build:docs
       - run: yarn test
