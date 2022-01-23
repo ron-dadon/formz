@@ -1,10 +1,12 @@
 export declare function useFormz(): FormzResult
 
-export declare function useFormzContext(): FormzContextResult
+export declare function useFormzContext(): FormzFullContextResult
 
 export declare function useFormzField(field: FieldInput): FieldResult
 
 type ValuesType = { [field: string]: any }
+type FormPropsGenerator = (context: FormzContextResult) => object
+type ValidationFunction = (validateInput: ValidateInput) => Promise<any>
 
 interface OnSubmitArguments {
   values: object
@@ -12,7 +14,7 @@ interface OnSubmitArguments {
 
 interface FormProps {
   onSubmit: (args: OnSubmitArguments) => Promise<any>
-  formProps?: object
+  formProps?: object | FormPropsGenerator
   onSubmitSuccess?: (any) => void
   onSubmitError?: (Error) => void
 }
@@ -25,6 +27,36 @@ interface FormzContextResult {
   form: FormState
   fields: { [fieldName: string]: FieldState }
   values: ValuesType
+}
+
+interface FieldInput {
+  name: string
+}
+
+interface MountFieldInput extends FieldInput {
+  defaultValue?: any
+  validate?: ValidationFunction
+}
+
+interface SetFieldErrorInput extends FieldInput {
+  error: string | Error
+}
+
+interface SetFieldValueInput extends FieldInput {
+  value: any
+}
+
+interface FormzFullContextResult extends FormzContextResult {
+  mountField: (field: MountFieldInput) => void
+  unmountField: (field: FieldInput) => void
+  setFieldTouched: (field: FieldInput) => void
+  setFieldError: (field: SetFieldErrorInput) => void
+  setValidating: (field: FieldInput) => void
+  clearFieldError: (field: FieldInput) => void
+  setFieldValue: (field: SetFieldValueInput) => void
+  resetField: (field: FieldInput) => void
+  reset: (e?: Event) => void
+  submit: (e?: Event) => void
 }
 
 interface MetaState {
@@ -57,7 +89,7 @@ interface ValidateInput {
 interface FieldInput {
   name: string
   defaultValue?: any
-  validate?: (validateInput: ValidateInput) => Promise<any>
+  validate?: ValidationFunction
   parse?: (value: any) => any
   format?: (value: any) => any
   validateOnInit?: boolean

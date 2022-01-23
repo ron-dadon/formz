@@ -3,9 +3,14 @@ import { addParameters } from '@storybook/react'
 
 export const parameters = {
   actions: { argTypesRegex: '^on[A-Z].*' },
-  // docs: {
-  //   theme: themes.light,
-  // },
+  options: {
+    storySort: {
+      order: ['Getting Started', 'API', 'Examples'],
+    },
+  },
+  docs: {
+    theme: themes.dark,
+  },
   controls: {
     matchers: {
       color: /(background|color)$/i,

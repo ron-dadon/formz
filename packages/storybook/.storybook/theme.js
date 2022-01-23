@@ -2,7 +2,7 @@ import { create } from '@storybook/theming'
 import Logo from '../stories/assets/formz-logo.svg'
 
 export default create({
-  base: 'light',
+  base: 'dark',
   brandTitle: 'Formz',
   brandUrl: 'https://example.com',
   brandImage: Logo,

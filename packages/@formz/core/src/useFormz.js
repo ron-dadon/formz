@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react'
 import { FormzContext } from './FormzContext.js'
 
-const defaultMetaState = {
+export const defaultMetaState = {
   invalid: false,
   valid: true,
   validating: false,
@@ -10,7 +10,7 @@ const defaultMetaState = {
   pristine: true,
 }
 
-const createDefaultFieldState = ({ defaultValue = null, validate }) => ({
+const createDefaultFieldState = ({ defaultValue, validate }) => ({
   ...defaultMetaState,
   defaultValue,
   validate,
@@ -74,10 +74,16 @@ const createFormzProvider = () => {
     if (!onSubmit || typeof onSubmit !== 'function')
       throw new Error('`onSubmit` prop is required in Form')
 
+    if (
+      (formProps && typeof formProps !== 'function' && typeof formProps !== 'object') ||
+      Array.isArray(formProps)
+    )
+      throw new Error('`formProps` prop can be an object or a function')
+
     const [state, setState] = useState(defaultFormState)
 
     const mountField = useCallback(
-      ({ name, defaultValue = null, validate }) => {
+      ({ name, defaultValue, validate }) => {
         setState((current) => ({
           ...current,
           fields: {
@@ -131,9 +137,7 @@ const createFormzProvider = () => {
     const setFieldError = useCallback(
       ({ name, error: rawError }) => {
         setState((current) => {
-          const error = rawError?.message || rawError
-          if (current.fields[name].error === error) return current
-
+          const error = (rawError instanceof Error && rawError?.message) || rawError
           const currentFields = {
             ...current.fields,
             [name]: {
@@ -243,37 +247,45 @@ const createFormzProvider = () => {
       [setState]
     )
 
-    const reset = useCallback(() => {
-      setState((current) => {
-        const fields = Object.entries(current.fields).reduce(
-          (newFields, [name, { defaultValue }]) => ({
-            ...newFields,
-            [name]: createDefaultFieldState({ defaultValue }),
-          }),
-          {}
-        )
-        const values = Object.entries(current.fields).reduce(
-          (newValues, [name, { defaultValue }]) => ({
-            ...newValues,
-            [name]: defaultValue,
-          }),
-          {}
-        )
-        return {
-          ...defaultFormState,
-          fields,
-          values,
-        }
-      })
-    }, [setState])
+    const reset = useCallback(
+      (e) => {
+        if (e?.preventDefault) e.preventDefault()
 
-    const submit = async () => {
+        setState((current) => {
+          const fields = Object.entries(current.fields).reduce(
+            (newFields, [name, { defaultValue }]) => ({
+              ...newFields,
+              [name]: createDefaultFieldState({ defaultValue }),
+            }),
+            {}
+          )
+          const values = Object.entries(current.fields).reduce(
+            (newValues, [name, { defaultValue }]) => ({
+              ...newValues,
+              [name]: defaultValue,
+            }),
+            {}
+          )
+          return {
+            ...defaultFormState,
+            fields,
+            values,
+          }
+        })
+      },
+      [setState]
+    )
+
+    const submit = async (e) => {
+      if (e?.preventDefault) e.preventDefault()
+
       if (state.form.submitting) throw new Error('Cannot submit form more than once every time')
       setState((current) => ({
         ...current,
         form: {
           ...current.form,
           submitting: true,
+          submitted: false,
           submitSuccess: false,
           submitError: false,
           submitCount: current.form.submitCount + 1,
@@ -281,7 +293,7 @@ const createFormzProvider = () => {
       }))
       try {
         const submitValues = convertToDeepObject(state.values)
-        await Promise.all(
+        const validationResults = await Promise.allSettled(
           Object.entries(state.fields).map(async ([name, { validate }]) => {
             try {
               if (validate) {
@@ -294,9 +306,13 @@ const createFormzProvider = () => {
               clearFieldError({ name })
             } catch (error) {
               setFieldError({ name, error })
+              throw error
             }
           })
         )
+        if (validationResults.some(({ status }) => status === 'rejected')) {
+          throw new Error('Validation error')
+        }
         const submitResult = await onSubmit({ values: submitValues })
         setState((current) => ({
           ...current,
@@ -334,9 +350,16 @@ const createFormzProvider = () => {
       }),
       [state]
     )
+
     return (
       <FormzContext.Provider value={formState}>
-        <form {...formProps}>{children}</form>
+        <form
+          {...(typeof formProps === 'function' ? formProps(state) : formProps)}
+          onSubmit={submit}
+          onReset={reset}
+        >
+          {children}
+        </form>
       </FormzContext.Provider>
     )
   }

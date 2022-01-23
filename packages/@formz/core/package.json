@@ -20,7 +20,7 @@
     "formatters"
   ],
   "type": "module",
-  "main": "dist/index.js",
+  "main": "src/index.js",
   "typings": "dist/index.d.ts",
   "devDependencies": {
     "@babel/cli": "7.16.8",
@@ -30,6 +30,7 @@
     "babel-preset-minify": "0.5.1",
     "jest": "27.4.7",
     "@testing-library/react-hooks": "7.0.2",
+    "@testing-library/react": "12.1.2",
     "prettier": "2.5.1",
     "regenerator-runtime": "0.13.9"
   },

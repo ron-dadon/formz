@@ -1,4 +1,5 @@
 import { useFormzField } from '@formz/core'
+import { classnames } from '../utils'
 
 export const Input = ({
   name,
@@ -36,9 +37,9 @@ export const Input = ({
         type={type}
         placeholder={placeholder}
         disabled={submitting}
-        className="form-control"
+        className={classnames('form-control', { 'is-invalid': invalid })}
       />
-      {invalid && <div className="form-text">{error}</div>}
+      {invalid && <div className="invalid-feedback">{error}</div>}
     </div>
   )
 }
@@ -78,7 +79,7 @@ export const Select = ({
         {...props}
         placeholder={placeholder}
         disabled={submitting}
-        className="form-control"
+        className={classnames('form-control', { 'is-invalid': invalid })}
       >
         {Object.entries(options).map(([option, label]) => (
           <option key={option} value={option}>
@@ -86,7 +87,7 @@ export const Select = ({
           </option>
         ))}
       </select>
-      {invalid && <div className="form-text">{error}</div>}
+      {invalid && <div className="invalid-feedback">{error}</div>}
     </div>
   )
 }

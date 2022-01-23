@@ -1,0 +1,32 @@
+import { Meta } from '@storybook/addon-docs';
+
+<Meta title="Getting Started" />
+
+# Overview
+
+Formz was created in 2018 by Ron Dadon while working at Samanage (acquired by SolarWinds in 2019)
+in order to solve the problem of form state handling in React. Until that point, `redux-form` was
+the de-facto form library, especially when `redux` was already in use by the application.
+
+Coming over to React from AngularJS (R.I.P), I felt a bit overwhalmed by the amount of code required
+to make forms work, and later as I got to know and understand `redux` better, I've found myself
+wondering why should I update a global state store everytime a temporary internal form state is
+updated.
+
+Searching the web at that time, did not lead me to any library I really liked, so Formz was born.
+
+It is in use by the Service Desk application since than, in production, with 1000's of active users
+using forms it handles on a daily basis.
+
+React has changed a lot since 2018, and the library was updated in the beginning of 2022 to be a
+pure hooks based library, and moving state to context instead of internal class state. At that time,
+the library was also split under the `@formz` namespace, with `@formz/core` containing all the core
+functionality, and other utilities / framework integrations will be released under the `@formz`
+namespace as separate libraries.
+
+<div class="alert alert-success">Formz has a tiny foot print, with <strong>no external dependencies at all</strong>, getting into a whopping <strong>8KB</strong> only
+when gzipped!</div>
+
+# Install
+
+`npm install @formz/core` OR `yarn add @formz/core`
