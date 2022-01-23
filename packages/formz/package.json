@@ -30,13 +30,17 @@
     "babel-preset-minify": "0.5.1",
     "jest": "27.4.7",
     "@testing-library/react-hooks": "7.0.2",
-    "prettier": "2.5.1"
+    "prettier": "2.5.1",
+    "regenerator-runtime": "0.13.9"
   },
   "peerDependencies": {
     "react": ">= 17"
   },
   "jest": {
-    "testEnvironment": "jsdom"
+    "testEnvironment": "jsdom",
+    "setupFilesAfterEnv": [
+      "./tests/setup.js"
+    ]
   },
   "prettier": {
     "printWidth": 100,
