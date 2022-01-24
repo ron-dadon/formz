@@ -12,7 +12,7 @@
 
 
 Formz is a React form library based on hooks, designed from the ground up to be as efficient, robust
-and easy to understand as possible. With a size of **8kb gzipped**, it packs in a full form state
+and easy to understand as possible. With a size of **4kb gzipped**, it packs in a full form state
 management engine, including validations, values parsing & formatting and much more.
 
 ## Installation
