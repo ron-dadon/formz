@@ -1,5 +1,5 @@
 import React from 'react'
-import { useFormz } from '@formz/core'
+import { useFormz } from 'formz'
 import { Input, Select } from './components/Input'
 import { FormButtons, SubmitResult } from './components/Buttons'
 import { sleep } from './utils'

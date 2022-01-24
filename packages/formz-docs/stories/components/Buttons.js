@@ -1,4 +1,4 @@
-import { useFormzContext } from '@formz/core'
+import { useFormzContext } from 'formz'
 import { classnames } from '../utils'
 
 export const SubmitButton = () => {

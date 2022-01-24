@@ -1,5 +1,5 @@
 import React from 'react'
-import { useFormzContext, useFormzField } from '@formz/core'
+import { useFormzContext, useFormzField } from 'formz'
 
 export const useFormzDebugger = ({ values, form, fields }) => {
   const { values: contextValues, form: contextForm, fields: contextFields } = useFormzContext()

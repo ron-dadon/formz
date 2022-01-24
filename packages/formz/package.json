@@ -1,7 +1,7 @@
 {
-  "name": "@formz/core",
+  "name": "formz",
   "description": "Painless React forms with the magic of hooks",
-  "version": "0.1.0",
+  "version": "2.0.0",
   "license": "MIT",
   "repository": "https://github.com/ron-dadon/formz",
   "keywords": [
@@ -20,7 +20,7 @@
     "formatters"
   ],
   "type": "module",
-  "main": "src/index.js",
+  "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "devDependencies": {
     "@babel/cli": "7.16.8",

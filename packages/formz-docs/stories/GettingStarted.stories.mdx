@@ -7,7 +7,7 @@ import Logo from './assets/formz-logo.svg'
 
 ## Overview
 
-Formz was created in 2018 by Ron Dadon while working at Samanage (acquired by SolarWinds in 2019)
+Formz was created in 2018 by [Ron Dadon](https://github.com/ron-dadon) while working at [Samanage](https://www.linkedin.com/company/samanage) (acquired by SolarWinds in 2019)
 in order to solve the problem of form state handling in React. Until that point, `redux-form` was
 the de-facto form library, especially when `redux` was already in use by the application.
 
@@ -18,25 +18,30 @@ updated.
 
 Searching the web at that time, did not lead me to any library I really liked, so Formz was born.
 
-It is in use by the Service Desk application since than, in production, with 1000's of active users
+It is in use by the [Service Desk](https://www.solarwinds.com/service-desk) application since than, in production, with 1000's of active users
 using forms it handles on a daily basis.
 
 React has changed a lot since 2018, and the library was completely written in the beginning of 2022
 to be a pure hooks based library, and moving state to context instead of internal class state.
-At that time, the library was also split under the `@formz` namespace, with `@formz/core` containing
+At that time, the library was also split, with `formz` containing
 all the core functionality, and other utilities / framework integrations will be released under the
-`@formz` namespace as separate libraries.
+`formz-*` as separate libraries.
 
 <div class="alert alert-success">Formz has a tiny foot print, with <strong>no external dependencies at all</strong>, resulting in a <strong>8KB</strong> only
 when gzipped!</div>
 
 ## Install
 
-`npm install @formz/core` OR `yarn add @formz/core`
+`npm install formz` OR `yarn add formz`
 
 ## License
 
 The library is released under the MIT license.
 
-## Old library
-<div class="alert alert-warning">The original formz library is considered deprecated at this point. Only critical bug fixes will be applied to it if needed.</div>
+## Previous versions
+
+Version 2 is a complete re-write and it is **not** backward compatible at all. Some features were
+dropped during the rewrite after learning that they are rarely to never used.
+
+<div class="alert alert-warning">The first version of the library is considered deprecated at this point. Only critical bug fixes will be applied to it if needed.</div>
+

@@ -1,6 +1,6 @@
 {
-  "name": "@formz/utils",
-  "description": "Utilities for quick @formz development",
+  "name": "formz-utils",
+  "description": "Utilities for quick formz development",
   "version": "0.1.0",
   "license": "MIT",
   "repository": "https://github.com/ron-dadon/formz",
@@ -33,7 +33,7 @@
   },
   "peerDependencies": {
     "react": ">= 17",
-    "@formz/core": ">= 0.1"
+    "formz": ">= 2"
   },
   "jest": {
     "testEnvironment": "jsdom"

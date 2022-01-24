@@ -1,4 +1,4 @@
-import { useFormzField } from '@formz/core'
+import { useFormzField } from 'formz'
 import { classnames } from '../utils'
 
 export const Input = ({

@@ -1,6 +1,6 @@
 import { Meta } from '@storybook/addon-docs';
 
-<Meta title="API/core" />
+<Meta title="API" />
 
 # Hooks
 
@@ -22,7 +22,7 @@ None.
 ### Example
 
 ```jsx
-import { useFormz } from '@formz/core'
+import { useFormz } from 'formz'
 
 const MyForm = () => {
   const onSubmit = async ({ values }) => console.log(values)
@@ -57,7 +57,7 @@ None.
 ### Example
 
 ```jsx
-import { useFormzContext, useFormz } from '@formz/core'
+import { useFormzContext, useFormz } from 'formz'
 
 const MyFormState = () => {
   const { values, fields, form } = useFormzContext()
@@ -127,7 +127,7 @@ Defines a field in the form and provides access to the field internal state and 
 ### Example
 
 ```jsx
-import { useFormzField, useFormz } from '@formz/core'
+import { useFormzField, useFormz } from 'formz'
 
 const NameInput = () => {
   const { inputProps } = useFormzField({ name: 'fullName', defaultValue: '' })
