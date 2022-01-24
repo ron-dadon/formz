@@ -102,6 +102,7 @@ Defines a field in the form and provides access to the field internal state and 
 
 |Name|Description|
 |----|-----------|
+|`ready`|Is the field ready to use, will be `false` for the first render since it will only "register" the field during the mounting of the component|
 |`form`|The internal state of the form|
 |`fields`|A map of `<field name, field state>` providing all the internal state of each field in the form|
 |`values`|The raw values of the entire form|

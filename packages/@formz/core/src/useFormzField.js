@@ -9,7 +9,6 @@ export const useFormzField = ({
   format,
   validateOnChange = false,
   validateOnBlur = true,
-  validateOnInit = false,
 }) => {
   const formState = useContext(FormzContext)
   const {
@@ -66,6 +65,7 @@ export const useFormzField = ({
   const currentValue = mounted ? value : defaultValue
   const formattedValue = format ? format(currentValue) : currentValue
   return {
+    ready: mounted,
     form,
     values,
     fields,

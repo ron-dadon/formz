@@ -1,0 +1,23 @@
+{
+  "env": {
+    "development": {
+      "presets": [
+        "@babel/env",
+        "@babel/react"
+      ]
+    },
+    "production": {
+      "presets": [
+        "@babel/env",
+        "@babel/react",
+        "minify"
+      ]
+    },
+    "test": {
+      "presets": [
+        "@babel/env",
+        "@babel/react"
+      ]
+    }
+  }
+}

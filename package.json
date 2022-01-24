@@ -24,6 +24,7 @@
     "test": "yarn workspace @formz/core test",
     "docs": "yarn workspace @formz/docs start",
     "build:core": "yarn workspace @formz/core build",
-    "build:docs": "yarn workspace @formz/docs build"
+    "build:docs": "yarn workspace @formz/docs build",
+    "build:utils": "yarn workspace @formz/utils build"
   }
 }

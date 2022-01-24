@@ -103,6 +103,7 @@ interface FieldInputProps {
 }
 
 interface FieldResult extends FormzContextResult {
+  ready: boolean
   field: FieldState
   rawValue: any
   value: any

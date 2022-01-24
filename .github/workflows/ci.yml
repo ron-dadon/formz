@@ -1,4 +1,4 @@
-name: Unit Tests
+name: CI
 
 on:
   push:
@@ -20,4 +20,5 @@ jobs:
       - run: yarn install
       - run: yarn build:core
       - run: yarn build:docs
+      - run: yarn build:utils
       - run: yarn test

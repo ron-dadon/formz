@@ -33,7 +33,7 @@
   },
   "peerDependencies": {
     "react": ">= 17",
-    "@formz/core": "1.0.0"
+    "@formz/core": ">= 1"
   },
   "jest": {
     "testEnvironment": "jsdom"
