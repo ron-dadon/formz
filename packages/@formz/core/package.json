@@ -1,7 +1,7 @@
 {
   "name": "@formz/core",
   "description": "Painless React forms with the magic of hooks",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "license": "MIT",
   "repository": "https://github.com/ron-dadon/formz",
   "keywords": [
@@ -47,6 +47,10 @@
     "printWidth": 100,
     "semi": false,
     "singleQuote": true
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   },
   "scripts": {
     "build": "NODE_ENV=production babel src --out-dir dist && cp src/index.d.ts dist/index.d.ts",

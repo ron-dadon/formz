@@ -1,7 +1,7 @@
 {
   "name": "@formz/utils",
   "description": "Utilities for quick @formz development",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "license": "MIT",
   "repository": "https://github.com/ron-dadon/formz",
   "keywords": [
@@ -33,7 +33,7 @@
   },
   "peerDependencies": {
     "react": ">= 17",
-    "@formz/core": ">= 1"
+    "@formz/core": ">= 0.1"
   },
   "jest": {
     "testEnvironment": "jsdom"
@@ -42,6 +42,10 @@
     "printWidth": 100,
     "semi": false,
     "singleQuote": true
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   },
   "scripts": {
     "build": "NODE_ENV=production babel src --out-dir dist",
