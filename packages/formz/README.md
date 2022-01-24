@@ -1,17 +1,17 @@
-# @formz/core
+# Formz
 
-Formz core library, create forms with ease without the pain.
+Formz library, create forms with ease without the pain.
 
 ## Installation
 
 ```bash
-$ npm i @formz/core --save
+$ npm i formz --save
 ``` 
 
 ```bash
-$ yarn add @formz/core
+$ yarn add formz
 ```
 
 ## Requirements
 
-`@formz/core` only has a single peer dependency, `react >= 17`.
+`formz` only has a single peer dependency, `react >= 17`.

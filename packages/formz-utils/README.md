@@ -1,17 +1,17 @@
-# @formz/utils
+# formz-utils
 
-A set of utility functions to make the simple `@formz/core` even simpler.
+A set of utility functions to make the simple `formz` even simpler.
 
 ## Installation
 
 ```bash
-$ npm i @formz/utils --save
+$ npm i formz-utils --save
 ``` 
 
 ```bash
-$ yarn add @formz/utils
+$ yarn add formz-utils
 ```
 
 ## Requirements
 
-`@formz/utils` only has 2 peer dependencies, `react >= 17` and `@formz/core >= 1`.
+`formz-utils` only has 2 peer dependencies, `react >= 17` and `formz >= 2`.
