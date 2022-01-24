@@ -3,6 +3,8 @@
 node_modules
 build
 dist
+storybook-static
+coverage
 .cache
 .idea
 

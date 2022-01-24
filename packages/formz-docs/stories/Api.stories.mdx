@@ -1,0 +1,167 @@
+import { Meta } from '@storybook/addon-docs';
+
+<Meta title="API" />
+
+# Hooks
+
+## useFormz
+
+This hook defines the entry point of the form, providing a `Form` component that provides the
+context to the fields below it.
+
+### Input
+
+None.
+
+### Output
+
+|Name|Description|
+|----|-----------|
+|`Form`|A `Form` component that is the provider for the rest of the form elements|
+
+### Example
+
+```jsx
+import { useFormz } from 'formz'
+
+const MyForm = () => {
+  const onSubmit = async ({ values }) => console.log(values)
+  const { Form } = useFormz()
+
+  return (
+    <Form onSubmit={onSubmit}>
+      <FieldA />
+      <FieldB />
+      <SubmitButton />
+    </Form>
+  )
+}
+```
+
+## useFormzContext
+
+Provides access to the entire form context state in any component rendered under the `Form` provider.
+
+### Input
+
+None.
+
+### Output
+
+|Name|Description|
+|----|-----------|
+|`values`|The current values of all the fields in the form|
+|`fields`|A map of `<field name, field state>` providing all the internal state of each field in the form|
+|`form`|The internal state of the form|
+
+### Example
+
+```jsx
+import { useFormzContext, useFormz } from 'formz'
+
+const MyFormState = () => {
+  const { values, fields, form } = useFormzContext()
+  console.log('Values', values)
+  console.log('Fields', fields)
+  console.log('Form', form)
+  return null
+}
+
+const MyForm = () => {
+  const onSubmit = async ({ values }) => console.log(values)
+  const { Form } = useFormz()
+
+  return (
+    <Form onSubmit={onSubmit}>
+      <MyFormState />
+      <FieldA />
+      <FieldB />
+      <SubmitButton />
+    </Form>
+  )
+}
+```
+
+## useFormzField
+
+Defines a field in the form and provides access to the field internal state and value.
+
+### Input
+
+|Name|Description|Default|Required|
+|----|-----------|-------|--------|
+|`name`|The name of the field. Supports deep object nesting using `.` notation, for example: `user.firstName` will result in the form `values` passed to `onSubmit` with `{ user: { firstName } }`|-|✓|
+|`defaultValue`|The default value of the field|-|𐄂|
+|`validate`|A function that will be called to validate the field value. This function will be called when the form is submitted, or for events where `validateOnX` parameter is true|-|✓|
+|`parse`|A function that will be called with the field value when the field `onChange` is called, and can parse the input value to a different value that will be stored in the form state|-|✓|
+|`format`|A function that will be called with the field stored value and returned as the `value` of the field in the output|-|✓|
+|`validateOnBlur`|Should the `validate` function run when the field is blurred (everytime `onBlur` is called)|`true`|✓|
+|`validateOnChange`|Should the `validate` function run when the field value is changing (everytime `onChange` is called)|`false`|✓|
+
+<div class="alert alert-warning">
+  <strong>⚠️ IMPORTANT</strong> - <code>validate</code> function changes are triggering an update to the form state,
+  since every field <code>validate</code> function is stored in the state in order for it to run before the form
+  is submitted. You must memoized this function using <code>useCallback</code> or any other memoize method so
+  it will not trigger a state update if not really changed.
+
+</div>
+
+### Output
+
+|Name|Description|
+|----|-----------|
+|`ready`|Is the field ready to use, will be `false` for the first render since it will only "register" the field during the mounting of the component|
+|`form`|The internal state of the form|
+|`fields`|A map of `<field name, field state>` providing all the internal state of each field in the form|
+|`values`|The raw values of the entire form|
+|`field`|The field internal state|
+|`rawValue`|The stored value of the field|
+|`value`|The value of the field. If `format` was provided, will be the result of the `format` function, otherwise will be the `rawValue`|
+|`name`|The name of the field|
+|`defaultValue`|The provided `defaultValue` of the field|
+|`inputProps`|A quick set of props that is commonly used by UI elements for interacting with the field, for easy spread on the element|
+|`inputProps.value`|The same as `value`|
+|`inputProps.onChange`|A function that should be called to update the field value|
+|`inputProps.onBlur`|A function that should be called when the field loses focus|
+
+### Example
+
+```jsx
+import { useFormzField, useFormz } from 'formz'
+
+const NameInput = () => {
+  const { inputProps } = useFormzField({ name: 'fullName', defaultValue: '' })
+  return <input {...inputProps} />
+}
+
+const MyForm = () => {
+  const onSubmit = async ({ values }) => console.log(values)
+  const { Form } = useFormz()
+
+  return (
+    <Form onSubmit={onSubmit}>
+      <NameInput />
+      <SubmitButton />
+    </Form>
+  )
+}
+```
+
+# Components
+
+## Form
+
+The `Form` component renders a `FormzContext.Provider` component and passes the entire form state
+to it, so it is available to the `Form` children using the `useFormzContext` or `useField` hooks.
+
+The `children` are wrapped with a `form` tag, and you can provide additional props to it via
+`formProps` prop on the `Form`.
+
+The `Form` component supports the following props:
+
+|Name|Description|Default|Required|
+|----|-----------|-------|--------|
+|`onSubmit`|A callback function that will be called when the form is submitted|-|✓|
+|`formProps`|Props that should be passed on to the `form` tag that is wrapping the `children`. All valid `form` tag props are supported|-|𐄂|
+|`onSubmitSuccess`|A callback function that will be called with the result of `onSubmit` in case of successful submission|-|𐄂|
+|`onSubmitError`|A callback function that will be called with the error of `onSubmit` in case of failed submission|-|𐄂|

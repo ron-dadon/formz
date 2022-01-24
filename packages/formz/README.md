@@ -1,17 +1,17 @@
-# Formz
+# @formz/core
 
-You can find the full documentation at [https://ron-dadon.github.io/formz](https://ron-dadon.github.io/formz) or visit the [github repository](https://github.com/ron-dadon/formz).
+Formz core library, create forms with ease without the pain.
 
 ## Installation
 
 ```bash
-$ npm i formz --save
+$ npm i @formz/core --save
 ``` 
 
 ```bash
-$ yarn add formz
+$ yarn add @formz/core
 ```
 
 ## Requirements
 
-To keep `formz` size to the minimum, it is not compiled with `react` and `prop-types`, but uses them as a peer dependency, so you must have `react` and `prop-types` as a dependency in your project.
+`@formz/core` only has a single peer dependency, `react >= 17`.

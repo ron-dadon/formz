@@ -1,5 +1,5 @@
-src
-tests
-node_modules
+coverage/
+tests/
+node_modules/
 .babelrc
 .npmignore

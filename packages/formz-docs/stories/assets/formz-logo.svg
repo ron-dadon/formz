@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="144"
+     height="144" viewBox="0 0 144 144" enable-background="new 0 0 350 391" xml:space="preserve">
+  <defs>
+    <filter id="drop-shadow-filter-0" x="-500%" y="-500%" width="1000%" height="1000%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="0"></feGaussianBlur>
+        <feOffset dx="6" dy="6"></feOffset>
+        <feComponentTransfer result="offsetblur">
+        <feFuncA id="spread-ctrl" type="linear" slope="0.86"></feFuncA>
+      </feComponentTransfer>
+        <feFlood flood-color="#4d4d4d"></feFlood>
+        <feComposite in2="offsetblur" operator="in"></feComposite>
+        <feMerge>
+        <feMergeNode></feMergeNode>
+            <feMergeNode in="SourceGraphic"></feMergeNode>
+      </feMerge>
+    </filter>
+  </defs>
+    <ellipse style="fill: rgb(0, 255, 251);" cx="72" cy="72" rx="72" ry="72"></ellipse>
+    <g style="filter: url(#drop-shadow-filter-0);"
+       transform="matrix(0.984849, 0, 0, 0.984849, 1.090869, -2.848527)">
+    <rect x="24" y="32" width="96" height="24" style="fill: rgb(255, 255, 255);"></rect>
+        <rect x="24" y="64" width="56" height="24" style="fill: rgb(255, 255, 255);"></rect>
+        <rect x="24" y="96" width="24" height="24" style="fill: rgb(255, 255, 255);"></rect>
+  </g>
+</svg>

@@ -1,7 +1,7 @@
 {
-  "name": "formz",
-  "description": "Painless React forms with the magic of hooks",
-  "version": "2.0.0",
+  "name": "formz-utils",
+  "description": "Utilities for quick formz development",
+  "version": "0.1.0",
   "license": "MIT",
   "repository": "https://github.com/ron-dadon/formz",
   "keywords": [
@@ -20,8 +20,7 @@
     "formatters"
   ],
   "type": "module",
-  "main": "dist/index.js",
-  "typings": "dist/index.d.ts",
+  "main": "src/index.js",
   "devDependencies": {
     "@babel/cli": "7.16.8",
     "@babel/core": "7.16.10",
@@ -30,18 +29,14 @@
     "babel-preset-minify": "0.5.1",
     "jest": "27.4.7",
     "@testing-library/react-hooks": "7.0.2",
-    "@testing-library/react": "12.1.2",
-    "prettier": "2.5.1",
-    "regenerator-runtime": "0.13.9"
+    "prettier": "2.5.1"
   },
   "peerDependencies": {
-    "react": ">= 17"
+    "react": ">= 17",
+    "formz": ">= 2"
   },
   "jest": {
-    "testEnvironment": "jsdom",
-    "setupFilesAfterEnv": [
-      "./tests/setup.js"
-    ]
+    "testEnvironment": "jsdom"
   },
   "prettier": {
     "printWidth": 100,
@@ -53,7 +48,7 @@
     "registry": "https://registry.npmjs.org/"
   },
   "scripts": {
-    "build": "NODE_ENV=production babel src --out-dir dist && cp src/index.d.ts dist/index.d.ts",
+    "build": "NODE_ENV=production babel src --out-dir dist",
     "test": "jest ."
   }
 }

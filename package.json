@@ -1,14 +1,16 @@
 {
   "private": "true",
-  "workspaces": ["packages/*"],
+  "workspaces": [
+    "packages/**/*"
+  ],
   "license": "MIT",
   "repository": "https://github.com/ron-dadon/formz",
   "keywords": [
     "formz",
     "react",
-    "react-dom",
     "form",
     "forms",
+    "hooks",
     "field",
     "fields",
     "validation",
@@ -19,12 +21,10 @@
     "formatters"
   ],
   "scripts": {
-    "build:lib": "yarn workspace formz build",
-    "build:lib:patch": "yarn workspace formz build:patch",
-    "build:lib:minor": "yarn workspace formz build:minor",
-    "build:lib:major": "yarn workspace formz build:major",
-    "build:examples": "yarn workspace examples build",
-    "start:examples": "yarn workspace examples start",
-    "test": "yarn workspace formz test"
+    "test": "yarn workspace formz test",
+    "docs": "yarn workspace formz-docs start",
+    "build": "yarn workspace formz build",
+    "build:docs": "yarn workspace formz-docs build",
+    "build:utils": "yarn workspace formz-utils build"
   }
 }
