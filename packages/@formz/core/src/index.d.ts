@@ -46,9 +46,14 @@ interface SetFieldValueInput extends FieldInput {
   value: any
 }
 
+interface FieldValidationInput extends FieldInput {
+  validate?: ValidationFunction
+}
+
 interface FormzFullContextResult extends FormzContextResult {
   mountField: (field: MountFieldInput) => void
   unmountField: (field: FieldInput) => void
+  setFieldValidation: (field: FieldValidationInput) => void
   setFieldTouched: (field: FieldInput) => void
   setFieldError: (field: SetFieldErrorInput) => void
   setValidating: (field: FieldInput) => void

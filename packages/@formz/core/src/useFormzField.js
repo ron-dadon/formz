@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react'
+import { useContext, useEffect, useRef } from 'react'
 import { FormzContext } from './FormzContext.js'
 
 export const useFormzField = ({
@@ -20,6 +20,9 @@ export const useFormzField = ({
     setFieldError,
     clearFieldError,
     setValidating,
+    setFieldValidation,
+    mountField,
+    unmountField,
   } = formState
   const value = values[name]
   const field = fields[name] || {}
@@ -41,9 +44,15 @@ export const useFormzField = ({
   }
 
   useEffect(() => {
-    formState.mountField({ name, defaultValue, validate })
-    return () => formState.unmountField({ name })
+    mountField({ name, defaultValue, validate })
+    return () => unmountField({ name })
   }, [])
+
+  useEffect(() => {
+    if (mounted) {
+      setFieldValidation({ name, validate })
+    }
+  }, [validate, mounted])
 
   const onChangeHandler = (e) => {
     const newValue = parse ? parse(e) : e?.target?.value || e

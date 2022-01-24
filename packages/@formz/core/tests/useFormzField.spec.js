@@ -64,6 +64,69 @@ test('should create field with validate function', () => {
   })
 })
 
+test('should create field with validate function and update it', async () => {
+  const validate = jest.fn()
+  const validate2 = jest.fn()
+  const { result } = renderHook(
+    () =>
+      useFormzField({
+        name: 'test',
+        defaultValue: 'A',
+        validate,
+        validateOnBlur: true,
+      }),
+    { wrapper }
+  )
+
+  await act(async () => {
+    await result.current.inputProps.onBlur()
+  })
+
+  expect(validate).toHaveBeenCalled()
+  expect(validate2).not.toHaveBeenCalled()
+
+  validate.mockReset()
+  validate2.mockReset()
+
+  const { result: result2 } = renderHook(
+    () =>
+      useFormzField({
+        name: 'test',
+        defaultValue: 'A',
+        validate: validate2,
+        validateOnBlur: true,
+      }),
+    { wrapper }
+  )
+
+  await act(async () => {
+    await result2.current.inputProps.onBlur()
+  })
+
+  expect(validate).not.toHaveBeenCalled()
+  expect(validate2).toHaveBeenCalled()
+
+  validate.mockReset()
+  validate2.mockReset()
+
+  const { result: result3 } = renderHook(
+    () =>
+      useFormzField({
+        name: 'test',
+        defaultValue: 'A',
+        validateOnBlur: true,
+      }),
+    { wrapper }
+  )
+
+  await act(async () => {
+    await result3.current.inputProps.onBlur()
+  })
+
+  expect(validate).not.toHaveBeenCalled()
+  expect(validate2).not.toHaveBeenCalled()
+})
+
 test('should create field with validate function and call it with validateOnChange', async () => {
   const validate = jest.fn()
 

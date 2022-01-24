@@ -83,6 +83,77 @@ test('should unregister a field', () => {
   expect(result.current.fields.testB).toBeDefined()
 })
 
+test('should update field validation only if changed', () => {
+  const { result } = renderHook(() => useFormzContext(), { wrapper })
+  const nop2 = () => {}
+
+  act(() => {
+    result.current.mountField({ name: 'test', validate: nop })
+  })
+
+  const oldReference = result.current
+
+  act(() => {
+    result.current.setFieldValidation({ name: 'test', validate: nop })
+  })
+
+  expect(result.current).toBe(oldReference)
+
+  const oldReference2 = result.current
+
+  act(() => {
+    result.current.setFieldValidation({ name: 'test', validate: nop2 })
+  })
+
+  expect(result.current).not.toBe(oldReference2)
+})
+
+test('should update field validation state if validate removed', async () => {
+  const { result } = renderHook(() => useFormzContext(), { wrapper })
+  const nopError = () => {
+    throw new Error('Bad')
+  }
+
+  act(() => {
+    result.current.mountField({ name: 'test', validate: nopError })
+    result.current.mountField({ name: 'test2', validate: nopError })
+  })
+
+  await act(async () => {
+    await result.current.submit()
+  })
+
+  expect(result.current.form.errors).toEqual({ test: 'Bad', test2: 'Bad' })
+
+  act(() => {
+    result.current.setFieldValidation({ name: 'test', validate: null })
+  })
+
+  expect(result.current.form.valid).toBeFalsy()
+  expect(result.current.form.invalid).toBeTruthy()
+  expect(result.current.form.errors).toEqual({ test2: 'Bad' })
+  expect(result.current.fields.test.valid).toBeTruthy()
+  expect(result.current.fields.test.invalid).toBeFalsy()
+  expect(result.current.fields.test.error).toBeFalsy()
+  expect(result.current.fields.test2.valid).toBeFalsy()
+  expect(result.current.fields.test2.invalid).toBeTruthy()
+  expect(result.current.fields.test2.error).toBeTruthy()
+
+  act(() => {
+    result.current.setFieldValidation({ name: 'test2', validate: null })
+  })
+
+  expect(result.current.form.valid).toBeTruthy()
+  expect(result.current.form.invalid).toBeFalsy()
+  expect(result.current.form.errors).toEqual({})
+  expect(result.current.fields.test.valid).toBeTruthy()
+  expect(result.current.fields.test.invalid).toBeFalsy()
+  expect(result.current.fields.test.error).toBeFalsy()
+  expect(result.current.fields.test2.valid).toBeTruthy()
+  expect(result.current.fields.test2.invalid).toBeFalsy()
+  expect(result.current.fields.test2.error).toBeFalsy()
+})
+
 test('should set field and form as touched', () => {
   const { result } = renderHook(() => useFormzContext(), { wrapper })
 

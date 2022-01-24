@@ -105,11 +105,44 @@ const createFormzProvider = () => {
           delete fields[name]
           delete values[name]
           delete formErrors[name]
+          const valid = isEmptyObject(formErrors)
           return {
             ...current,
-            form: { ...current.form, error: isEmptyObject(formErrors), errors: formErrors },
+            form: { ...current.form, valid, invalid: !valid, errors: formErrors },
             fields,
             values,
+          }
+        })
+      },
+      [setState]
+    )
+
+    const setFieldValidation = useCallback(
+      ({ name, validate }) => {
+        setState((current) => {
+          const currentField = current.fields[name]
+          if (currentField.validate === validate) return current
+
+          const newField = { ...currentField, validate }
+          const newFields = {
+            ...current.fields,
+            [name]: newField,
+          }
+          const newFormErrors = { ...current.form.errors }
+          const newForm = { ...current.form }
+          if (!validate) {
+            newField.valid = true
+            newField.invalid = false
+            newField.error = false
+            newForm.valid = Object.values(newFields).every(({ valid }) => valid)
+            newForm.invalid = !newForm.valid
+            delete newFormErrors[name]
+            newForm.errors = newFormErrors
+          }
+          return {
+            ...current,
+            form: newForm,
+            fields: newFields,
           }
         })
       },
@@ -340,6 +373,7 @@ const createFormzProvider = () => {
         mountField,
         unmountField,
         setFieldTouched,
+        setFieldValidation,
         setFieldError,
         setValidating,
         clearFieldError,

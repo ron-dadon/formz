@@ -98,6 +98,14 @@ Defines a field in the form and provides access to the field internal state and 
 |`validateOnBlur`|Should the `validate` function run when the field is blurred (everytime `onBlur` is called)|`true`|✓|
 |`validateOnChange`|Should the `validate` function run when the field value is changing (everytime `onChange` is called)|`false`|✓|
 
+<div class="alert alert-warning">
+  <strong>⚠️ IMPORTANT</strong> - <code>validate</code> function changes are triggering an update to the form state,
+  since every field <code>validate</code> function is stored in the state in order for it to run before the form
+  is submitted. You must memoized this function using <code>useCallback</code> or any other memoize method so
+  it will not trigger a state update if not really changed.
+
+</div>
+
 ### Output
 
 |Name|Description|
