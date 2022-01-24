@@ -1,5 +1,5 @@
 <div align="center">
-    <div><img src="https://ron-dadon.github.io/formz/packages/formz-docs/stories/assets/formz-logo.svg" width="256" height="256" /></div>
+    <div><img src="https://raw.githubusercontent.com/ron-dadon/formz/master/packages/formz-docs/stories/assets/formz-logo.svg" width="256" height="256" /></div>
     <p>Painless React Forms</p>
 </div>
 
