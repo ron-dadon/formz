@@ -55,7 +55,7 @@ export const useFormzField = ({
   }, [validate, mounted])
 
   const onChangeHandler = (e) => {
-    const newValue = parse ? parse(e) : e?.target?.value || e
+    const newValue = parse ? parse(e) : e?.target?.value !== undefined ? e?.target?.value : e
     setFieldValue({ name, value: newValue })
     return (
       validateOnChange &&
