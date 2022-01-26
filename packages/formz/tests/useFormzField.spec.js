@@ -264,6 +264,37 @@ test('should run parse when calling onChange', () => {
   expect(result.current.value).toEqual('B')
 })
 
+test('should call onChange with an event object with target value', () => {
+  const { result } = renderHook(
+    () =>
+      useFormzField({
+        name: 'test',
+        defaultValue: 'a',
+      }),
+    { wrapper }
+  )
+
+  expect(result.current.inputProps.value).toEqual('a')
+
+  act(() => {
+    result.current.inputProps.onChange({ target: { value: 'b' } })
+  })
+
+  expect(result.current.inputProps.value).toEqual('b')
+
+  act(() => {
+    result.current.inputProps.onChange({ target: { value: '' } })
+  })
+
+  expect(result.current.inputProps.value).toEqual('')
+
+  act(() => {
+    result.current.inputProps.onChange('test')
+  })
+
+  expect(result.current.inputProps.value).toEqual('test')
+})
+
 test('should run format when pulling value from state', () => {
   const format = jest.fn((v) => v.toUpperCase())
   const { result } = renderHook(
