@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { FormzContext } from './FormzContext.js'
 
 export const defaultMetaState = {
@@ -81,6 +81,22 @@ const createFormzProvider = () => {
       throw new Error('`formProps` prop can be an object or a function')
 
     const [state, setState] = useState(defaultFormState)
+    const calledCallback = useRef(false)
+
+    useEffect(() => {
+      const {
+        form: { submitting, submitted, submitSuccess, submitError, submitResult },
+      } = state
+      if (submitting || !submitted || calledCallback.current) return
+      if (submitSuccess) {
+        calledCallback.current = true
+        onSubmitSuccess(submitResult)
+      }
+      if (submitError) {
+        calledCallback.current = true
+        onSubmitError(submitError)
+      }
+    }, [state, onSubmitSuccess, onSubmitError])
 
     const mountField = useCallback(
       ({ name, defaultValue, validate }) => {
@@ -321,9 +337,11 @@ const createFormzProvider = () => {
           submitted: false,
           submitSuccess: false,
           submitError: false,
+          submitResult: null,
           submitCount: current.form.submitCount + 1,
         },
       }))
+      calledCallback.current = false
       try {
         const submitValues = convertToDeepObject(state.values)
         const validationResults = await Promise.allSettled(
@@ -349,15 +367,13 @@ const createFormzProvider = () => {
         const submitResult = await onSubmit({ values: submitValues })
         setState((current) => ({
           ...current,
-          form: { ...current.form, submitSuccess: true },
+          form: { ...current.form, submitSuccess: true, submitResult },
         }))
-        onSubmitSuccess && onSubmitSuccess(submitResult)
       } catch (e) {
         setState((current) => ({
           ...current,
           form: { ...current.form, submitError: e },
         }))
-        onSubmitError && onSubmitError(e)
       } finally {
         setState((current) => ({
           ...current,

@@ -649,6 +649,23 @@ test('should call onSubmitSuccess on successful submit', async () => {
   expect(onSubmit).toHaveBeenCalled()
   expect(onSubmitSuccess).toHaveBeenCalled()
   expect(onSubmitError).not.toHaveBeenCalled()
+
+  jest.clearAllMocks()
+
+  await act(async () => {
+    await result.current.setFieldValue({ name: 'testA', value: 'B' })
+  })
+
+  expect(onSubmitSuccess).not.toHaveBeenCalled()
+  expect(onSubmitError).not.toHaveBeenCalled()
+
+  await act(async () => {
+    await result.current.submit()
+  })
+
+  expect(onSubmit).toHaveBeenCalled()
+  expect(onSubmitSuccess).toHaveBeenCalled()
+  expect(onSubmitError).not.toHaveBeenCalled()
 })
 
 test('should call onSubmitError on failed submit', async () => {
@@ -666,6 +683,23 @@ test('should call onSubmitError on failed submit', async () => {
   act(() => {
     result.current.mountField({ name: 'testA', defaultValue: 'A' })
   })
+
+  await act(async () => {
+    await result.current.submit()
+  })
+
+  expect(onSubmit).toHaveBeenCalled()
+  expect(onSubmitSuccess).not.toHaveBeenCalled()
+  expect(onSubmitError).toHaveBeenCalledWith(e)
+
+  jest.clearAllMocks()
+
+  await act(async () => {
+    await result.current.setFieldValue({ name: 'testA', value: 'B' })
+  })
+
+  expect(onSubmitSuccess).not.toHaveBeenCalled()
+  expect(onSubmitError).not.toHaveBeenCalled()
 
   await act(async () => {
     await result.current.submit()
