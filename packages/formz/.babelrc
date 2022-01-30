@@ -9,8 +9,7 @@
     "production": {
       "presets": [
         "@babel/env",
-        "@babel/react",
-        "minify"
+        "@babel/react"
       ]
     },
     "test": {
