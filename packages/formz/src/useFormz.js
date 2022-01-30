@@ -90,11 +90,11 @@ const createFormzProvider = () => {
       if (submitting || !submitted || calledCallback.current) return
       if (submitSuccess) {
         calledCallback.current = true
-        onSubmitSuccess(submitResult)
+        onSubmitSuccess && onSubmitSuccess(submitResult)
       }
       if (submitError) {
         calledCallback.current = true
-        onSubmitError(submitError)
+        onSubmitError && onSubmitError(submitError)
       }
     }, [state, onSubmitSuccess, onSubmitError])
 

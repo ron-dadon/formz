@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [2.0.4] - 2022-01-30
+
+### Fixed
+
+- `formz`
+  - Form submit caused error if `onSubmitSuccess` or `onSubmitError` was not provided. 
+
 ## [2.0.3] - 2022-01-27
 
 ### Fixed
