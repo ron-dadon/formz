@@ -1,7 +1,7 @@
 {
   "name": "formz",
   "description": "Painless React forms with the magic of hooks",
-  "version": "2.0.5",
+  "version": "2.0.6",
   "license": "MIT",
   "repository": "https://github.com/ron-dadon/formz",
   "keywords": [
@@ -54,7 +54,6 @@
   },
   "scripts": {
     "build": "NODE_ENV=production babel src --out-dir dist && cp src/index.d.ts dist/index.d.ts",
-    "test": "jest .",
-    "prepublish": "yarn build"
+    "test": "jest ."
   }
 }
