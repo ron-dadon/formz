@@ -1,30 +1,45 @@
-
 # Change Log
+
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
+
+## [2.1.0] - 2022-02-04
+
+### Added
+
+- `formz`
+  - Native submit event is passed to `onSubmit`, `onSubmitSuccess` and `onSubmitError`
+
+### Fixed
+
+- `formz`
+  - Validation on blur event triggered with previous value
 
 ## [2.0.7] - 2022-01-30
 
 ### Fixed
 
 - `formz`
-  - Form submit caused error if `onSubmitSuccess` or `onSubmitError` was not provided. 
+  - Form submit caused error if `onSubmitSuccess` or `onSubmitError` was not provided.
 
 ## [2.0.3] - 2022-01-27
 
 ### Fixed
 
 - `formz`
-  - Calling `onSubmitSuccess` / `onSubmitError` caused an unmounted component state change if the `Form` component was unmounted during that time (for example, navigating to another page). 
+  - Calling `onSubmitSuccess` / `onSubmitError` caused an unmounted component state change if
+    the `Form` component was unmounted during that time (for example, navigating to another page).
 
 ## [2.0.2] - 2022-01-26
 
 ### Fixed
 
 - `formz`
-  - When a field value as set to falsy value (`''`, `0` etc.) with a native event (`input` onChange for example), the value would become the event object resulting in an `[Object object]` text in the input.
+  - When a field value as set to falsy value (`''`, `0` etc.) with a native event (`input` onChange
+    for example), the value would become the event object resulting in an `[Object object]` text in
+    the input.
 
 ## [2.0.1] - 2022-01-24
 
@@ -35,7 +50,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [2.0.0] - 2022-01-24
 
-A new version of `Formz` built on top of React hooks and context API with an even smaller footprint than before!
+A new version of `Formz` built on top of React hooks and context API with an even smaller footprint
+than before!
 
 ### Added
 

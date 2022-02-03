@@ -83,6 +83,7 @@ interface FormState extends MetaState {
   submitted: boolean
   submitSuccess: boolean
   submitError: boolean | Error
+  submitEvent: null | SubmitEvent
 }
 
 interface FieldState extends MetaState {

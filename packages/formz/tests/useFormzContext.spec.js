@@ -27,6 +27,7 @@ test('should return form context default state', () => {
     submitCount: 0,
     submitSuccess: false,
     submitError: false,
+    submitEvent: null,
     errors: {},
   })
   expect(result.current.fields).toEqual({})
@@ -513,7 +514,7 @@ test('should call onSubmit', async () => {
   })
 
   expect(onSubmit).toHaveBeenCalledTimes(1)
-  expect(onSubmit).toHaveBeenCalledWith({ values: { testA: 'A' } })
+  expect(onSubmit).toHaveBeenCalledWith({ values: { testA: 'A' }, event: null })
   expect(result.current.form.submitting).toBeFalsy()
   expect(result.current.form.submitted).toBeTruthy()
   expect(result.current.form.submitSuccess).toBeTruthy()
@@ -530,6 +531,64 @@ test('should call onSubmit', async () => {
   expect(result.current.form.submitSuccess).toBeTruthy()
   expect(result.current.form.submitError).toBeFalsy()
   expect(result.current.form.submitCount).toEqual(2)
+})
+
+test('should call onSubmit with the passed event', async () => {
+  const onSubmit = jest.fn()
+  const { result } = renderHook(() => useFormzContext(), { wrapper, initialProps: { onSubmit } })
+
+  act(() => {
+    result.current.mountField({ name: 'testA', defaultValue: 'A' })
+  })
+
+  await act(async () => {
+    await result.current.submit({ nativeEvent: 1 })
+  })
+
+  expect(onSubmit).toHaveBeenCalledWith({ values: { testA: 'A' }, event: 1 })
+})
+
+test('should call onSubmit with the passed event and pass it to onSubmitSuccess', async () => {
+  const onSubmit = jest.fn()
+  const onSubmitSuccess = jest.fn()
+  const { result } = renderHook(() => useFormzContext(), {
+    wrapper,
+    initialProps: { onSubmit, onSubmitSuccess },
+  })
+
+  act(() => {
+    result.current.mountField({ name: 'testA', defaultValue: 'A' })
+  })
+
+  await act(async () => {
+    await result.current.submit({ nativeEvent: 1 })
+  })
+
+  expect(onSubmit).toHaveBeenCalledWith({ values: { testA: 'A' }, event: 1 })
+  expect(onSubmitSuccess).toHaveBeenCalledWith(undefined, 1)
+})
+
+test('should call onSubmit with the passed event and pass it to onSubmitError', async () => {
+  const e = new Error('Fail')
+  const onSubmit = jest.fn(() => {
+    throw e
+  })
+  const onSubmitError = jest.fn()
+  const { result } = renderHook(() => useFormzContext(), {
+    wrapper,
+    initialProps: { onSubmit, onSubmitError },
+  })
+
+  act(() => {
+    result.current.mountField({ name: 'testA', defaultValue: 'A' })
+  })
+
+  await act(async () => {
+    await result.current.submit({ nativeEvent: 1 })
+  })
+
+  expect(onSubmit).toHaveBeenCalledWith({ values: { testA: 'A' }, event: 1 })
+  expect(onSubmitError).toHaveBeenCalledWith(e, 1)
 })
 
 test('should call onSubmit and fail due to onSubmit error', async () => {
@@ -554,7 +613,7 @@ test('should call onSubmit and fail due to onSubmit error', async () => {
   })
 
   expect(onSubmit).toHaveBeenCalledTimes(1)
-  expect(onSubmit).toHaveBeenCalledWith({ values: { testA: 'A' } })
+  expect(onSubmit).toHaveBeenCalledWith({ values: { testA: 'A' }, event: null })
   expect(result.current.form.submitting).toBeFalsy()
   expect(result.current.form.submitted).toBeTruthy()
   expect(result.current.form.submitSuccess).toBeFalsy()
@@ -626,6 +685,7 @@ test('should call onSubmit with nested object', async () => {
         c: { d: 'D', e: 'E' },
       },
     },
+    event: null,
   })
 })
 
@@ -690,7 +750,7 @@ test('should call onSubmitError on failed submit', async () => {
 
   expect(onSubmit).toHaveBeenCalled()
   expect(onSubmitSuccess).not.toHaveBeenCalled()
-  expect(onSubmitError).toHaveBeenCalledWith(e)
+  expect(onSubmitError).toHaveBeenCalledWith(e, null)
 
   jest.clearAllMocks()
 
@@ -707,5 +767,5 @@ test('should call onSubmitError on failed submit', async () => {
 
   expect(onSubmit).toHaveBeenCalled()
   expect(onSubmitSuccess).not.toHaveBeenCalled()
-  expect(onSubmitError).toHaveBeenCalledWith(e)
+  expect(onSubmitError).toHaveBeenCalledWith(e, null)
 })

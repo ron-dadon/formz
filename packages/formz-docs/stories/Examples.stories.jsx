@@ -137,6 +137,7 @@ export const WithValidation = () => {
       formProps={{
         noValidate: true,
       }}
+      onSubmitSuccess={(_, e) => console.log(e.submitter.name)}
     >
       <ValidatedNameField />
       <ValidatedDateField />

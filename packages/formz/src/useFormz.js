@@ -29,6 +29,7 @@ const defaultFormState = {
     submitting: false,
     submitSuccess: false,
     submitError: false,
+    submitEvent: null,
   },
 }
 
@@ -87,17 +88,23 @@ const createFormzProvider = () => {
 
     useEffect(() => {
       const {
-        form: { submitting, submitted, submitSuccess, submitError, submitResult },
+        form: { submitting, submitted, submitSuccess, submitError, submitResult, submitEvent },
       } = state
       if (submitting || !submitted || calledCallback.current) return
       if (submitSuccess) {
         calledCallback.current = true
-        onSubmitSuccess && onSubmitSuccess(submitResult)
+        onSubmitSuccess && onSubmitSuccess(submitResult, submitEvent)
       }
       if (submitError) {
         calledCallback.current = true
-        onSubmitError && onSubmitError(submitError)
+        onSubmitError && onSubmitError(submitError, submitEvent)
       }
+      setState((current) => {
+        const {
+          form: { submitEvent, ...form },
+        } = current
+        return { ...current, form: { ...form, submitEvent: null } }
+      })
     }, [state, onSubmitSuccess, onSubmitError])
 
     const mountField = useCallback(
@@ -373,7 +380,7 @@ const createFormzProvider = () => {
       [setState]
     )
 
-    const submit = async (e) => {
+    const submit = async (e = {}) => {
       if (e?.preventDefault) e.preventDefault()
 
       if (state.form.submitting) throw new Error('Cannot submit form more than once every time')
@@ -387,6 +394,7 @@ const createFormzProvider = () => {
           submitError: false,
           submitResult: null,
           submitCount: current.form.submitCount + 1,
+          submitEvent: e?.nativeEvent || null,
         },
       }))
       calledCallback.current = false
@@ -412,7 +420,7 @@ const createFormzProvider = () => {
         if (validationResults.some(({ status }) => status === 'rejected')) {
           throw new Error('Validation error')
         }
-        const submitResult = await onSubmit({ values: submitValues })
+        const submitResult = await onSubmit({ values: submitValues, event: e?.nativeEvent || null })
         setState((current) => ({
           ...current,
           form: { ...current.form, submitSuccess: true, submitResult },
