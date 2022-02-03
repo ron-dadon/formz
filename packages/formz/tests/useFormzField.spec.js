@@ -148,8 +148,9 @@ test('should create field with validate function and call it with validateOnChan
 
   expect(validate).not.toHaveBeenCalled()
 
-  await act(async () => {
-    await result.current.inputProps.onChange('B')
+  act(() => {
+    result.current.inputProps.onChange('B')
+    result.current.inputProps.onChange('B')
   })
 
   expect(validate).toHaveBeenCalled()
