@@ -4,6 +4,7 @@ import { classnames } from '../utils'
 export const Input = ({
   name,
   placeholder,
+  helperText,
   defaultValue,
   validate,
   validateOnChange,
@@ -16,7 +17,7 @@ export const Input = ({
 }) => {
   const {
     inputProps,
-    field: { invalid, error },
+    field: { invalid, valid, error },
     form: { submitting },
   } = useFormzField({
     name,
@@ -34,11 +35,21 @@ export const Input = ({
       <input
         {...inputProps}
         {...props}
+        onChange={(e) => {
+          console.log('onChange', e)
+          inputProps.onChange(e)
+          document.querySelector('input').focus()
+        }}
+        onBlur={(e) => {
+          console.log('onBlur', e)
+          inputProps.onBlur(e)
+        }}
         type={type}
         placeholder={placeholder}
         disabled={submitting}
         className={classnames('form-control', { 'is-invalid': invalid })}
       />
+      {helperText && valid && <div className="form-helper">{helperText}</div>}
       {invalid && <div className="invalid-feedback">{error}</div>}
     </div>
   )
