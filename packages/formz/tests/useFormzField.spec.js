@@ -2,6 +2,11 @@ import React from 'react'
 import { renderHook, act } from '@testing-library/react-hooks'
 import { defaultMetaState, useFormz, useFormzField } from '../src'
 
+const defaultFieldState = {
+  ...defaultMetaState,
+  validateOnChange: false,
+  validateOnBlur: true,
+}
 const nop = () => {}
 
 const wrapper = ({ children }) => {
@@ -16,7 +21,7 @@ test('should create field', () => {
   expect(typeof result.current.inputProps.onChange === 'function').toBeTruthy()
   expect(typeof result.current.inputProps.onBlur === 'function').toBeTruthy()
   expect(result.current.name).toEqual('test')
-  expect(result.current.field).toEqual(defaultMetaState)
+  expect(result.current.field).toEqual(defaultFieldState)
 })
 
 test('should create field with default value', () => {
@@ -35,7 +40,7 @@ test('should create field with default value', () => {
   expect(result.current.name).toEqual('test')
   expect(result.current.value).toEqual('A')
   expect(result.current.field).toEqual({
-    ...defaultMetaState,
+    ...defaultFieldState,
     defaultValue: 'A',
   })
 })
@@ -58,7 +63,7 @@ test('should create field with validate function', () => {
   expect(result.current.name).toEqual('test')
   expect(result.current.value).toEqual('A')
   expect(result.current.field).toEqual({
-    ...defaultMetaState,
+    ...defaultFieldState,
     defaultValue: 'A',
     validate,
   })

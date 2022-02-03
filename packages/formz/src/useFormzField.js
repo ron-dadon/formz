@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef } from 'react'
+import { useContext, useEffect, useRef, useState } from 'react'
 import { FormzContext } from './FormzContext.js'
 
 export const useFormzField = ({
@@ -17,9 +17,6 @@ export const useFormzField = ({
     form,
     setFieldValue,
     setFieldTouched,
-    setFieldError,
-    clearFieldError,
-    setValidating,
     setFieldValidation,
     mountField,
     unmountField,
@@ -28,47 +25,24 @@ export const useFormzField = ({
   const field = fields[name] || {}
   const mounted = !!fields[name]
 
-  const triggerValidation = async ({ value: newValue, values: newValues, validate }) => {
-    if (validate || field.validate) {
-      setValidating({ name })
-      try {
-        await (validate || field.validate)({ name, value: newValue, values: newValues })
-        clearFieldError({ name })
-      } catch (e) {
-        setFieldError({
-          name,
-          error: e.message || e,
-        })
-      }
-    }
-  }
-
   useEffect(() => {
-    mountField({ name, defaultValue, validate })
+    mountField({ name, defaultValue, validate, validateOnBlur, validateOnChange })
     return () => unmountField({ name })
   }, [])
 
   useEffect(() => {
     if (mounted) {
-      setFieldValidation({ name, validate })
+      setFieldValidation({ name, validate, validateOnBlur, validateOnChange })
     }
-  }, [validate, mounted])
+  }, [validate, validateOnBlur, validateOnChange, mounted])
 
   const onChangeHandler = (e) => {
     const newValue = parse ? parse(e) : e?.target?.value !== undefined ? e?.target?.value : e
     setFieldValue({ name, value: newValue })
-    return (
-      validateOnChange &&
-      triggerValidation({
-        value: newValue,
-        values: { ...values, [name]: newValue },
-      })
-    )
   }
 
   const onBlur = () => {
     setFieldTouched({ name })
-    return validateOnBlur && triggerValidation({ value, values })
   }
 
   const currentValue = mounted ? value : defaultValue

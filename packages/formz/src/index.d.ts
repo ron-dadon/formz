@@ -36,6 +36,8 @@ interface FieldInput {
 interface MountFieldInput extends FieldInput {
   defaultValue?: any
   validate?: ValidationFunction
+  validateOnBlur?: boolean
+  validateOnChange?: boolean
 }
 
 interface SetFieldErrorInput extends FieldInput {
@@ -48,6 +50,8 @@ interface SetFieldValueInput extends FieldInput {
 
 interface FieldValidationInput extends FieldInput {
   validate?: ValidationFunction
+  validateOnBlur?: boolean
+  validateOnChange?: boolean
 }
 
 interface FormzFullContextResult extends FormzContextResult {
@@ -83,6 +87,9 @@ interface FormState extends MetaState {
 
 interface FieldState extends MetaState {
   error?: boolean | string
+  validate?: ValidationFunction
+  validateOnBlur?: boolean
+  validateOnChange?: boolean
 }
 
 interface ValidateInput {

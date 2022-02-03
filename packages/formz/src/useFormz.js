@@ -10,10 +10,12 @@ export const defaultMetaState = {
   pristine: true,
 }
 
-const createDefaultFieldState = ({ defaultValue, validate }) => ({
+const createDefaultFieldState = ({ defaultValue, validate, validateOnBlur, validateOnChange }) => ({
   ...defaultMetaState,
   defaultValue,
   validate,
+  validateOnBlur,
+  validateOnChange,
 })
 
 const defaultFormState = {
@@ -99,12 +101,17 @@ const createFormzProvider = () => {
     }, [state, onSubmitSuccess, onSubmitError])
 
     const mountField = useCallback(
-      ({ name, defaultValue, validate }) => {
+      ({ name, defaultValue, validate, validateOnBlur, validateOnChange }) => {
         setState((current) => ({
           ...current,
           fields: {
             ...current.fields,
-            [name]: createDefaultFieldState({ defaultValue, validate }),
+            [name]: createDefaultFieldState({
+              defaultValue,
+              validate,
+              validateOnBlur,
+              validateOnChange,
+            }),
           },
           values: { ...current.values, [name]: defaultValue },
         }))
@@ -134,12 +141,17 @@ const createFormzProvider = () => {
     )
 
     const setFieldValidation = useCallback(
-      ({ name, validate }) => {
+      ({ name, validate, validateOnBlur, validateOnChange }) => {
         setState((current) => {
           const currentField = current.fields[name]
-          if (currentField.validate === validate) return current
+          if (
+            currentField.validate === validate &&
+            currentField.validateOnChange === validateOnChange &&
+            currentField.validateOnBlur === validateOnBlur
+          )
+            return current
 
-          const newField = { ...currentField, validate }
+          const newField = { ...currentField, validate, validateOnBlur, validateOnChange }
           const newFields = {
             ...current.fields,
             [name]: newField,
@@ -168,14 +180,33 @@ const createFormzProvider = () => {
     const setFieldTouched = useCallback(
       ({ name }) => {
         setState((current) => {
-          if (current.fields[name].touched) return current
+          const value = current.values[name]
+          const currentField = current.fields[name]
+          const { touched, validateOnBlur, validate } = currentField
+          if (touched && (!validateOnBlur || !validate)) return current
+
+          if (validate && validateOnBlur) {
+            setValidating({ name })
+            try {
+              const validateResult = validate({ name, value, values: current.values })
+              if (validateResult instanceof Promise) {
+                validateResult
+                  .then(() => clearFieldError({ name }))
+                  .catch((error) => setFieldError({ name, error }))
+              } else {
+                clearFieldError({ name })
+              }
+            } catch (error) {
+              setFieldError({ name, error })
+            }
+          }
 
           return {
             ...current,
             form: { ...current.form, touched: true, untouched: false },
             fields: {
               ...current.fields,
-              [name]: { ...current.fields[name], touched: true, untouched: false },
+              [name]: { ...currentField, touched: true, untouched: false },
             },
           }
         })
@@ -249,7 +280,24 @@ const createFormzProvider = () => {
     const setFieldValue = useCallback(
       ({ name, value }) => {
         setState((current) => {
+          const { validate, validateOnChange } = current.fields[name]
           if (current.values[name] === value) return current
+
+          if (validate && validateOnChange) {
+            setValidating({ name })
+            try {
+              const validateResult = validate({ name, value, values: current.values })
+              if (validateResult instanceof Promise) {
+                validateResult
+                  .then(() => clearFieldError({ name }))
+                  .catch((error) => setFieldError({ name, error }))
+              } else {
+                clearFieldError({ name })
+              }
+            } catch (error) {
+              setFieldError({ name, error })
+            }
+          }
 
           return {
             ...current,
