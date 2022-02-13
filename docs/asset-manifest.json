@@ -1,0 +1,14 @@
+{
+  "files": {
+    "main.css": "/static/css/main.cb24ed6d.css",
+    "main.js": "/static/js/main.603891ad.js",
+    "static/media/formz-logo.svg": "/static/media/formz-logo.26f360a3f0fcd65bae2abcc8e2b85087.svg",
+    "index.html": "/index.html",
+    "main.cb24ed6d.css.map": "/static/css/main.cb24ed6d.css.map",
+    "main.603891ad.js.map": "/static/js/main.603891ad.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.cb24ed6d.css",
+    "static/js/main.603891ad.js"
+  ]
+}
