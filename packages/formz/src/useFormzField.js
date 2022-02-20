@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef, useState } from 'react'
+import { useContext, useEffect, useCallback } from 'react'
 import { FormzContext } from './FormzContext.js'
 
 export const useFormzField = ({
@@ -36,14 +36,14 @@ export const useFormzField = ({
     }
   }, [validate, validateOnBlur, validateOnChange, mounted])
 
-  const onChangeHandler = (e) => {
+  const onChangeHandler = useCallback((e) => {
     const newValue = parse ? parse(e) : e?.target?.value !== undefined ? e?.target?.value : e
     setFieldValue({ name, value: newValue })
-  }
+  }, [parse, setFieldValue, name])
 
-  const onBlur = () => {
+  const onBlur = useCallback(() => {
     setFieldTouched({ name })
-  }
+  }, [setFieldTouched, name])
 
   const currentValue = mounted ? value : defaultValue
   const formattedValue = format ? format(currentValue) : currentValue
