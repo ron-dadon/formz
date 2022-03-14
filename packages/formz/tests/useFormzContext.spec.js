@@ -514,7 +514,7 @@ test('should call onSubmit', async () => {
   })
 
   expect(onSubmit).toHaveBeenCalledTimes(1)
-  expect(onSubmit).toHaveBeenCalledWith({ values: { testA: 'A' }, event: null })
+  expect(onSubmit).toHaveBeenCalledWith({ values: { testA: 'A' }, event: null, options: {}, validationErrors: null })
   expect(result.current.form.submitting).toBeFalsy()
   expect(result.current.form.submitted).toBeTruthy()
   expect(result.current.form.submitSuccess).toBeTruthy()
@@ -545,7 +545,7 @@ test('should call onSubmit with the passed event', async () => {
     await result.current.submit({ nativeEvent: 1 })
   })
 
-  expect(onSubmit).toHaveBeenCalledWith({ values: { testA: 'A' }, event: 1 })
+  expect(onSubmit).toHaveBeenCalledWith({ values: { testA: 'A' }, event: 1, options: {}, validationErrors: null })
 })
 
 test('should call onSubmit with the validation errors', async () => {
@@ -569,6 +569,9 @@ test('should call onSubmit with the validation errors', async () => {
       testB: 'B',
     },
     event: 1,
+    options: {
+      ignoreErrors: true,
+    },
     validationErrors: {
       testA: {
         required: true,
@@ -594,7 +597,7 @@ test('should call onSubmit with the passed event and pass it to onSubmitSuccess'
     await result.current.submit({ nativeEvent: 1 })
   })
 
-  expect(onSubmit).toHaveBeenCalledWith({ values: { testA: 'A' }, event: 1 })
+  expect(onSubmit).toHaveBeenCalledWith({ values: { testA: 'A' }, event: 1, options: {}, validationErrors: null })
   expect(onSubmitSuccess).toHaveBeenCalledWith(undefined, 1)
 })
 
@@ -617,7 +620,7 @@ test('should call onSubmit with the passed event and pass it to onSubmitError', 
     await result.current.submit({ nativeEvent: 1 })
   })
 
-  expect(onSubmit).toHaveBeenCalledWith({ values: { testA: 'A' }, event: 1 })
+  expect(onSubmit).toHaveBeenCalledWith({ values: { testA: 'A' }, event: 1, options: {}, validationErrors: null })
   expect(onSubmitError).toHaveBeenCalledWith(e, 1)
 })
 
@@ -643,7 +646,7 @@ test('should call onSubmit and fail due to onSubmit error', async () => {
   })
 
   expect(onSubmit).toHaveBeenCalledTimes(1)
-  expect(onSubmit).toHaveBeenCalledWith({ values: { testA: 'A' }, event: null })
+  expect(onSubmit).toHaveBeenCalledWith({ values: { testA: 'A' }, event: null, options: {}, validationErrors: null })
   expect(result.current.form.submitting).toBeFalsy()
   expect(result.current.form.submitted).toBeTruthy()
   expect(result.current.form.submitSuccess).toBeFalsy()
@@ -716,6 +719,8 @@ test('should call onSubmit with nested object', async () => {
       },
     },
     event: null,
+    options: {},
+    validationErrors: null,
   })
 })
 
