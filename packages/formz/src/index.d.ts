@@ -8,8 +8,15 @@ type ValuesType = { [field: string]: any }
 type FormPropsGenerator = (context: FormzContextResult) => object
 type ValidationFunction = (validateInput: ValidateInput) => Promise<any>
 
+interface SubmitOptions {
+  ignoreErrors?: boolean
+}
+
 interface OnSubmitArguments {
-  values: object
+  values: ValuesType,
+  event?: Event | null,
+  validationErrors?: ValuesType | null
+  options: SubmitOptions,
 }
 
 interface FormProps {
@@ -65,7 +72,7 @@ interface FormzFullContextResult extends FormzContextResult {
   setFieldValue: (field: SetFieldValueInput) => void
   resetField: (field: FieldInput) => void
   reset: (e?: Event) => void
-  submit: (e?: Event) => void
+  submit: (e?: Event, options?: SubmitOptions) => void
 }
 
 interface MetaState {

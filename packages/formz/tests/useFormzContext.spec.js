@@ -548,6 +548,36 @@ test('should call onSubmit with the passed event', async () => {
   expect(onSubmit).toHaveBeenCalledWith({ values: { testA: 'A' }, event: 1 })
 })
 
+test('should call onSubmit with the validation errors', async () => {
+  const onSubmit = jest.fn()
+  const { result } = renderHook(() => useFormzContext(), { wrapper, initialProps: { onSubmit } })
+
+  act(() => {
+    result.current.mountField({ name: 'testA', defaultValue: 'A', validate: () => {
+      throw { required: true, length: false }
+    }})
+    result.current.mountField({ name: 'testB', defaultValue: 'B' })
+  })
+
+  await act(async () => {
+    await result.current.submit({ nativeEvent: 1 }, { ignoreErrors: true })
+  })
+
+  expect(onSubmit).toHaveBeenCalledWith({
+    values: {
+      testA: 'A',
+      testB: 'B',
+    },
+    event: 1,
+    validationErrors: {
+      testA: {
+        required: true,
+        length: false
+      },
+    }
+  })
+})
+
 test('should call onSubmit with the passed event and pass it to onSubmitSuccess', async () => {
   const onSubmit = jest.fn()
   const onSubmitSuccess = jest.fn()
