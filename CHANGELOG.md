@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [2.2.0] - 2022-03-14
+
+### Added
+
+- `formz`
+  - Formz provider `submit` function now takes 2 arguments: `(event, options)`
+  - `submit` can be triggered with `ignoreErrors` option to force calling `onSubmit` even if validation error occurred
+
+- `formz-docs`
+  - Updated API docs with missing info about `form` and `fields`
+
 ## [2.1.1] - 2022-02-20
 
 ### Fixed
