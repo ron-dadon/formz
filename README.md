@@ -7,6 +7,10 @@
 
 ![build](https://github.com/ron-dadon/formz/actions/workflows/ci.yml/badge.svg)
 ![code ql](https://github.com/ron-dadon/formz/actions/workflows/codeql-analysis.yml/badge.svg)
+![npm](https://img.shields.io/npm/dt/formz)
+![Libraries.io dependency status for latest release](https://img.shields.io/librariesio/release/npm/formz)
+![npm](https://img.shields.io/npm/v/formz)
+![npm bundle size](https://img.shields.io/bundlephobia/minzip/formz)
 
 </div>
 
