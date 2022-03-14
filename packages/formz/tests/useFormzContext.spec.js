@@ -514,7 +514,7 @@ test('should call onSubmit', async () => {
   })
 
   expect(onSubmit).toHaveBeenCalledTimes(1)
-  expect(onSubmit).toHaveBeenCalledWith({ values: { testA: 'A' }, event: null })
+  expect(onSubmit).toHaveBeenCalledWith({ values: { testA: 'A' }, event: null, options: {}, validationErrors: null })
   expect(result.current.form.submitting).toBeFalsy()
   expect(result.current.form.submitted).toBeTruthy()
   expect(result.current.form.submitSuccess).toBeTruthy()
@@ -545,7 +545,40 @@ test('should call onSubmit with the passed event', async () => {
     await result.current.submit({ nativeEvent: 1 })
   })
 
-  expect(onSubmit).toHaveBeenCalledWith({ values: { testA: 'A' }, event: 1 })
+  expect(onSubmit).toHaveBeenCalledWith({ values: { testA: 'A' }, event: 1, options: {}, validationErrors: null })
+})
+
+test('should call onSubmit with the validation errors', async () => {
+  const onSubmit = jest.fn()
+  const { result } = renderHook(() => useFormzContext(), { wrapper, initialProps: { onSubmit } })
+
+  act(() => {
+    result.current.mountField({ name: 'testA', defaultValue: 'A', validate: () => {
+      throw { required: true, length: false }
+    }})
+    result.current.mountField({ name: 'testB', defaultValue: 'B' })
+  })
+
+  await act(async () => {
+    await result.current.submit({ nativeEvent: 1 }, { ignoreErrors: true })
+  })
+
+  expect(onSubmit).toHaveBeenCalledWith({
+    values: {
+      testA: 'A',
+      testB: 'B',
+    },
+    event: 1,
+    options: {
+      ignoreErrors: true,
+    },
+    validationErrors: {
+      testA: {
+        required: true,
+        length: false
+      },
+    }
+  })
 })
 
 test('should call onSubmit with the passed event and pass it to onSubmitSuccess', async () => {
@@ -564,7 +597,7 @@ test('should call onSubmit with the passed event and pass it to onSubmitSuccess'
     await result.current.submit({ nativeEvent: 1 })
   })
 
-  expect(onSubmit).toHaveBeenCalledWith({ values: { testA: 'A' }, event: 1 })
+  expect(onSubmit).toHaveBeenCalledWith({ values: { testA: 'A' }, event: 1, options: {}, validationErrors: null })
   expect(onSubmitSuccess).toHaveBeenCalledWith(undefined, 1)
 })
 
@@ -587,7 +620,7 @@ test('should call onSubmit with the passed event and pass it to onSubmitError', 
     await result.current.submit({ nativeEvent: 1 })
   })
 
-  expect(onSubmit).toHaveBeenCalledWith({ values: { testA: 'A' }, event: 1 })
+  expect(onSubmit).toHaveBeenCalledWith({ values: { testA: 'A' }, event: 1, options: {}, validationErrors: null })
   expect(onSubmitError).toHaveBeenCalledWith(e, 1)
 })
 
@@ -613,7 +646,7 @@ test('should call onSubmit and fail due to onSubmit error', async () => {
   })
 
   expect(onSubmit).toHaveBeenCalledTimes(1)
-  expect(onSubmit).toHaveBeenCalledWith({ values: { testA: 'A' }, event: null })
+  expect(onSubmit).toHaveBeenCalledWith({ values: { testA: 'A' }, event: null, options: {}, validationErrors: null })
   expect(result.current.form.submitting).toBeFalsy()
   expect(result.current.form.submitted).toBeTruthy()
   expect(result.current.form.submitSuccess).toBeFalsy()
@@ -686,6 +719,8 @@ test('should call onSubmit with nested object', async () => {
       },
     },
     event: null,
+    options: {},
+    validationErrors: null,
   })
 })
 

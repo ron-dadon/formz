@@ -380,7 +380,8 @@ const createFormzProvider = () => {
       [setState]
     )
 
-    const submit = async (e = {}) => {
+    const submit = async (e = {}, options = {}) => {
+      const { ignoreErrors = false } = options
       if (e?.preventDefault) e.preventDefault()
 
       if (state.form.submitting) throw new Error('Cannot submit form more than once every time')
@@ -413,14 +414,18 @@ const createFormzProvider = () => {
               clearFieldError({ name })
             } catch (error) {
               setFieldError({ name, error })
-              throw error
+              throw { name, error }
             }
           })
         )
-        if (validationResults.some(({ status }) => status === 'rejected')) {
+        const rejectedValidations = validationResults.filter(({ status }) => status === 'rejected')
+        if (!ignoreErrors && rejectedValidations.length) {
           throw new Error('Validation error')
         }
-        const submitResult = await onSubmit({ values: submitValues, event: e?.nativeEvent || null })
+        const validationErrors = ignoreErrors
+          ? rejectedValidations.reduce((all, { reason: { name, error } }) => ({ ...all, [name]: error }), {})
+          : null
+        const submitResult = await onSubmit({ values: submitValues, event: e?.nativeEvent || null, validationErrors, options })
         setState((current) => ({
           ...current,
           form: { ...current.form, submitSuccess: true, submitResult },
