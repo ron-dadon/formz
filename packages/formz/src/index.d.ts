@@ -13,10 +13,10 @@ interface SubmitOptions {
 }
 
 interface OnSubmitArguments {
-  values: ValuesType,
-  event?: Event | null,
+  values: ValuesType
+  event?: Event | null
   validationErrors?: ValuesType | null
-  options: SubmitOptions,
+  options: SubmitOptions
 }
 
 interface FormProps {
@@ -45,6 +45,7 @@ interface MountFieldInput extends FieldInput {
   validate?: ValidationFunction
   validateOnBlur?: boolean
   validateOnChange?: boolean
+  validateAll?: boolean
 }
 
 interface SetFieldErrorInput extends FieldInput {
@@ -59,6 +60,7 @@ interface FieldValidationInput extends FieldInput {
   validate?: ValidationFunction
   validateOnBlur?: boolean
   validateOnChange?: boolean
+  validateAll?: boolean
 }
 
 interface FormzFullContextResult extends FormzContextResult {
@@ -114,6 +116,7 @@ interface FieldInput {
   format?: (value: any) => any
   validateOnBlur?: boolean
   validateOnChange?: boolean
+  validateAll?: boolean
 }
 
 interface FieldInputProps {

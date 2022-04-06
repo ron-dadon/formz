@@ -9,7 +9,7 @@ export const Input = ({
   validate,
   validateOnChange,
   validateOnBlue,
-  validateOnInit,
+  validateAll,
   parse,
   format,
   type = 'text',
@@ -25,7 +25,7 @@ export const Input = ({
     validate,
     validateOnChange,
     validateOnBlue,
-    validateOnInit,
+    validateAll,
     parse,
     format,
   })
@@ -38,7 +38,7 @@ export const Input = ({
         onChange={(e) => {
           console.log('onChange', e)
           inputProps.onChange(e)
-          document.querySelector('input').focus()
+          // document.querySelector('input').focus()
         }}
         onBlur={(e) => {
           console.log('onBlur', e)
