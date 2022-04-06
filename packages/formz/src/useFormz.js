@@ -10,12 +10,19 @@ export const defaultMetaState = {
   pristine: true,
 }
 
-const createDefaultFieldState = ({ defaultValue, validate, validateOnBlur, validateOnChange }) => ({
+const createDefaultFieldState = ({
+  defaultValue,
+  validate,
+  validateOnBlur,
+  validateOnChange,
+  validateAll,
+}) => ({
   ...defaultMetaState,
   defaultValue,
   validate,
   validateOnBlur,
   validateOnChange,
+  validateAll,
 })
 
 const defaultFormState = {
@@ -108,7 +115,7 @@ const createFormzProvider = () => {
     }, [state, onSubmitSuccess, onSubmitError])
 
     const mountField = useCallback(
-      ({ name, defaultValue, validate, validateOnBlur, validateOnChange }) => {
+      ({ name, defaultValue, validate, validateOnBlur, validateOnChange, validateAll }) => {
         setState((current) => ({
           ...current,
           fields: {
@@ -118,6 +125,7 @@ const createFormzProvider = () => {
               validate,
               validateOnBlur,
               validateOnChange,
+              validateAll,
             }),
           },
           values: { ...current.values, [name]: defaultValue },
@@ -148,17 +156,24 @@ const createFormzProvider = () => {
     )
 
     const setFieldValidation = useCallback(
-      ({ name, validate, validateOnBlur, validateOnChange }) => {
+      ({ name, validate, validateOnBlur, validateOnChange, validateAll }) => {
         setState((current) => {
           const currentField = current.fields[name]
           if (
             currentField.validate === validate &&
             currentField.validateOnChange === validateOnChange &&
-            currentField.validateOnBlur === validateOnBlur
+            currentField.validateOnBlur === validateOnBlur &&
+            currentField.validateAll === validateAll
           )
             return current
 
-          const newField = { ...currentField, validate, validateOnBlur, validateOnChange }
+          const newField = {
+            ...currentField,
+            validate,
+            validateOnBlur,
+            validateAll,
+            validateOnChange,
+          }
           const newFields = {
             ...current.fields,
             [name]: newField,
@@ -189,10 +204,10 @@ const createFormzProvider = () => {
         setState((current) => {
           const value = current.values[name]
           const currentField = current.fields[name]
-          const { touched, validateOnBlur, validate } = currentField
+          const { touched, validateOnBlur, validateAll, validate } = currentField
           if (touched && (!validateOnBlur || !validate)) return current
 
-          if (validate && validateOnBlur) {
+          if (validate && validateOnBlur && !validateAll) {
             setValidating({ name })
             try {
               const validateResult = validate({ name, value, values: current.values })
@@ -208,7 +223,7 @@ const createFormzProvider = () => {
             }
           }
 
-          return {
+          const newState = {
             ...current,
             form: { ...current.form, touched: true, untouched: false },
             fields: {
@@ -216,6 +231,12 @@ const createFormzProvider = () => {
               [name]: { ...currentField, touched: true, untouched: false },
             },
           }
+
+          if (validate && validateOnBlur && validateAll) {
+            validateAllFields(newState)
+          }
+
+          return newState
         })
       },
       [setState]
@@ -287,10 +308,10 @@ const createFormzProvider = () => {
     const setFieldValue = useCallback(
       ({ name, value }) => {
         setState((current) => {
-          const { validate, validateOnChange } = current.fields[name]
+          const { validate, validateOnChange, validateAll } = current.fields[name]
           if (current.values[name] === value) return current
 
-          if (validate && validateOnChange) {
+          if (validate && validateOnChange && !validateAll) {
             setValidating({ name })
             try {
               const validateResult = validate({ name, value, values: current.values })
@@ -306,12 +327,18 @@ const createFormzProvider = () => {
             }
           }
 
-          return {
+          const newState = {
             ...current,
             values: { ...current.values, [name]: value },
             form: { ...current.form, pristine: false },
             fields: { ...current.fields, [name]: { ...current.fields[name], pristine: false } },
           }
+
+          if (validate && validateOnChange && validateAll) {
+            validateAllFields(newState)
+          }
+
+          return newState
         })
       },
       [setState]
@@ -380,6 +407,26 @@ const createFormzProvider = () => {
       [setState]
     )
 
+    const validateAllFields = async (formState) =>
+      Promise.allSettled(
+        Object.entries(formState.fields).map(async ([name, { validate }]) => {
+          try {
+            if (validate) {
+              setValidating({ name })
+              await validate({
+                name,
+                value: formState.values[name],
+                values: formState.values,
+              })
+            }
+            clearFieldError({ name })
+          } catch (error) {
+            setFieldError({ name, error })
+            throw { name, error }
+          }
+        })
+      )
+
     const submit = async (e = {}, options = {}) => {
       const { ignoreErrors = false } = options
       if (e?.preventDefault) e.preventDefault()
@@ -401,31 +448,26 @@ const createFormzProvider = () => {
       calledCallback.current = false
       try {
         const submitValues = convertToDeepObject(state.values)
-        const validationResults = await Promise.allSettled(
-          Object.entries(state.fields).map(async ([name, { validate }]) => {
-            try {
-              if (validate) {
-                setValidating({ name })
-                await validate({
-                  value: state.values[name],
-                  values: state.values,
-                })
-              }
-              clearFieldError({ name })
-            } catch (error) {
-              setFieldError({ name, error })
-              throw { name, error }
-            }
-          })
-        )
+        const validationResults = await validateAllFields(state)
         const rejectedValidations = validationResults.filter(({ status }) => status === 'rejected')
         if (!ignoreErrors && rejectedValidations.length) {
           throw new Error('Validation error')
         }
         const validationErrors = ignoreErrors
-          ? rejectedValidations.reduce((all, { reason: { name, error } }) => ({ ...all, [name]: error }), {})
+          ? rejectedValidations.reduce(
+              (all, { reason: { name, error } }) => ({
+                ...all,
+                [name]: error,
+              }),
+              {}
+            )
           : null
-        const submitResult = await onSubmit({ values: submitValues, event: e?.nativeEvent || null, validationErrors, options })
+        const submitResult = await onSubmit({
+          values: submitValues,
+          event: e?.nativeEvent || null,
+          validationErrors,
+          options,
+        })
         setState((current) => ({
           ...current,
           form: { ...current.form, submitSuccess: true, submitResult },

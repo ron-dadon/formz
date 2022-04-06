@@ -22,6 +22,28 @@ const ValidatedNameField = () => {
   )
 }
 
+const validateAmount = ({ name, value, values }) => {
+  console.log('VALIDATE AMOUNT', name, value, values)
+  if (value + values[name === 'amountA' ? 'amountB' : 'amountA'] > 100) {
+    throw new Error('Amounts sum cannot be more than 100')
+  }
+}
+
+const ValidatedAmountField = ({ name }) => {
+  return (
+    <Input
+      name={name}
+      type="number"
+      placeholder="Amount"
+      defaultValue={0}
+      parse={(e) => (e.target.value ? parseInt(e.target.value, 10) : '')}
+      validate={validateAmount}
+      validateOnChange
+      validateAll
+    />
+  )
+}
+
 const DateField = () => {
   const defaultValue = new Date().toISOString().substr(0, 16)
 
@@ -143,6 +165,30 @@ export const WithValidation = () => {
       <ValidatedDateField />
       <AgeField />
       <Gender />
+      <SubmitResult />
+      <FormButtons />
+    </Form>
+  )
+}
+
+export const WithAllValidation = () => {
+  const { Form } = useFormz()
+
+  const onSubmit = async ({ values }) => {
+    console.log('VALUES', values)
+    await sleep(1000)
+  }
+
+  return (
+    <Form
+      onSubmit={onSubmit}
+      formProps={{
+        noValidate: true,
+      }}
+      onSubmitSuccess={(_, e) => console.log(e.submitter.name)}
+    >
+      <ValidatedAmountField name="amountA" />
+      <ValidatedAmountField name="amountB" />
       <SubmitResult />
       <FormButtons />
     </Form>

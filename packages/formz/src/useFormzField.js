@@ -9,6 +9,7 @@ export const useFormzField = ({
   format,
   validateOnChange = false,
   validateOnBlur = true,
+  validateAll = false,
 }) => {
   const formState = useContext(FormzContext)
   const {
@@ -26,20 +27,23 @@ export const useFormzField = ({
   const mounted = !!fields[name]
 
   useEffect(() => {
-    mountField({ name, defaultValue, validate, validateOnBlur, validateOnChange })
+    mountField({ name, defaultValue, validate, validateOnBlur, validateOnChange, validateAll })
     return () => unmountField({ name })
   }, [])
 
   useEffect(() => {
     if (mounted) {
-      setFieldValidation({ name, validate, validateOnBlur, validateOnChange })
+      setFieldValidation({ name, validate, validateOnBlur, validateOnChange, validateAll })
     }
   }, [validate, validateOnBlur, validateOnChange, mounted])
 
-  const onChangeHandler = useCallback((e) => {
-    const newValue = parse ? parse(e) : e?.target?.value !== undefined ? e?.target?.value : e
-    setFieldValue({ name, value: newValue })
-  }, [parse, setFieldValue, name])
+  const onChangeHandler = useCallback(
+    (e) => {
+      const newValue = parse ? parse(e) : e?.target?.value !== undefined ? e?.target?.value : e
+      setFieldValue({ name, value: newValue })
+    },
+    [parse, setFieldValue, name]
+  )
 
   const onBlur = useCallback(() => {
     setFieldTouched({ name })

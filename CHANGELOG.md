@@ -5,13 +5,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [2.3.0] - 2022-04-06
+
+### Added
+
+- `formz`
+  - Add `validateAll` support for `useFormField`. When this attribute is `true`, whenever the field
+    is validated, all other fields will be validated as well.
+
+- `formz-docs`
+  - Updated API docs with `validateAll`
+  - Add `validate all` example
+
 ## [2.2.0] - 2022-03-14
 
 ### Added
 
 - `formz`
   - Formz provider `submit` function now takes 2 arguments: `(event, options)`
-  - `submit` can be triggered with `ignoreErrors` option to force calling `onSubmit` even if validation error occurred
+  - `submit` can be triggered with `ignoreErrors` option to force calling `onSubmit` even if
+    validation error occurred
 
 - `formz-docs`
   - Updated API docs with missing info about `form` and `fields`
@@ -21,7 +34,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 
 - `formz`
-  - Functions `onChange` and `onBlur` provided by `useFormzField.inputProps` are memoized to prevent redundant renders
+  - Functions `onChange` and `onBlur` provided by `useFormzField.inputProps` are memoized to prevent
+    redundant renders
 
 ## [2.1.0] - 2022-02-04
 

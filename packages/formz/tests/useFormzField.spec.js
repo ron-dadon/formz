@@ -6,6 +6,7 @@ const defaultFieldState = {
   ...defaultMetaState,
   validateOnChange: false,
   validateOnBlur: true,
+  validateAll: false,
 }
 const nop = () => {}
 
@@ -22,6 +23,19 @@ test('should create field', () => {
   expect(typeof result.current.inputProps.onBlur === 'function').toBeTruthy()
   expect(result.current.name).toEqual('test')
   expect(result.current.field).toEqual(defaultFieldState)
+})
+
+test('should create field with validateAll', () => {
+  const { result } = renderHook(
+    () =>
+      useFormzField({
+        name: 'test',
+        validateAll: true,
+      }),
+    { wrapper }
+  )
+
+  expect(result.current.field).toEqual({ ...defaultFieldState, validateAll: true })
 })
 
 test('should create field with default value', () => {

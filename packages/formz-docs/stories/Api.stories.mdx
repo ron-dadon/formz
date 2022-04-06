@@ -112,16 +112,20 @@ Defines a field in the form and provides access to the field internal state and 
 |--------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------|----------|
 | `name`             | The name of the field. Supports deep object nesting using `.` notation, for example: `user.firstName` will result in the form `values` passed to `onSubmit` with `{ user: { firstName } }` | -       | ✓        |
 | `defaultValue`     | The default value of the field                                                                                                                                                             | -       | 𐄂       |
-| `validate`         | A function that will be called to validate the field value. This function will be called when the form is submitted, or for events where `validateOnX` parameter is true                   | -       | ✓        |
-| `parse`            | A function that will be called with the field value when the field `onChange` is called, and can parse the input value to a different value that will be stored in the form state          | -       | ✓        |
-| `format`           | A function that will be called with the field stored value and returned as the `value` of the field in the output                                                                          | -       | ✓        |
-| `validateOnBlur`   | Should the `validate` function run when the field is blurred (everytime `onBlur` is called)                                                                                                | `true`  | ✓        |
-| `validateOnChange` | Should the `validate` function run when the field value is changing (everytime `onChange` is called)                                                                                       | `false` | ✓        |
+| `validate`         | A function that will be called to validate the field value. This function will be called when the form is submitted, or for events where `validateOnX` parameter is true                   | -       | 𐄂       |
+| `parse`            | A function that will be called with the field value when the field `onChange` is called, and can parse the input value to a different value that will be stored in the form state          | -       | 𐄂       |
+| `format`           | A function that will be called with the field stored value and returned as the `value` of the field in the output                                                                          | -       | 𐄂       |
+| `validateOnBlur`   | Should the `validate` function run when the field is blurred (everytime `onBlur` is called)                                                                                                | `true`  | 𐄂       |
+| `validateOnChange` | Should the `validate` function run when the field value is changing (everytime `onChange` is called)                                                                                       | `false` | 𐄂       |
+| `validateAll`      | Should the `validate` function of this field and all other field be executed if this field validation is triggered                                                                         | `false` | 𐄂       |
 
 <div class="alert alert-warning">
-  <strong>⚠️ IMPORTANT</strong> - <code>validate</code> function changes are triggering an update to the form state,
-  since every field <code>validate</code> function is stored in the state in order for it to run before the form
-  is submitted. You must memoized this function using <code>useCallback</code> or any other memoize method so
+  <strong>⚠️ IMPORTANT</strong> - <code>validate</code> function changes are triggering an update to
+  the form state,
+  since every field <code>validate</code> function is stored in the state in order for it to run
+  before the form
+  is submitted. You must memoized this function using <code>useCallback</code> or any other memoize
+  method so
   it will not trigger a state update if not really changed.
 </div>
 

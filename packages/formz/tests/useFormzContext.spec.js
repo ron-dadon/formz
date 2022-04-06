@@ -514,7 +514,12 @@ test('should call onSubmit', async () => {
   })
 
   expect(onSubmit).toHaveBeenCalledTimes(1)
-  expect(onSubmit).toHaveBeenCalledWith({ values: { testA: 'A' }, event: null, options: {}, validationErrors: null })
+  expect(onSubmit).toHaveBeenCalledWith({
+    values: { testA: 'A' },
+    event: null,
+    options: {},
+    validationErrors: null,
+  })
   expect(result.current.form.submitting).toBeFalsy()
   expect(result.current.form.submitted).toBeTruthy()
   expect(result.current.form.submitSuccess).toBeTruthy()
@@ -545,7 +550,12 @@ test('should call onSubmit with the passed event', async () => {
     await result.current.submit({ nativeEvent: 1 })
   })
 
-  expect(onSubmit).toHaveBeenCalledWith({ values: { testA: 'A' }, event: 1, options: {}, validationErrors: null })
+  expect(onSubmit).toHaveBeenCalledWith({
+    values: { testA: 'A' },
+    event: 1,
+    options: {},
+    validationErrors: null,
+  })
 })
 
 test('should call onSubmit with the validation errors', async () => {
@@ -553,9 +563,13 @@ test('should call onSubmit with the validation errors', async () => {
   const { result } = renderHook(() => useFormzContext(), { wrapper, initialProps: { onSubmit } })
 
   act(() => {
-    result.current.mountField({ name: 'testA', defaultValue: 'A', validate: () => {
-      throw { required: true, length: false }
-    }})
+    result.current.mountField({
+      name: 'testA',
+      defaultValue: 'A',
+      validate: () => {
+        throw { required: true, length: false }
+      },
+    })
     result.current.mountField({ name: 'testB', defaultValue: 'B' })
   })
 
@@ -575,9 +589,9 @@ test('should call onSubmit with the validation errors', async () => {
     validationErrors: {
       testA: {
         required: true,
-        length: false
+        length: false,
       },
-    }
+    },
   })
 })
 
@@ -597,7 +611,12 @@ test('should call onSubmit with the passed event and pass it to onSubmitSuccess'
     await result.current.submit({ nativeEvent: 1 })
   })
 
-  expect(onSubmit).toHaveBeenCalledWith({ values: { testA: 'A' }, event: 1, options: {}, validationErrors: null })
+  expect(onSubmit).toHaveBeenCalledWith({
+    values: { testA: 'A' },
+    event: 1,
+    options: {},
+    validationErrors: null,
+  })
   expect(onSubmitSuccess).toHaveBeenCalledWith(undefined, 1)
 })
 
@@ -620,7 +639,12 @@ test('should call onSubmit with the passed event and pass it to onSubmitError', 
     await result.current.submit({ nativeEvent: 1 })
   })
 
-  expect(onSubmit).toHaveBeenCalledWith({ values: { testA: 'A' }, event: 1, options: {}, validationErrors: null })
+  expect(onSubmit).toHaveBeenCalledWith({
+    values: { testA: 'A' },
+    event: 1,
+    options: {},
+    validationErrors: null,
+  })
   expect(onSubmitError).toHaveBeenCalledWith(e, 1)
 })
 
@@ -646,7 +670,12 @@ test('should call onSubmit and fail due to onSubmit error', async () => {
   })
 
   expect(onSubmit).toHaveBeenCalledTimes(1)
-  expect(onSubmit).toHaveBeenCalledWith({ values: { testA: 'A' }, event: null, options: {}, validationErrors: null })
+  expect(onSubmit).toHaveBeenCalledWith({
+    values: { testA: 'A' },
+    event: null,
+    options: {},
+    validationErrors: null,
+  })
   expect(result.current.form.submitting).toBeFalsy()
   expect(result.current.form.submitted).toBeTruthy()
   expect(result.current.form.submitSuccess).toBeFalsy()
@@ -803,4 +832,65 @@ test('should call onSubmitError on failed submit', async () => {
   expect(onSubmit).toHaveBeenCalled()
   expect(onSubmitSuccess).not.toHaveBeenCalled()
   expect(onSubmitError).toHaveBeenCalledWith(e, null)
+})
+
+test('should call all fields validation if validateAll is true', async () => {
+  const { result } = renderHook(() => useFormzContext(), { wrapper })
+
+  const validateA = jest.fn(({ value }) => {
+    if (value === 'e') {
+      throw new Error('Bad A')
+    }
+  })
+
+  const validateB = jest.fn(({ value }) => {
+    if (value === 'e') {
+      throw new Error('Bad B')
+    }
+  })
+
+  act(() => {
+    result.current.mountField({ name: 'testA', validate: validateA, validateOnBlur: true })
+  })
+
+  act(() => {
+    result.current.mountField({
+      name: 'testB',
+      validate: validateB,
+      validateOnBlur: true,
+      validateAll: true,
+    })
+  })
+
+  expect(result.current.fields.testA.validateAll).toBeFalsy()
+  expect(result.current.fields.testB.validateAll).toBeTruthy()
+
+  act(() => {
+    result.current.setFieldValue({ name: 'testA', value: 'e' })
+    result.current.setFieldValue({ name: 'testB', value: 'e' })
+  })
+  act(() => {
+    result.current.setFieldTouched({ name: 'testA' })
+  })
+
+  expect(validateA).toHaveBeenCalled()
+  expect(validateB).not.toHaveBeenCalled()
+  expect(result.current.fields.testA.invalid).toBeTruthy()
+  expect(result.current.fields.testB.invalid).toBeFalsy()
+
+  jest.clearAllMocks()
+
+  act(() => {
+    result.current.setFieldValue({ name: 'testA', value: 'ok' })
+  })
+
+  act(() => {
+    result.current.setFieldTouched({ name: 'testB' })
+  })
+
+  await new Promise((r) => setTimeout(r, 100))
+  expect(validateA).toHaveBeenCalled()
+  expect(validateB).toHaveBeenCalled()
+  expect(result.current.fields.testA.invalid).toBeFalsy()
+  expect(result.current.fields.testB.invalid).toBeTruthy()
 })
