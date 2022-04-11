@@ -894,3 +894,84 @@ test('should call all fields validation if validateAll is true', async () => {
   expect(result.current.fields.testA.invalid).toBeFalsy()
   expect(result.current.fields.testB.invalid).toBeTruthy()
 })
+
+test('should call specific fields validation if validateAll is a function', async () => {
+  const { result } = renderHook(() => useFormzContext(), { wrapper })
+
+  const validateA = jest.fn(({ value }) => {
+    if (value === 'e') {
+      throw new Error('Bad A')
+    }
+  })
+
+  const validateB = jest.fn(({ value }) => {
+    if (value === 'e') {
+      throw new Error('Bad B')
+    }
+  })
+
+  const validateC = jest.fn(({ value }) => {
+    if (value === 'e') {
+      throw new Error('Bad C')
+    }
+  })
+
+  act(() => {
+    result.current.mountField({ name: 'testA', validate: validateA, validateOnBlur: true })
+  })
+
+  act(() => {
+    result.current.mountField({
+      name: 'testB',
+      validate: validateB,
+      validateOnBlur: true,
+      validateAll: (name) => ['testA', 'testB'].includes(name),
+    })
+  })
+
+  act(() => {
+    result.current.mountField({
+      name: 'testC',
+      validate: validateC,
+      validateOnBlur: true,
+    })
+  })
+
+  expect(result.current.fields.testA.validateAll).toBeFalsy()
+  expect(result.current.fields.testB.validateAll).toBeTruthy()
+  expect(result.current.fields.testC.validateAll).toBeFalsy()
+
+  act(() => {
+    result.current.setFieldValue({ name: 'testA', value: 'e' })
+    result.current.setFieldValue({ name: 'testB', value: 'e' })
+    result.current.setFieldValue({ name: 'testC', value: 'e' })
+  })
+  act(() => {
+    result.current.setFieldTouched({ name: 'testA' })
+  })
+
+  expect(validateA).toHaveBeenCalled()
+  expect(validateB).not.toHaveBeenCalled()
+  expect(validateC).not.toHaveBeenCalled()
+  expect(result.current.fields.testA.invalid).toBeTruthy()
+  expect(result.current.fields.testB.invalid).toBeFalsy()
+  expect(result.current.fields.testC.invalid).toBeFalsy()
+
+  jest.clearAllMocks()
+
+  act(() => {
+    result.current.setFieldValue({ name: 'testA', value: 'ok' })
+  })
+
+  act(() => {
+    result.current.setFieldTouched({ name: 'testB' })
+  })
+
+  await new Promise((r) => setTimeout(r, 100))
+  expect(validateA).toHaveBeenCalled()
+  expect(validateB).toHaveBeenCalled()
+  expect(validateC).not.toHaveBeenCalled()
+  expect(result.current.fields.testA.invalid).toBeFalsy()
+  expect(result.current.fields.testB.invalid).toBeTruthy()
+  expect(result.current.fields.testC.invalid).toBeFalsy()
+})

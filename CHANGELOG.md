@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [2.4.0] - 2022-04-11
+
+### Added
+
+- `formz`
+  - Add `validateAll` support for a function that will allow skipping or including fields in the
+    re-validation.
+
+- `formz-docs`
+  - Updated API docs with `validateAll` changes
+
 ## [2.3.0] - 2022-04-06
 
 ### Added

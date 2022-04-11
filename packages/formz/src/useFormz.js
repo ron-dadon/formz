@@ -233,7 +233,7 @@ const createFormzProvider = () => {
           }
 
           if (validate && validateOnBlur && validateAll) {
-            validateAllFields(newState)
+            validateAllFields(newState, typeof validateAll === 'function' ? validateAll : null)
           }
 
           return newState
@@ -335,7 +335,7 @@ const createFormzProvider = () => {
           }
 
           if (validate && validateOnChange && validateAll) {
-            validateAllFields(newState)
+            validateAllFields(newState, typeof validateAll === 'function' ? validateAll : null)
           }
 
           return newState
@@ -407,9 +407,10 @@ const createFormzProvider = () => {
       [setState]
     )
 
-    const validateAllFields = async (formState) =>
+    const validateAllFields = async (formState, validateAll) =>
       Promise.allSettled(
         Object.entries(formState.fields).map(async ([name, { validate }]) => {
+          if (validateAll && !validateAll(name, formState.fields[name])) return null
           try {
             if (validate) {
               setValidating({ name })
