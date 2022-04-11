@@ -7,6 +7,7 @@ export declare function useFormzField(field: FieldInput): FieldResult
 type ValuesType = { [field: string]: any }
 type FormPropsGenerator = (context: FormzContextResult) => object
 type ValidationFunction = (validateInput: ValidateInput) => Promise<any>
+type ValidateAllFunction = (name: string, field: FieldState) => boolean
 
 interface SubmitOptions {
   ignoreErrors?: boolean
@@ -45,7 +46,7 @@ interface MountFieldInput extends FieldInput {
   validate?: ValidationFunction
   validateOnBlur?: boolean
   validateOnChange?: boolean
-  validateAll?: boolean
+  validateAll?: ValidateAllFunction | boolean
 }
 
 interface SetFieldErrorInput extends FieldInput {
@@ -60,7 +61,7 @@ interface FieldValidationInput extends FieldInput {
   validate?: ValidationFunction
   validateOnBlur?: boolean
   validateOnChange?: boolean
-  validateAll?: boolean
+  validateAll?: ValidateAllFunction | boolean
 }
 
 interface FormzFullContextResult extends FormzContextResult {
@@ -116,7 +117,7 @@ interface FieldInput {
   format?: (value: any) => any
   validateOnBlur?: boolean
   validateOnChange?: boolean
-  validateAll?: boolean
+  validateAll?: ValidateAllFunction | boolean
 }
 
 interface FieldInputProps {
