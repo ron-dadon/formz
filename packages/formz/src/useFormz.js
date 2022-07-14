@@ -7,22 +7,22 @@ export const defaultMetaState = {
   validating: false,
   touched: false,
   untouched: true,
-  pristine: true,
+  pristine: true
 }
 
 const createDefaultFieldState = ({
-  defaultValue,
-  validate,
-  validateOnBlur,
-  validateOnChange,
-  validateAll,
-}) => ({
+                                   defaultValue,
+                                   validate,
+                                   validateOnBlur,
+                                   validateOnChange,
+                                   validateAll
+                                 }) => ({
   ...defaultMetaState,
   defaultValue,
   validate,
   validateOnBlur,
   validateOnChange,
-  validateAll,
+  validateAll
 })
 
 const defaultFormState = {
@@ -36,8 +36,8 @@ const defaultFormState = {
     submitting: false,
     submitSuccess: false,
     submitError: false,
-    submitEvent: null,
-  },
+    submitEvent: null
+  }
 }
 
 const isEmptyObject = (obj) => !Object.keys(obj).length
@@ -68,19 +68,19 @@ const convertToDeepObject = (obj) =>
       setDeepValue({
         obj: result,
         name,
-        value,
+        value
       }),
     {}
   )
 
 const createFormzProvider = () => {
   const FormzProvider = ({
-    onSubmit,
-    children,
-    formProps = {},
-    onSubmitSuccess,
-    onSubmitError,
-  }) => {
+                           onSubmit,
+                           children,
+                           formProps = {},
+                           onSubmitSuccess,
+                           onSubmitError
+                         }) => {
     if (!onSubmit || typeof onSubmit !== 'function')
       throw new Error('`onSubmit` prop is required in Form')
 
@@ -95,7 +95,7 @@ const createFormzProvider = () => {
 
     useEffect(() => {
       const {
-        form: { submitting, submitted, submitSuccess, submitError, submitResult, submitEvent },
+        form: { submitting, submitted, submitSuccess, submitError, submitResult, submitEvent }
       } = state
       if (submitting || !submitted || calledCallback.current) return
       if (submitSuccess) {
@@ -108,7 +108,7 @@ const createFormzProvider = () => {
       }
       setState((current) => {
         const {
-          form: { submitEvent, ...form },
+          form: { submitEvent, ...form }
         } = current
         return { ...current, form: { ...form, submitEvent: null } }
       })
@@ -125,10 +125,10 @@ const createFormzProvider = () => {
               validate,
               validateOnBlur,
               validateOnChange,
-              validateAll,
-            }),
+              validateAll
+            })
           },
-          values: { ...current.values, [name]: defaultValue },
+          values: { ...current.values, [name]: defaultValue }
         }))
       },
       [setState]
@@ -148,7 +148,7 @@ const createFormzProvider = () => {
             ...current,
             form: { ...current.form, valid, invalid: !valid, errors: formErrors },
             fields,
-            values,
+            values
           }
         })
       },
@@ -172,11 +172,11 @@ const createFormzProvider = () => {
             validate,
             validateOnBlur,
             validateAll,
-            validateOnChange,
+            validateOnChange
           }
           const newFields = {
             ...current.fields,
-            [name]: newField,
+            [name]: newField
           }
           const newFormErrors = { ...current.form.errors }
           const newForm = { ...current.form }
@@ -192,7 +192,7 @@ const createFormzProvider = () => {
           return {
             ...current,
             form: newForm,
-            fields: newFields,
+            fields: newFields
           }
         })
       },
@@ -228,8 +228,8 @@ const createFormzProvider = () => {
             form: { ...current.form, touched: true, untouched: false },
             fields: {
               ...current.fields,
-              [name]: { ...currentField, touched: true, untouched: false },
-            },
+              [name]: { ...currentField, touched: true, untouched: false }
+            }
           }
 
           if (validate && validateOnBlur && validateAll) {
@@ -253,8 +253,8 @@ const createFormzProvider = () => {
               error,
               valid: false,
               invalid: true,
-              validating: false,
-            },
+              validating: false
+            }
           }
           return {
             ...current,
@@ -264,13 +264,13 @@ const createFormzProvider = () => {
               invalid: true,
               errors: {
                 ...current.form.errors,
-                [name]: error,
+                [name]: error
               },
               validating: Object.values(currentFields).some(
                 ({ validating, name: fieldName }) => fieldName !== name && validating
-              ),
+              )
             },
-            fields: currentFields,
+            fields: currentFields
           }
         })
       },
@@ -283,7 +283,7 @@ const createFormzProvider = () => {
           const formErrors = { ...current.form.errors }
           const currentFields = {
             ...current.fields,
-            [name]: { ...current.fields[name], valid: true, invalid: false, validating: false },
+            [name]: { ...current.fields[name], valid: true, invalid: false, validating: false }
           }
           delete currentFields[name].error
           delete formErrors[name]
@@ -293,12 +293,12 @@ const createFormzProvider = () => {
             valid,
             invalid: !valid,
             errors: formErrors,
-            validating: Object.values(currentFields).some(({ validating }) => validating),
+            validating: Object.values(currentFields).some(({ validating }) => validating)
           }
           return {
             ...current,
             form: currentForm,
-            fields: currentFields,
+            fields: currentFields
           }
         })
       },
@@ -331,7 +331,7 @@ const createFormzProvider = () => {
             ...current,
             values: { ...current.values, [name]: value },
             form: { ...current.form, pristine: false },
-            fields: { ...current.fields, [name]: { ...current.fields[name], pristine: false } },
+            fields: { ...current.fields, [name]: { ...current.fields[name], pristine: false } }
           }
 
           if (validate && validateOnChange && validateAll) {
@@ -352,7 +352,7 @@ const createFormzProvider = () => {
           return {
             ...current,
             form: { ...current.form, validating: true },
-            fields: { ...current.fields, [name]: { ...current.fields[name], validating: true } },
+            fields: { ...current.fields, [name]: { ...current.fields[name], validating: true } }
           }
         })
       },
@@ -369,9 +369,9 @@ const createFormzProvider = () => {
             values: { ...current.values, [name]: field.defaultValue },
             form: {
               ...current.form,
-              pristine: Object.values(fields).every(({ pristine }) => pristine),
+              pristine: Object.values(fields).every(({ pristine }) => pristine)
             },
-            fields: fields,
+            fields: fields
           }
         })
       },
@@ -386,21 +386,21 @@ const createFormzProvider = () => {
           const fields = Object.entries(current.fields).reduce(
             (newFields, [name, { defaultValue }]) => ({
               ...newFields,
-              [name]: createDefaultFieldState({ defaultValue }),
+              [name]: createDefaultFieldState({ defaultValue })
             }),
             {}
           )
           const values = Object.entries(current.fields).reduce(
             (newValues, [name, { defaultValue }]) => ({
               ...newValues,
-              [name]: defaultValue,
+              [name]: defaultValue
             }),
             {}
           )
           return {
             ...defaultFormState,
             fields,
-            values,
+            values
           }
         })
       },
@@ -417,7 +417,7 @@ const createFormzProvider = () => {
               await validate({
                 name,
                 value: formState.values[name],
-                values: formState.values,
+                values: formState.values
               })
             }
             clearFieldError({ name })
@@ -443,8 +443,8 @@ const createFormzProvider = () => {
           submitError: false,
           submitResult: null,
           submitCount: current.form.submitCount + 1,
-          submitEvent: e?.nativeEvent || null,
-        },
+          submitEvent: e?.nativeEvent || null
+        }
       }))
       calledCallback.current = false
       try {
@@ -456,32 +456,32 @@ const createFormzProvider = () => {
         }
         const validationErrors = ignoreErrors
           ? rejectedValidations.reduce(
-              (all, { reason: { name, error } }) => ({
-                ...all,
-                [name]: error,
-              }),
-              {}
-            )
+            (all, { reason: { name, error } }) => ({
+              ...all,
+              [name]: error
+            }),
+            {}
+          )
           : null
         const submitResult = await onSubmit({
           values: submitValues,
           event: e?.nativeEvent || null,
           validationErrors,
-          options,
+          options
         })
         setState((current) => ({
           ...current,
-          form: { ...current.form, submitSuccess: true, submitResult },
+          form: { ...current.form, submitSuccess: true, submitResult }
         }))
       } catch (e) {
         setState((current) => ({
           ...current,
-          form: { ...current.form, submitError: e },
+          form: { ...current.form, submitError: e }
         }))
       } finally {
         setState((current) => ({
           ...current,
-          form: { ...current.form, submitting: false, submitted: true },
+          form: { ...current.form, submitting: false, submitted: true }
         }))
       }
     }
@@ -500,7 +500,8 @@ const createFormzProvider = () => {
         setFieldValue,
         resetField,
         reset,
-        submit,
+        validate: () => validateAllFields(state),
+        submit
       }),
       [state]
     )

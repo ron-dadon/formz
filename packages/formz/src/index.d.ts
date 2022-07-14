@@ -76,6 +76,7 @@ interface FormzFullContextResult extends FormzContextResult {
   resetField: (field: FieldInput) => void
   reset: (e?: Event) => void
   submit: (e?: Event, options?: SubmitOptions) => void
+  validate: () => Promise<void>
 }
 
 interface MetaState {
