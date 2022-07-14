@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [2.5.0] - 2022-07-14
+
+### Added
+
+- `formz`
+  - Add `validate` function on the formz context to allow manual triggering of validation for all
+    fields.
+
 ## [2.4.0] - 2022-04-11
 
 ### Added
