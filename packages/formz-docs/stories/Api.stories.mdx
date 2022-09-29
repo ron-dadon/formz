@@ -60,6 +60,7 @@ None.
 | `fields[field].validation`       | The field validation function                                                                                       |
 | `fields[field].validateOnBlur`   | `true` means the field will be validated when the field `inputProps.onBlur` is called                               |
 | `fields[field].validateOnChange` | `true` means the field will be validated when the field `inputProps.onChange` is called                             |
+| `fields[field].fieldRef`         | A react reference object holding the reference to the underlying HTML element of the field                          |
 | `form`                           | The internal state of the form                                                                                      |
 | `form.valid`                     | `true` means all the field validations passed or never run                                                          |
 | `form.invalid`                   | `true` means at least one of the field validations failed                                                           |
@@ -146,6 +147,7 @@ Defines a field in the form and provides access to the field internal state and 
 | `inputProps.value`    | The same as `value`                                                                                                                          |
 | `inputProps.onChange` | A function that should be called to update the field value                                                                                   |
 | `inputProps.onBlur`   | A function that should be called when the field loses focus                                                                                  |
+| `inputProps.ref`      | A react reference object to hold the reference to the underlying HTML element of the field                                                   |
 
 ### Example
 

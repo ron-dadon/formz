@@ -7,6 +7,7 @@ const defaultFieldState = {
   validateOnChange: false,
   validateOnBlur: true,
   validateAll: false,
+  fieldRef: { current: null }
 }
 const nop = () => {}
 
@@ -21,6 +22,8 @@ test('should create field', () => {
   expect(result.current.inputProps.value).not.toBeDefined()
   expect(typeof result.current.inputProps.onChange === 'function').toBeTruthy()
   expect(typeof result.current.inputProps.onBlur === 'function').toBeTruthy()
+  expect(typeof result.current.inputProps.ref === 'object').toBeTruthy()
+  expect(result.current.inputProps.ref.current).toBeNull()
   expect(result.current.name).toEqual('test')
   expect(result.current.field).toEqual(defaultFieldState)
 })
@@ -353,3 +356,23 @@ test('should run format when pulling value from state', () => {
   expect(format).toHaveBeenCalled()
   expect(result.current.value).toEqual('A')
 })
+
+test('should keep ref', () => {
+  const { result } = renderHook(
+    () =>
+      useFormzField({
+        name: 'test',
+        defaultValue: 'a',
+      }),
+    { wrapper }
+  )
+
+  const firstRef = result.current.inputProps.ref
+
+  act(() => {
+    result.current.inputProps.ref.current = 'a'
+  })
+
+  expect(firstRef.current).toBe(result.current.inputProps.ref.current)
+})
+
