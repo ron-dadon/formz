@@ -11,18 +11,20 @@ export const defaultMetaState = {
 }
 
 const createDefaultFieldState = ({
-                                   defaultValue,
-                                   validate,
-                                   validateOnBlur,
-                                   validateOnChange,
-                                   validateAll
-                                 }) => ({
+   defaultValue,
+   validate,
+   validateOnBlur,
+   validateOnChange,
+   validateAll,
+   fieldRef
+ }) => ({
   ...defaultMetaState,
   defaultValue,
   validate,
   validateOnBlur,
   validateOnChange,
-  validateAll
+  validateAll,
+  fieldRef
 })
 
 const defaultFormState = {
@@ -79,7 +81,8 @@ const createFormzProvider = () => {
                            children,
                            formProps = {},
                            onSubmitSuccess,
-                           onSubmitError
+                           onSubmitError,
+                          focusFirstErrorField,
                          }) => {
     if (!onSubmit || typeof onSubmit !== 'function')
       throw new Error('`onSubmit` prop is required in Form')
@@ -95,7 +98,8 @@ const createFormzProvider = () => {
 
     useEffect(() => {
       const {
-        form: { submitting, submitted, submitSuccess, submitError, submitResult, submitEvent }
+        form: { submitting, submitted, submitSuccess, submitError, submitResult, submitEvent },
+        fields,
       } = state
       if (submitting || !submitted || calledCallback.current) return
       if (submitSuccess) {
@@ -104,6 +108,10 @@ const createFormzProvider = () => {
       }
       if (submitError) {
         calledCallback.current = true
+        if (focusFirstErrorField) {
+          const [,fieldToFocus] = Object.entries(fields).find(([,fieldState]) => fieldState.invalid && fieldState.fieldRef.current && typeof fieldState.fieldRef.current.focus === 'function') || []
+          if (fieldToFocus) fieldToFocus.fieldRef.current.focus()
+        }
         onSubmitError && onSubmitError(submitError, submitEvent)
       }
       setState((current) => {
@@ -115,7 +123,7 @@ const createFormzProvider = () => {
     }, [state, onSubmitSuccess, onSubmitError])
 
     const mountField = useCallback(
-      ({ name, defaultValue, validate, validateOnBlur, validateOnChange, validateAll }) => {
+      ({ name, defaultValue, validate, validateOnBlur, validateOnChange, validateAll, fieldRef }) => {
         setState((current) => ({
           ...current,
           fields: {
@@ -125,7 +133,8 @@ const createFormzProvider = () => {
               validate,
               validateOnBlur,
               validateOnChange,
-              validateAll
+              validateAll,
+              fieldRef
             })
           },
           values: { ...current.values, [name]: defaultValue }

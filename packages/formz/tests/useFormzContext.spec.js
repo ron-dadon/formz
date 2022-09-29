@@ -4,13 +4,14 @@ import { defaultMetaState, useFormz, useFormzContext } from '../src'
 
 const nop = () => {}
 
-const wrapper = ({ children, onSubmit, onSubmitSuccess, onSubmitError }) => {
+const wrapper = ({ children, onSubmit, onSubmitSuccess, onSubmitError, focusFirstErrorField }) => {
   const { Form } = useFormz()
   return (
     <Form
       onSubmit={onSubmit || nop}
       onSubmitSuccess={onSubmitSuccess}
       onSubmitError={onSubmitError}
+      focusFirstErrorField={focusFirstErrorField}
     >
       {children}
     </Form>
@@ -683,6 +684,7 @@ test('should call onSubmit and fail due to onSubmit error', async () => {
   expect(result.current.form.submitError.message).toEqual('Fail submit')
   expect(result.current.form.submitCount).toEqual(1)
 })
+
 test('should not call onSubmit due to field validation error', async () => {
   const onSubmit = jest.fn()
   const { result } = renderHook(() => useFormzContext(), { wrapper, initialProps: { onSubmit } })
@@ -974,4 +976,34 @@ test('should call specific fields validation if validateAll is a function', asyn
   expect(result.current.fields.testA.invalid).toBeFalsy()
   expect(result.current.fields.testB.invalid).toBeTruthy()
   expect(result.current.fields.testC.invalid).toBeFalsy()
+})
+
+test('should focus first field error due to field validation error on submit', async () => {
+  const onSubmit = jest.fn()
+  const refA = { current: { focus: jest.fn() } }
+  const refB = { current: { focus: jest.fn() } }
+  const { result } = renderHook(() => useFormzContext(), { wrapper, initialProps: { onSubmit, focusFirstErrorField: true } })
+
+  act(() => {
+    result.current.mountField({
+      name: 'testA',
+      defaultValue: 'A',
+      validate: () => {
+        throw new Error('Fail A')
+      },
+      fieldRef: refA,
+    })
+    result.current.mountField({
+      name: 'testB',
+      defaultValue: 'B',
+      fieldRef: refB,
+    })
+  })
+
+  await act(async () => {
+    await result.current.submit()
+  })
+
+  expect(refA.current.focus).toHaveBeenCalled()
+  expect(refB.current.focus).not.toHaveBeenCalled()
 })

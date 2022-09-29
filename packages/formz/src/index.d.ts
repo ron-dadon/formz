@@ -25,6 +25,7 @@ interface FormProps {
   formProps?: object | FormPropsGenerator
   onSubmitSuccess?: (any) => void
   onSubmitError?: (Error) => void
+  focusFirstErrorField?: boolean
 }
 
 interface FormzResult {
@@ -47,6 +48,7 @@ interface MountFieldInput extends FieldInput {
   validateOnBlur?: boolean
   validateOnChange?: boolean
   validateAll?: ValidateAllFunction | boolean
+  fieldRef: React.RefObject<HTMLElement | null>,
 }
 
 interface SetFieldErrorInput extends FieldInput {
@@ -125,6 +127,7 @@ interface FieldInputProps {
   value: any
   onChange: (value: any) => void
   onBlur: (event?: object) => void
+  ref: React.RefObject<HTMLElement | null>
 }
 
 interface FieldResult extends FormzContextResult {

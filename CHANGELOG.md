@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [2.6.0] - 2022-09-29
+
+### Added
+
+- `formz`
+  - Add `ref` to `useFormzField` under `inputProps` to pass a reference to the field HTML element down
+    to the field state.
+  - Add `focusFirstErrorField` boolean prop to `Form` component. If the form is invalid during submit, and the field has his `ref` filled, the field will be focused automatically.
+
 ## [2.5.0] - 2022-07-14
 
 ### Added

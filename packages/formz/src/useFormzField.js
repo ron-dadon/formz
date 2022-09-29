@@ -1,4 +1,4 @@
-import { useContext, useEffect, useCallback } from 'react'
+import { useContext, useEffect, useCallback, useRef } from 'react'
 import { FormzContext } from './FormzContext.js'
 
 export const useFormzField = ({
@@ -12,6 +12,7 @@ export const useFormzField = ({
   validateAll = false,
 }) => {
   const formState = useContext(FormzContext)
+  const fieldRef = useRef(null)
   const {
     values,
     fields,
@@ -27,7 +28,7 @@ export const useFormzField = ({
   const mounted = !!fields[name]
 
   useEffect(() => {
-    mountField({ name, defaultValue, validate, validateOnBlur, validateOnChange, validateAll })
+    mountField({ name, defaultValue, validate, validateOnBlur, validateOnChange, validateAll, fieldRef })
     return () => unmountField({ name })
   }, [])
 
@@ -61,6 +62,6 @@ export const useFormzField = ({
     value: formattedValue,
     name,
     defaultValue,
-    inputProps: { value: formattedValue, onChange: onChangeHandler, onBlur },
+    inputProps: { value: formattedValue, onChange: onChangeHandler, onBlur, ref: fieldRef },
   }
 }
