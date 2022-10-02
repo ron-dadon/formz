@@ -109,7 +109,7 @@ const createFormzProvider = () => {
       if (submitError) {
         calledCallback.current = true
         if (focusFirstErrorField) {
-          const [,fieldToFocus] = Object.entries(fields).find(([,fieldState]) => fieldState.invalid && fieldState.fieldRef.current && typeof fieldState.fieldRef.current.focus === 'function') || []
+          const [,fieldToFocus] = Object.entries(fields).find(([,fieldState]) => fieldState.invalid && fieldState.fieldRef?.current && typeof fieldState.fieldRef.current.focus === 'function') || []
           if (fieldToFocus) fieldToFocus.fieldRef.current.focus()
         }
         onSubmitError && onSubmitError(submitError, submitEvent)

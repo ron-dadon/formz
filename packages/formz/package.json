@@ -1,7 +1,7 @@
 {
   "name": "formz",
   "description": "Painless React forms with the magic of hooks",
-  "version": "2.6.0",
+  "version": "2.6.1",
   "license": "MIT",
   "repository": "https://github.com/ron-dadon/formz",
   "keywords": [
