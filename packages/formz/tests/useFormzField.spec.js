@@ -287,7 +287,7 @@ test('should run parse when calling onChange', () => {
   expect(result.current.value).toEqual('B')
 })
 
-test('should keep onChange and onBlur references', () => {
+test('should keep onChange reference', () => {
   const parse = jest.fn((v) => v.toUpperCase())
   const { result } = renderHook(
     () =>
@@ -300,14 +300,12 @@ test('should keep onChange and onBlur references', () => {
   )
 
   const firstOnChange = result.current.inputProps.onChange
-  const firstOnBlur = result.current.inputProps.onBlur
 
   act(() => {
     result.current.inputProps.onChange('b')
   })
 
   expect(firstOnChange).toBe(result.current.inputProps.onChange)
-  expect(firstOnBlur).toBe(result.current.inputProps.onBlur)
 })
 
 test('should call onChange with an event object with target value', () => {

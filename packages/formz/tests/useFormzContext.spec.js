@@ -274,21 +274,21 @@ test('should not set field validating twice', () => {
     result.current.mountField({ name: 'testA' })
   })
 
-  const oldReference1 = result.current
+  const oldReference1 = result.current.fields
 
   act(() => {
     result.current.setValidating({ name: 'testA' })
   })
 
-  expect(result.current).not.toBe(oldReference1)
+  expect(result.current.fields).not.toBe(oldReference1)
 
-  const oldReference2 = result.current
+  const oldReference2 = result.current.fields
 
   act(() => {
     result.current.setValidating({ name: 'testA' })
   })
 
-  expect(result.current).toBe(oldReference2)
+  expect(result.current.fields).toBe(oldReference2)
 })
 
 test('should clear field error', () => {
