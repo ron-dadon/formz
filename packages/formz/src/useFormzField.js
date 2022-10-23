@@ -39,14 +39,14 @@ export const useFormzField = ({
   }, [validate, validateOnBlur, validateOnChange, mounted])
 
   const onChangeHandler = useCallback(
-    (e) => {
+    function handleChange(e) {
       const newValue = parse ? parse(e) : e?.target?.value !== undefined ? e?.target?.value : e
       setFieldValue({ name, value: newValue })
     },
     [parse, setFieldValue, name]
   )
 
-  const onBlur = useCallback(() => {
+  const onBlur = useCallback(function handleBlur() {
     setFieldTouched({ name })
   }, [setFieldTouched, name])
 
