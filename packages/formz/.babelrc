@@ -1,22 +1,18 @@
 {
+  "presets": ["@babel/env", "@babel/react"],
+  "plugins": ["@babel/transform-runtime"],
   "env": {
-    "development": {
+    "production-esm": {
       "presets": [
-        "@babel/env",
+        [
+          "@babel/env",
+          {
+            "modules": false
+          }
+        ],
         "@babel/react"
-      ]
-    },
-    "production": {
-      "presets": [
-        "@babel/env",
-        "@babel/react"
-      ]
-    },
-    "test": {
-      "presets": [
-        "@babel/env",
-        "@babel/react"
-      ]
+      ],
+      "plugins": [["@babel/transform-runtime", { "useESModules": true }]]
     }
   }
 }

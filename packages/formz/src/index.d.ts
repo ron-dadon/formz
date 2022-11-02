@@ -48,7 +48,7 @@ interface MountFieldInput extends FieldInput {
   validateOnBlur?: boolean
   validateOnChange?: boolean
   validateAll?: ValidateAllFunction | boolean
-  fieldRef: React.RefObject<HTMLElement | null>,
+  fieldRef: React.RefObject<HTMLElement | null>
 }
 
 interface SetFieldErrorInput extends FieldInput {

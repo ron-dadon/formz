@@ -28,15 +28,24 @@ export const useFormzField = ({
   const mounted = !!fields[name]
 
   useEffect(() => {
-    mountField({ name, defaultValue, validate, validateOnBlur, validateOnChange, validateAll, fieldRef })
+    mountField({
+      name,
+      defaultValue,
+      validate,
+      validateOnBlur,
+      validateOnChange,
+      validateAll,
+      fieldRef,
+    })
     return () => unmountField({ name })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {
     if (mounted) {
       setFieldValidation({ name, validate, validateOnBlur, validateOnChange, validateAll })
     }
-  }, [validate, validateOnBlur, validateOnChange, mounted])
+  }, [validate, validateOnBlur, validateOnChange, mounted, setFieldValidation, name, validateAll])
 
   const onChangeHandler = useCallback(
     function handleChange(e) {
@@ -46,9 +55,12 @@ export const useFormzField = ({
     [parse, setFieldValue, name]
   )
 
-  const onBlur = useCallback(function handleBlur() {
-    setFieldTouched({ name })
-  }, [setFieldTouched, name])
+  const onBlur = useCallback(
+    function handleBlur() {
+      setFieldTouched({ name })
+    },
+    [setFieldTouched, name]
+  )
 
   const currentValue = mounted ? value : defaultValue
   const formattedValue = format ? format(currentValue) : currentValue
