@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [2.7.1] - 2023-08-12
+
+### Changed
+
+- `formz`
+  - Submit event now triggering `stopPropagation()` method to avoid event bubbling to parent forms.
+
+## [2.7.0] - 2022-10-23
+
+### Change
+
+- `formz`
+  - Split state to 2 different states to reduce re-rendering of components if they only depend on certain partial form state.
+
 ## [2.6.1] - 2022-10-02
 
 ### Added

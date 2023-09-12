@@ -457,7 +457,10 @@ const createFormzProvider = () => {
     const submit = useCallback(
       async (e = {}, options = {}) => {
         const { ignoreErrors = false } = options
-        if (e?.preventDefault) e.preventDefault()
+        if (e?.preventDefault) {
+          e.preventDefault()
+          e.stopPropagation()
+        }
 
         if (form.submitting) throw new Error('Cannot submit form more than once every time')
         setForm((currentForm) => ({
