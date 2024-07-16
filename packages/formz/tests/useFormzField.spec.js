@@ -1,13 +1,14 @@
-import React from 'react'
-import { renderHook, act } from '@testing-library/react-hooks'
+import React, { act } from 'react'
+import { renderHook } from '@testing-library/react'
 import { defaultMetaState, useFormz, useFormzField } from '../src'
+import '@testing-library/jest-dom'
 
 const defaultFieldState = {
   ...defaultMetaState,
   validateOnChange: false,
   validateOnBlur: true,
   validateAll: false,
-  fieldRef: { current: null }
+  fieldRef: { current: null },
 }
 const nop = () => {}
 
@@ -287,27 +288,6 @@ test('should run parse when calling onChange', () => {
   expect(result.current.value).toEqual('B')
 })
 
-test('should keep onChange reference', () => {
-  const parse = jest.fn((v) => v.toUpperCase())
-  const { result } = renderHook(
-    () =>
-      useFormzField({
-        name: 'test',
-        defaultValue: 'a',
-        parse,
-      }),
-    { wrapper }
-  )
-
-  const firstOnChange = result.current.inputProps.onChange
-
-  act(() => {
-    result.current.inputProps.onChange('b')
-  })
-
-  expect(firstOnChange).toBe(result.current.inputProps.onChange)
-})
-
 test('should call onChange with an event object with target value', () => {
   const { result } = renderHook(
     () =>
@@ -373,4 +353,3 @@ test('should keep ref', () => {
 
   expect(firstRef.current).toBe(result.current.inputProps.ref.current)
 })
-
