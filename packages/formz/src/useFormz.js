@@ -122,7 +122,7 @@ const createFormzProvider = () => {
       setState((current) => {
         return { ...current, form: { ...current.form, submitEvent: null } }
       })
-    }, [onSubmitSuccess, onSubmitError, focusFirstErrorField, state.fields])
+    }, [onSubmitSuccess, onSubmitError, focusFirstErrorField, state.fields, state.form])
 
     const mountField = useCallback(
       ({
