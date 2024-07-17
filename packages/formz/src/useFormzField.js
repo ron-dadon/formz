@@ -52,14 +52,14 @@ export const useFormzField = ({
       const newValue = parse ? parse(e) : e?.target?.value !== undefined ? e?.target?.value : e
       setFieldValue({ name, value: newValue })
     },
-    [parse, setFieldValue, name]
+    [parse, setFieldValue, name],
   )
 
   const onBlur = useCallback(
     function handleBlur() {
       setFieldTouched({ name })
     },
-    [setFieldTouched, name]
+    [setFieldTouched, name],
   )
 
   const currentValue = mounted ? value : defaultValue

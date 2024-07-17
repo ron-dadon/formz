@@ -1,6 +1,6 @@
 import React from 'react'
 import { useFormz } from '../src/useFormz.js'
-import { screen } from '@testing-library/dom'
+import { screen } from '@testing-library/react'
 import { render, renderHook } from '@testing-library/react'
 import '@testing-library/jest-dom'
 
@@ -43,7 +43,7 @@ test('Should render form tag with form props function', async () => {
   const { Form } = result.current
 
   render(
-    <Form onSubmit={console.log} formProps={() => ({ 'data-testid': '123', noValidate: true })} />
+    <Form onSubmit={console.log} formProps={() => ({ 'data-testid': '123', noValidate: true })} />,
   )
   const form = await screen.findByTestId('123')
   expect(form instanceof HTMLFormElement).toBeTruthy()

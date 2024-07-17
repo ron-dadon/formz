@@ -21,7 +21,7 @@ const Wrapper = ({ children, onSubmit, onSubmitSuccess, onSubmitError, focusFirs
 
 const createWrapper = (Wrapper, props = {}) => {
   return function CreatedWrapper({ children }) {
-    return <Wrapper {...props}>{children}</Wrapper>;
+    return <Wrapper {...props}>{children}</Wrapper>
   }
 }
 
@@ -508,7 +508,9 @@ test('should call preventDefault in submit', async () => {
 
 test('should call onSubmit', async () => {
   const onSubmit = jest.fn()
-  const { result } = renderHook(() => useFormzContext(), { wrapper: createWrapper(Wrapper, { onSubmit })  })
+  const { result } = renderHook(() => useFormzContext(), {
+    wrapper: createWrapper(Wrapper, { onSubmit }),
+  })
 
   act(() => {
     result.current.mountField({ name: 'testA', defaultValue: 'A' })
@@ -552,7 +554,9 @@ test('should call onSubmit', async () => {
 
 test('should call onSubmit with the passed event', async () => {
   const onSubmit = jest.fn()
-  const { result } = renderHook(() => useFormzContext(), { wrapper: createWrapper(Wrapper, { onSubmit }) })
+  const { result } = renderHook(() => useFormzContext(), {
+    wrapper: createWrapper(Wrapper, { onSubmit }),
+  })
 
   act(() => {
     result.current.mountField({ name: 'testA', defaultValue: 'A' })
@@ -572,7 +576,9 @@ test('should call onSubmit with the passed event', async () => {
 
 test('should call onSubmit with the validation errors', async () => {
   const onSubmit = jest.fn()
-  const { result } = renderHook(() => useFormzContext(), { wrapper: createWrapper(Wrapper, { onSubmit }) })
+  const { result } = renderHook(() => useFormzContext(), {
+    wrapper: createWrapper(Wrapper, { onSubmit }),
+  })
 
   act(() => {
     result.current.mountField({
@@ -662,7 +668,9 @@ test('should call onSubmit and fail due to onSubmit error', async () => {
   const onSubmit = jest.fn(async () => {
     throw new Error('Fail submit')
   })
-  const { result } = renderHook(() => useFormzContext(), { wrapper: createWrapper(Wrapper, { onSubmit }) })
+  const { result } = renderHook(() => useFormzContext(), {
+    wrapper: createWrapper(Wrapper, { onSubmit }),
+  })
 
   act(() => {
     result.current.mountField({ name: 'testA', defaultValue: 'A' })
@@ -696,7 +704,9 @@ test('should call onSubmit and fail due to onSubmit error', async () => {
 
 test('should not call onSubmit due to field validation error', async () => {
   const onSubmit = jest.fn()
-  const { result } = renderHook(() => useFormzContext(), { wrapper: createWrapper(Wrapper, { onSubmit }) })
+  const { result } = renderHook(() => useFormzContext(), {
+    wrapper: createWrapper(Wrapper, { onSubmit }),
+  })
 
   act(() => {
     result.current.mountField({
@@ -730,7 +740,9 @@ test('should not call onSubmit due to field validation error', async () => {
 
 test('should call onSubmit with nested object', async () => {
   const onSubmit = jest.fn()
-  const { result } = renderHook(() => useFormzContext(), { wrapper: createWrapper(Wrapper, { onSubmit }) })
+  const { result } = renderHook(() => useFormzContext(), {
+    wrapper: createWrapper(Wrapper, { onSubmit }),
+  })
 
   act(() => {
     result.current.mountField({ name: 'test.a', defaultValue: 'A' })
@@ -810,7 +822,7 @@ test('should call onSubmitError on failed submit', async () => {
   const onSubmitSuccess = jest.fn()
   const onSubmitError = jest.fn()
   const { result } = renderHook(() => useFormzContext(), {
-    wrapper: createWrapper(Wrapper, { onSubmit, onSubmitSuccess, onSubmitError })
+    wrapper: createWrapper(Wrapper, { onSubmit, onSubmitSuccess, onSubmitError }),
   })
 
   act(() => {
@@ -995,7 +1007,9 @@ test('should focus first field error due to field validation error on submit', a
   const onSubmit = jest.fn()
   const refA = { current: { focus: jest.fn() } }
   const refB = { current: { focus: jest.fn() } }
-  const { result } = renderHook(() => useFormzContext(), { wrapper: createWrapper(Wrapper, { onSubmit, focusFirstErrorField: true })} )
+  const { result } = renderHook(() => useFormzContext(), {
+    wrapper: createWrapper(Wrapper, { onSubmit, focusFirstErrorField: true }),
+  })
 
   act(() => {
     result.current.mountField({
