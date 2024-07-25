@@ -4,8 +4,6 @@ module.exports = {
     'react-app',
     'react-app/jest',
     'prettier',
-    'plugin:import/recommended',
-    'plugin:react-hooks/recommended',
   ],
   plugins: ['prettier'],
   rules: {

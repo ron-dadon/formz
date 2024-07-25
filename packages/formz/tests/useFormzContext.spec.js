@@ -1,10 +1,11 @@
-import React from 'react'
-import { renderHook, act } from '@testing-library/react-hooks'
+import React, { act } from 'react'
+import { renderHook } from '@testing-library/react'
 import { defaultMetaState, useFormz, useFormzContext } from '../src'
+import '@testing-library/jest-dom'
 
 const nop = () => {}
 
-const wrapper = ({ children, onSubmit, onSubmitSuccess, onSubmitError, focusFirstErrorField }) => {
+const Wrapper = ({ children, onSubmit, onSubmitSuccess, onSubmitError, focusFirstErrorField }) => {
   const { Form } = useFormz()
   return (
     <Form
@@ -17,6 +18,14 @@ const wrapper = ({ children, onSubmit, onSubmitSuccess, onSubmitError, focusFirs
     </Form>
   )
 }
+
+const createWrapper = (Wrapper, props = {}) => {
+  return function CreatedWrapper({ children }) {
+    return <Wrapper {...props}>{children}</Wrapper>
+  }
+}
+
+const wrapper = createWrapper(Wrapper)
 
 test('should return form context default state', () => {
   const { result } = renderHook(() => useFormzContext(), { wrapper })
@@ -425,6 +434,8 @@ test('should reset field', () => {
 
   act(() => {
     result.current.setFieldValue({ name: 'testA', value: 'C' })
+  })
+  act(() => {
     result.current.setFieldValue({ name: 'testB', value: 'D' })
   })
 
@@ -497,7 +508,9 @@ test('should call preventDefault in submit', async () => {
 
 test('should call onSubmit', async () => {
   const onSubmit = jest.fn()
-  const { result } = renderHook(() => useFormzContext(), { wrapper, initialProps: { onSubmit } })
+  const { result } = renderHook(() => useFormzContext(), {
+    wrapper: createWrapper(Wrapper, { onSubmit }),
+  })
 
   act(() => {
     result.current.mountField({ name: 'testA', defaultValue: 'A' })
@@ -541,7 +554,9 @@ test('should call onSubmit', async () => {
 
 test('should call onSubmit with the passed event', async () => {
   const onSubmit = jest.fn()
-  const { result } = renderHook(() => useFormzContext(), { wrapper, initialProps: { onSubmit } })
+  const { result } = renderHook(() => useFormzContext(), {
+    wrapper: createWrapper(Wrapper, { onSubmit }),
+  })
 
   act(() => {
     result.current.mountField({ name: 'testA', defaultValue: 'A' })
@@ -561,7 +576,9 @@ test('should call onSubmit with the passed event', async () => {
 
 test('should call onSubmit with the validation errors', async () => {
   const onSubmit = jest.fn()
-  const { result } = renderHook(() => useFormzContext(), { wrapper, initialProps: { onSubmit } })
+  const { result } = renderHook(() => useFormzContext(), {
+    wrapper: createWrapper(Wrapper, { onSubmit }),
+  })
 
   act(() => {
     result.current.mountField({
@@ -600,8 +617,7 @@ test('should call onSubmit with the passed event and pass it to onSubmitSuccess'
   const onSubmit = jest.fn()
   const onSubmitSuccess = jest.fn()
   const { result } = renderHook(() => useFormzContext(), {
-    wrapper,
-    initialProps: { onSubmit, onSubmitSuccess },
+    wrapper: createWrapper(Wrapper, { onSubmit, onSubmitSuccess }),
   })
 
   act(() => {
@@ -628,8 +644,7 @@ test('should call onSubmit with the passed event and pass it to onSubmitError', 
   })
   const onSubmitError = jest.fn()
   const { result } = renderHook(() => useFormzContext(), {
-    wrapper,
-    initialProps: { onSubmit, onSubmitError },
+    wrapper: createWrapper(Wrapper, { onSubmit, onSubmitError }),
   })
 
   act(() => {
@@ -653,7 +668,9 @@ test('should call onSubmit and fail due to onSubmit error', async () => {
   const onSubmit = jest.fn(async () => {
     throw new Error('Fail submit')
   })
-  const { result } = renderHook(() => useFormzContext(), { wrapper, initialProps: { onSubmit } })
+  const { result } = renderHook(() => useFormzContext(), {
+    wrapper: createWrapper(Wrapper, { onSubmit }),
+  })
 
   act(() => {
     result.current.mountField({ name: 'testA', defaultValue: 'A' })
@@ -687,7 +704,9 @@ test('should call onSubmit and fail due to onSubmit error', async () => {
 
 test('should not call onSubmit due to field validation error', async () => {
   const onSubmit = jest.fn()
-  const { result } = renderHook(() => useFormzContext(), { wrapper, initialProps: { onSubmit } })
+  const { result } = renderHook(() => useFormzContext(), {
+    wrapper: createWrapper(Wrapper, { onSubmit }),
+  })
 
   act(() => {
     result.current.mountField({
@@ -721,7 +740,9 @@ test('should not call onSubmit due to field validation error', async () => {
 
 test('should call onSubmit with nested object', async () => {
   const onSubmit = jest.fn()
-  const { result } = renderHook(() => useFormzContext(), { wrapper, initialProps: { onSubmit } })
+  const { result } = renderHook(() => useFormzContext(), {
+    wrapper: createWrapper(Wrapper, { onSubmit }),
+  })
 
   act(() => {
     result.current.mountField({ name: 'test.a', defaultValue: 'A' })
@@ -760,8 +781,7 @@ test('should call onSubmitSuccess on successful submit', async () => {
   const onSubmitSuccess = jest.fn()
   const onSubmitError = jest.fn()
   const { result } = renderHook(() => useFormzContext(), {
-    wrapper,
-    initialProps: { onSubmit, onSubmitSuccess, onSubmitError },
+    wrapper: createWrapper(Wrapper, { onSubmit, onSubmitSuccess, onSubmitError }),
   })
 
   act(() => {
@@ -802,8 +822,7 @@ test('should call onSubmitError on failed submit', async () => {
   const onSubmitSuccess = jest.fn()
   const onSubmitError = jest.fn()
   const { result } = renderHook(() => useFormzContext(), {
-    wrapper,
-    initialProps: { onSubmit, onSubmitSuccess, onSubmitError },
+    wrapper: createWrapper(Wrapper, { onSubmit, onSubmitSuccess, onSubmitError }),
   })
 
   act(() => {
@@ -869,6 +888,8 @@ test('should call all fields validation if validateAll is true', async () => {
 
   act(() => {
     result.current.setFieldValue({ name: 'testA', value: 'e' })
+  })
+  act(() => {
     result.current.setFieldValue({ name: 'testB', value: 'e' })
   })
   act(() => {
@@ -945,7 +966,11 @@ test('should call specific fields validation if validateAll is a function', asyn
 
   act(() => {
     result.current.setFieldValue({ name: 'testA', value: 'e' })
+  })
+  act(() => {
     result.current.setFieldValue({ name: 'testB', value: 'e' })
+  })
+  act(() => {
     result.current.setFieldValue({ name: 'testC', value: 'e' })
   })
   act(() => {
@@ -982,7 +1007,9 @@ test('should focus first field error due to field validation error on submit', a
   const onSubmit = jest.fn()
   const refA = { current: { focus: jest.fn() } }
   const refB = { current: { focus: jest.fn() } }
-  const { result } = renderHook(() => useFormzContext(), { wrapper, initialProps: { onSubmit, focusFirstErrorField: true } })
+  const { result } = renderHook(() => useFormzContext(), {
+    wrapper: createWrapper(Wrapper, { onSubmit, focusFirstErrorField: true }),
+  })
 
   act(() => {
     result.current.mountField({
@@ -993,6 +1020,8 @@ test('should focus first field error due to field validation error on submit', a
       },
       fieldRef: refA,
     })
+  })
+  act(() => {
     result.current.mountField({
       name: 'testB',
       defaultValue: 'B',
@@ -1004,6 +1033,7 @@ test('should focus first field error due to field validation error on submit', a
     await result.current.submit()
   })
 
+  console.log('refA.current', refA.current)
   expect(refA.current.focus).toHaveBeenCalled()
   expect(refB.current.focus).not.toHaveBeenCalled()
 })

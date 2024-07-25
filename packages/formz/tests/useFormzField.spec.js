@@ -1,23 +1,45 @@
-import React from 'react'
-import { renderHook, act } from '@testing-library/react-hooks'
+import React, { act } from 'react'
+import { renderHook } from '@testing-library/react'
 import { defaultMetaState, useFormz, useFormzField } from '../src'
+import '@testing-library/jest-dom'
 
 const defaultFieldState = {
   ...defaultMetaState,
   validateOnChange: false,
   validateOnBlur: true,
   validateAll: false,
-  fieldRef: { current: null }
+  fieldRef: { current: null },
 }
 const nop = () => {}
 
-const wrapper = ({ children }) => {
+const Wrapper = ({ children }) => {
   const { Form } = useFormz()
   return <Form onSubmit={nop}>{children}</Form>
 }
 
+test('should keep onChange reference', () => {
+  const parse = jest.fn((v) => v.toUpperCase())
+  const { result } = renderHook(
+    () =>
+      useFormzField({
+        name: 'test',
+        defaultValue: 'a',
+        parse,
+      }),
+    { wrapper: Wrapper },
+  )
+
+  const firstOnChange = result.current.inputProps.onChange
+
+  act(() => {
+    result.current.inputProps.onChange('b')
+  })
+
+  expect(firstOnChange).toBe(result.current.inputProps.onChange)
+})
+
 test('should create field', () => {
-  const { result } = renderHook(() => useFormzField({ name: 'test' }), { wrapper })
+  const { result } = renderHook(() => useFormzField({ name: 'test' }), { wrapper: Wrapper })
 
   expect(result.current.inputProps.value).not.toBeDefined()
   expect(typeof result.current.inputProps.onChange === 'function').toBeTruthy()
@@ -35,7 +57,7 @@ test('should create field with validateAll', () => {
         name: 'test',
         validateAll: true,
       }),
-    { wrapper }
+    { wrapper: Wrapper },
   )
 
   expect(result.current.field).toEqual({ ...defaultFieldState, validateAll: true })
@@ -48,7 +70,7 @@ test('should create field with default value', () => {
         name: 'test',
         defaultValue: 'A',
       }),
-    { wrapper }
+    { wrapper: Wrapper },
   )
 
   expect(result.current.inputProps.value).toEqual('A')
@@ -71,7 +93,7 @@ test('should create field with validate function', () => {
         defaultValue: 'A',
         validate,
       }),
-    { wrapper }
+    { wrapper: Wrapper },
   )
 
   expect(result.current.inputProps.value).toEqual('A')
@@ -97,7 +119,7 @@ test('should create field with validate function and update it', async () => {
         validate,
         validateOnBlur: true,
       }),
-    { wrapper }
+    { wrapper: Wrapper },
   )
 
   await act(async () => {
@@ -118,7 +140,7 @@ test('should create field with validate function and update it', async () => {
         validate: validate2,
         validateOnBlur: true,
       }),
-    { wrapper }
+    { wrapper: Wrapper },
   )
 
   await act(async () => {
@@ -138,7 +160,7 @@ test('should create field with validate function and update it', async () => {
         defaultValue: 'A',
         validateOnBlur: true,
       }),
-    { wrapper }
+    { wrapper: Wrapper },
   )
 
   await act(async () => {
@@ -160,7 +182,7 @@ test('should create field with validate function and call it with validateOnChan
         validate,
         validateOnChange: true,
       }),
-    { wrapper }
+    { wrapper: Wrapper },
   )
 
   expect(validate).not.toHaveBeenCalled()
@@ -183,7 +205,7 @@ test('should create field with validate function and not call it with validateOn
         defaultValue: 'A',
         validate,
       }),
-    { wrapper }
+    { wrapper: Wrapper },
   )
 
   expect(validate).not.toHaveBeenCalled()
@@ -206,7 +228,7 @@ test('should create field with validate function and call it with validateOnBlue
         validate,
         validateOnBlur: true,
       }),
-    { wrapper }
+    { wrapper: Wrapper },
   )
 
   expect(validate).not.toHaveBeenCalled()
@@ -228,7 +250,7 @@ test('should create field with validate function and not call it with validateOn
         validate,
         validateOnBlur: false,
       }),
-    { wrapper }
+    { wrapper: Wrapper },
   )
 
   expect(validate).not.toHaveBeenCalled()
@@ -252,7 +274,7 @@ test('should create field with validate function and call it with validateOnBlue
         validate,
         validateOnBlur: true,
       }),
-    { wrapper }
+    { wrapper: Wrapper },
   )
 
   expect(validate).not.toHaveBeenCalled()
@@ -274,7 +296,7 @@ test('should run parse when calling onChange', () => {
         defaultValue: 'a',
         parse,
       }),
-    { wrapper }
+    { wrapper: Wrapper },
   )
 
   expect(parse).not.toHaveBeenCalled()
@@ -287,27 +309,6 @@ test('should run parse when calling onChange', () => {
   expect(result.current.value).toEqual('B')
 })
 
-test('should keep onChange reference', () => {
-  const parse = jest.fn((v) => v.toUpperCase())
-  const { result } = renderHook(
-    () =>
-      useFormzField({
-        name: 'test',
-        defaultValue: 'a',
-        parse,
-      }),
-    { wrapper }
-  )
-
-  const firstOnChange = result.current.inputProps.onChange
-
-  act(() => {
-    result.current.inputProps.onChange('b')
-  })
-
-  expect(firstOnChange).toBe(result.current.inputProps.onChange)
-})
-
 test('should call onChange with an event object with target value', () => {
   const { result } = renderHook(
     () =>
@@ -315,7 +316,7 @@ test('should call onChange with an event object with target value', () => {
         name: 'test',
         defaultValue: 'a',
       }),
-    { wrapper }
+    { wrapper: Wrapper },
   )
 
   expect(result.current.inputProps.value).toEqual('a')
@@ -348,7 +349,7 @@ test('should run format when pulling value from state', () => {
         defaultValue: 'a',
         format,
       }),
-    { wrapper }
+    { wrapper: Wrapper },
   )
 
   expect(format).toHaveBeenCalled()
@@ -362,7 +363,7 @@ test('should keep ref', () => {
         name: 'test',
         defaultValue: 'a',
       }),
-    { wrapper }
+    { wrapper: Wrapper },
   )
 
   const firstRef = result.current.inputProps.ref
@@ -373,4 +374,3 @@ test('should keep ref', () => {
 
   expect(firstRef.current).toBe(result.current.inputProps.ref.current)
 })
-
