@@ -179,6 +179,7 @@ const createFormzProvider = () => {
       ({ name, validate, validateOnBlur, validateOnChange, validateAll }) => {
         setState((current) => {
           const currentField = current.fields[name]
+          if (!currentField) return current
           if (
             currentField.validate === validate &&
             currentField.validateOnChange === validateOnChange &&
