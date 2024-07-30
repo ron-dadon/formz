@@ -83,6 +83,9 @@ test('should unregister a field', () => {
 
   act(() => {
     result.current.mountField({ name: 'testA' })
+  })
+
+  act(() => {
     result.current.mountField({ name: 'testB' })
   })
 
@@ -127,6 +130,9 @@ test('should update field validation state if validate removed', async () => {
 
   act(() => {
     result.current.mountField({ name: 'test', validate: nopError })
+  })
+
+  act(() => {
     result.current.mountField({ name: 'test2', validate: nopError })
   })
 
@@ -170,6 +176,9 @@ test('should set field and form as touched', () => {
 
   act(() => {
     result.current.mountField({ name: 'testA' })
+  })
+
+  act(() => {
     result.current.mountField({ name: 'testB' })
   })
 
@@ -205,6 +214,9 @@ test('should not update state if field already touched', () => {
 
   act(() => {
     result.current.mountField({ name: 'testA' })
+  })
+
+  act(() => {
     result.current.mountField({ name: 'testB' })
   })
 
@@ -229,6 +241,9 @@ test('should set field and form error', () => {
 
   act(() => {
     result.current.mountField({ name: 'testA' })
+  })
+
+  act(() => {
     result.current.mountField({ name: 'testB' })
   })
 
@@ -260,6 +275,9 @@ test('should set field and form as validating', () => {
 
   act(() => {
     result.current.mountField({ name: 'testA' })
+  })
+
+  act(() => {
     result.current.mountField({ name: 'testB' })
   })
 
@@ -305,8 +323,17 @@ test('should clear field error', () => {
 
   act(() => {
     result.current.mountField({ name: 'testA' })
+  })
+
+  act(() => {
     result.current.mountField({ name: 'testB' })
+  })
+
+  act(() => {
     result.current.setFieldError({ name: 'testA', error: 'error A' })
+  })
+
+  act(() => {
     result.current.setFieldError({ name: 'testB', error: 'error B' })
   })
 
@@ -354,6 +381,9 @@ test('should set field value', () => {
 
   act(() => {
     result.current.mountField({ name: 'testA' })
+  })
+
+  act(() => {
     result.current.mountField({ name: 'testB' })
   })
 
@@ -401,6 +431,9 @@ test('should set field value from defaultValue', () => {
 
   act(() => {
     result.current.mountField({ name: 'testA' })
+  })
+
+  act(() => {
     result.current.mountField({ name: 'testB', defaultValue: 'B' })
   })
 
@@ -424,6 +457,9 @@ test('should reset field', () => {
 
   act(() => {
     result.current.mountField({ name: 'testA', defaultValue: 'A' })
+  })
+
+  act(() => {
     result.current.mountField({ name: 'testB', defaultValue: 'B' })
   })
 
@@ -588,6 +624,9 @@ test('should call onSubmit with the validation errors', async () => {
         throw { required: true, length: false }
       },
     })
+  })
+
+  act(() => {
     result.current.mountField({ name: 'testB', defaultValue: 'B' })
   })
 
@@ -746,8 +785,17 @@ test('should call onSubmit with nested object', async () => {
 
   act(() => {
     result.current.mountField({ name: 'test.a', defaultValue: 'A' })
+  })
+
+  act(() => {
     result.current.mountField({ name: 'test.b', defaultValue: 'B' })
+  })
+
+  act(() => {
     result.current.mountField({ name: 'test.c.d', defaultValue: 'D' })
+  })
+
+  act(() => {
     result.current.mountField({ name: 'test.c.e', defaultValue: 'E' })
   })
 
@@ -1033,7 +1081,6 @@ test('should focus first field error due to field validation error on submit', a
     await result.current.submit()
   })
 
-  console.log('refA.current', refA.current)
   expect(refA.current.focus).toHaveBeenCalled()
   expect(refB.current.focus).not.toHaveBeenCalled()
 })
