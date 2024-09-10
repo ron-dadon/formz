@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [2.8.4] - 2024-09-10
+
+### Fixed
+
+- `formz`
+  - fix bug calling `validate` from `useFormzContext` cause failure due to not passing current fields & values.
+  
 ## [2.7.1] - 2023-08-12
 
 ### Changed

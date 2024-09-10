@@ -546,7 +546,8 @@ const createFormzProvider = () => {
         setFieldValue,
         resetField,
         reset,
-        validate: () => validateAllFields(),
+        validate: () =>
+          validateAllFields({ currentFields: state.fields, currentValues: state.values }),
         submit,
       }),
       [
